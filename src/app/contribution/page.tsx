@@ -20,7 +20,7 @@ export default async function Home() {
 
       <div className={styles.image}>
         <Image
-          src="/contribution.jpg"
+          src="/contribution/opengraph-image.jpg"
           alt="公式アカウントをみんなでまとめてリストを X(Twitter) でシェアすると、企業でアカウント運用の検討が始まる / Bluesky 上に公式アカウントが増える / Bluesky に行ってもいいかなと思う人が増える / 有志でまとめていますので、みんなで移行を促進していきましょう！"
           width={800}
           height={450}

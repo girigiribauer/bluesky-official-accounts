@@ -38,10 +38,10 @@ export default async function Home() {
     <div className={styles.container}>
       <h1 className={styles.heroTitle}>
         <Image
-          src="/bluesky-official-accounts.jpg"
+          src="/opengraph-image.jpg"
           alt="Bluesky 公式アカウント移行まとめ - X(Twitter) から Bluesky への移行状況をまとめ、移行を促進しています"
-          width={1600}
-          height={900}
+          width={800}
+          height={450}
         />
       </h1>
       <h2>公式アカウントの投稿をお願いします！</h2>
@@ -131,7 +131,8 @@ export default async function Home() {
           </dt>
           <dd>
             <p className={styles.description}>
-              X(Twitter) の運用を停止し、完全に Bluesky に移行した状態
+              完全に Bluesky に移行した状態 or Bluesky
+              にしかアカウントが存在していない
             </p>
           </dd>
         </dl>
