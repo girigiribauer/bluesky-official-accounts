@@ -1,7 +1,7 @@
 import styles from "./ShareButtons.module.scss";
 
 export const ShareButtons = () => {
-  const shareText = encodeURIComponent(
+  const encodedText = encodeURIComponent(
     "Bluesky 公式アカウント移行まとめ https://example.com #青空公式アカウント"
   );
 
@@ -9,7 +9,7 @@ export const ShareButtons = () => {
     <ul className={styles.buttons}>
       <li>
         <a
-          href={`https://x.com/intent/post?text=${shareText}`}
+          href={`https://x.com/intent/post?text=${encodedText}`}
           className={styles.twitter}
           target="_blank"
         >
@@ -24,7 +24,7 @@ export const ShareButtons = () => {
       </li>
       <li>
         <a
-          href={`https://bsky.app/intent/compose?text=${shareText}`}
+          href={`https://bsky.app/intent/compose?text=${encodedText}`}
           className={styles.bluesky}
           target="_blank"
         >
