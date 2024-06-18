@@ -12,3 +12,8 @@ export type NotionItem = {
   bluesky: string;
   updatedTime: string;
 };
+
+export type NotionItemsWithLabel = {
+  label: string;
+  items: NotionItem[];
+};

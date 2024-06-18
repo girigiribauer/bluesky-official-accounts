@@ -1,0 +1,143 @@
+@import 'src/_mixin';
+
+.tableView {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+
+    &:before {
+      width: 1rem;
+      content: '+';
+    }
+  }
+
+  .databaseDetails[open] > .header:before {
+    content: '-';
+  }
+
+  .heading {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    background: #e3e2e0;
+    color: #32302c;
+    line-height: 1;
+  }
+
+  .total {
+    font-size: 0.75rem;
+  }
+
+  table {
+    width: 100%;
+    margin-bottom: 2rem;
+    border-collapse: collapse;
+
+    @include mq(s) {
+      display: block;
+    }
+  }
+
+  thead {
+    @include mq(s) {
+      display: none;
+    }
+  }
+
+  tbody {
+    @include mq(s) {
+      width: 100%;
+      display: block;
+    }
+  }
+
+  tr {
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+
+    @include mq(s) {
+      width: 100%;
+      display: block;
+      padding: 1rem 0;
+    }
+  }
+
+  th, td {
+    box-sizing: border-box;
+    word-break: break-all;
+    font-weight: normal;
+    text-align: left;
+
+    @include mq(l) {
+      padding: 0.5rem 0.25rem;
+      vertical-align: top;
+    }
+  }
+
+  th {
+    font-size: 0.875rem;
+
+    @include mq(s) {
+      display: none;
+    }
+  }
+
+  .cellName {
+    @include mq(s) {
+      display: inline-block;
+      margin-right: 0.25rem;
+    }
+
+    @include mq(l) {
+      width: 26%;
+    }
+  }
+  .cellStatus {
+    @include mq(s) {
+      display: inline-block;
+    }
+
+    @include mq(l) {
+      width: 20%;
+    }
+  }
+  .cellLink {
+    @include mq(s) {
+      display: block;
+      padding-top: 0.25rem;
+    }
+
+    @include mq(l) {
+      width: 27%;
+    }
+  }
+
+  .accountName {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: normal;
+  }
+
+  .link {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+  }
+
+  .icon {
+    @include mq(l) {
+      display: none;
+    }
+  }
+}

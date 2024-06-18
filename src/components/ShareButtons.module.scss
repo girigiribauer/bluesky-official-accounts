@@ -1,0 +1,32 @@
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0;
+  margin: 2rem 0;
+  list-style: none;
+}
+
+.twitter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.125rem 0.25rem;
+  background: #000;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.bluesky {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.125rem 0.25rem;
+  background: #1185fe;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 0.75rem;
+  text-decoration: none;
+}

@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import "../globals.scss";
 
 export default function RootLayout({
   children,
@@ -7,10 +8,32 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+      </head>
       <body>
-        <Suspense fallback="Notion から断続的に読み込んでいます">
-          {children}
-        </Suspense>
+        <main className="main">
+          <Suspense fallback="Notion から断続的に読み込んでいます">
+            {children}
+          </Suspense>
+        </main>
       </body>
     </html>
   );
