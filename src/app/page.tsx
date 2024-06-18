@@ -16,23 +16,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const data = await fetchNotion(10000);
-  const blueskyAccounts = data.items.filter(
-    (a) => a.status !== "未移行（未確認）"
-  );
-
-  const categorizedData = data.items.reduce<NotionItemsWithLabel[]>(
-    (acc, item) => {
-      let found = acc.find((v) => v.label === item.category);
-      if (!found) {
-        found = { label: item.category, items: [] };
-        acc.push(found);
-      }
-      found.items.push(item);
-      return acc;
-    },
-    []
-  );
+  const { updatedTime, items } = await fetchNotion(10000);
 
   return (
     <div className={styles.container}>
@@ -140,20 +124,7 @@ export default async function Home() {
 
       <hr />
 
-      <ul className={styles.databaseMeta}>
-        <li>
-          <time>
-            {new Date(data.updatedTime).toLocaleDateString("ja-JP")}{" "}
-            時点の最新データ
-          </time>
-        </li>
-        <li>
-          本人確認済み:
-          {blueskyAccounts.length} 件 / 全登録数: {data.items.length} 件
-        </li>
-      </ul>
-
-      <TableView categorizedData={categorizedData} />
+      <TableView updatedTime={updatedTime} items={items} />
 
       <hr />
 

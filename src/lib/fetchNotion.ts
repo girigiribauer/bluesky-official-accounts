@@ -1,7 +1,6 @@
 import "server-only";
 
 import { Client } from "@notionhq/client";
-import { unstable_cache } from "next/cache";
 import { NotionResponse, NotionItem } from "../models/Notion";
 
 export type FetchDataResponse = {
@@ -14,7 +13,6 @@ const notion = new Client({
 });
 
 const query = async (databaseId: string, cursor?: string | null) => {
-  console.log(`query called at ${new Date()}`);
   return await notion.databases.query({
     database_id: databaseId,
     page_size: 100, // 上限100
@@ -42,7 +40,6 @@ const query = async (databaseId: string, cursor?: string | null) => {
 const fetchNotionOnce = async (
   cursor?: string | null
 ): Promise<NotionResponse> => {
-  console.log(`fetchNotionOnce called at ${new Date()}`);
   const databaseId = process.env.NEXT_PUBLIC_DB_URL || "DEFAULT_DATABASE_ID";
   const notionResponse = await query(databaseId, cursor);
 
@@ -66,7 +63,6 @@ const fetchNotionOnce = async (
 };
 
 export const fetchNotion = async (limit: number) => {
-  console.log(`fetchNotion called at ${new Date()}`);
   let allItems: NotionItem[] = [];
   let nextCursor: string | null = null;
 
