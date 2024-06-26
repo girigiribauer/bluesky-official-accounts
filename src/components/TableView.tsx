@@ -31,13 +31,22 @@ export const TableView = ({ updatedTime, items }: TableViewProps) => {
     []
   );
 
+  const time = new Intl.DateTimeFormat("ja-JP", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Tokyo",
+  }).format(new Date(updatedTime));
+
   return (
     <>
       <ul className={styles.databaseMeta}>
         <li>
-          <time>
-            {new Date(updatedTime).toLocaleDateString("ja-JP")} 時点の最新データ
-          </time>
+          <time>{time} 時点の最新データ</time>
         </li>
         <li>
           本人確認済み:

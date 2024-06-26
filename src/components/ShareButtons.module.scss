@@ -8,24 +8,28 @@
 }
 
 .twitter {
+  height: 20px;
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 0.125rem 0.25rem;
+  padding: 1px 12px 1px 12px;
   background: #000;
-  border-radius: 2px;
+  border-radius: 9999px;
   color: #fff;
   font-size: 0.75rem;
   text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .bluesky {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 0.125rem 0.25rem;
+  gap: 8px;
+  padding: 1px 8px;
   background: #1185fe;
-  border-radius: 2px;
+  border-radius: 4px;
   color: #fff;
   font-size: 0.75rem;
   text-decoration: none;

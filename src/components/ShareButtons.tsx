@@ -2,7 +2,7 @@ import styles from "./ShareButtons.module.scss";
 
 export const ShareButtons = () => {
   const encodedText = encodeURIComponent(
-    "Bluesky 公式アカウント移行まとめ https://example.com #青空公式アカウント"
+    `Bluesky 公式アカウント移行まとめ ${process.env.NEXT_PUBLIC_EXTERNAL_URL} #青空公式アカウント`
   );
 
   return (
@@ -19,7 +19,7 @@ export const ShareButtons = () => {
             width="14"
             height="14"
           />
-          <span>Xでポスト</span>
+          <span>ポスト</span>
         </a>
       </li>
       <li>

@@ -2,7 +2,7 @@ import { NotionItem } from "src/models/Notion";
 
 export const promoteTwitterURL = (item: NotionItem) => {
   const baseURL = "https://x.com/intent/post";
-  const shareURL = "https://example.com";
+  const shareURL = process.env.NEXT_PUBLIC_EXTERNAL_URL;
   const hashtag = "#青空公式アカウント";
   let appealText = "Bluesky 公式アカウント移行まとめ";
 
@@ -33,7 +33,7 @@ export const promoteTwitterURL = (item: NotionItem) => {
 
 export const promoteBlueskyURL = (item: NotionItem) => {
   const baseURL = "https://bsky.app/intent/compose";
-  const shareURL = "https://example.com";
+  const shareURL = process.env.NEXT_PUBLIC_EXTERNAL_URL;
   const hashtag = "#青空公式アカウント";
   let appealText = "Bluesky 公式アカウント移行まとめ";
 
