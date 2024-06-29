@@ -1,5 +1,10 @@
 import { Suspense } from "react";
 import "../globals.scss";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_EXTERNAL_URL ?? ""),
+};
 
 export default function RootLayout({
   children,
