@@ -9,7 +9,7 @@ export type FetchDataResponse = {
 };
 
 const notion = new Client({
-  auth: process.env.NEXT_PUBLIC_NOTION_API_KEY,
+  auth: process.env.NOTION_API_KEY,
 });
 
 const query = async (databaseId: string, cursor?: string | null) => {
@@ -40,7 +40,7 @@ const query = async (databaseId: string, cursor?: string | null) => {
 const fetchNotionOnce = async (
   cursor?: string | null
 ): Promise<NotionResponse> => {
-  const databaseId = process.env.NEXT_PUBLIC_DB_URL || "DEFAULT_DATABASE_ID";
+  const databaseId = process.env.DB_URL || "DEFAULT_DATABASE_ID";
   const notionResponse = await query(databaseId, cursor);
 
   const Response: NotionItem[] = await Promise.all(
