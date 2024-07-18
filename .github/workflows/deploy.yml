@@ -1,0 +1,19 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 21 * * *" # 06:00 in JST
+    - cron: "0 9 * * *" # 18:00 in JST
+
+jobs:
+  build:
+    name: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call webhook
+        run: curl -X POST ${{ secrets.VERCEL_WEBHOOK_URL }}
