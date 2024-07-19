@@ -124,21 +124,6 @@ export default async function Home() {
 
       <hr />
 
-      <p>
-        HTML 出力日時テスト{" "}
-        {new Intl.DateTimeFormat("ja-JP", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-          timeZone: "Asia/Tokyo",
-        }).format(new Date())}
-        <br />
-        1日2回、06:00と18:00に最新が反映されてるはず...
-      </p>
       <TableView updatedTime={updatedTime} items={items} />
 
       <hr />

@@ -46,7 +46,7 @@ export const TableView = ({ updatedTime, items }: TableViewProps) => {
     <>
       <ul className={styles.databaseMeta}>
         <li>
-          <time>{time} 時点の最新データ</time>
+          <time>{time} 時点の最新データ（1日2回最新化されます）</time>
         </li>
         <li>
           本人確認済み:
