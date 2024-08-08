@@ -1,4 +1,3 @@
-import { NotionItemsWithLabel } from "src/models/Notion";
 import { fetchNotion } from "../lib/fetchNotion";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -17,6 +16,23 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const { updatedTime, items } = await fetchNotion(10000);
+
+  const time = new Intl.DateTimeFormat("ja-JP", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Tokyo",
+  }).format(new Date(updatedTime));
+
+  const newerItems = items.filter(
+    (a) =>
+      new Date(a.updatedTime).valueOf() >=
+      new Date(time).valueOf() - 1000 * 60 * 60 * 24 * 7
+  );
 
   return (
     <div className={styles.container}>
@@ -122,9 +138,21 @@ export default async function Home() {
         </dl>
       </div>
 
+      <p className={styles.updatedTime}>
+        <time>{time} 時点の最新データ（1日2回最新化されます）</time>
+      </p>
+
       <hr />
 
-      <TableView updatedTime={updatedTime} items={items} />
+      <TableView title="1週間以内の登録アカウント" items={newerItems} />
+
+      <hr />
+
+      <TableView
+        title="すべての登録アカウント"
+        items={items}
+        isFiltered={true}
+      />
 
       <hr />
 

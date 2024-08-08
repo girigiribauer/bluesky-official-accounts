@@ -1,24 +1,35 @@
 @import 'src/_mixin';
 
-.databaseMeta {
-  margin: 2rem 0;
-  padding: 0 0 0 1rem;
-
-  li {
-    font-size: 0.875rem;
-  }
-
-  input {
-    width: 80px;
-    margin-right: 0.5rem;
-    font-size: 1rem;
-  }
-}
-
 .tableView {
   display: flex;
   flex-direction: column;
-  margin-top: 2rem;
+
+  .tableHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 2rem 0;
+  }
+
+  .tableTitle {
+    font-size: 1.0rem;
+    margin: 0;
+  }
+
+  .tableDesc {
+    font-size: 0.75rem;
+    margin: 0;
+  }
+
+  .filterBlock {
+    margin: 0 0 2rem 0;
+
+    input {
+      width: 80px;
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
+  }
 
   .header {
     display: flex;
