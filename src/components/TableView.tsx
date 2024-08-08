@@ -17,7 +17,9 @@ export const TableView = ({ updatedTime, items }: TableViewProps) => {
 
   const blueskyAccounts = items.filter((a) => a.status !== "未移行（未確認）");
   const filteredItems =
-    filter !== "" ? items.filter((v) => v.name.includes(filter)) : items;
+    filter !== ""
+      ? items.filter((v) => v.name.toLowerCase().includes(filter.toLowerCase()))
+      : items;
   const categorizedItems = filteredItems.reduce<NotionItemsWithLabel[]>(
     (acc, item) => {
       let found = acc.find((v) => v.label === item.category);
