@@ -144,7 +144,7 @@ export default async function Home() {
 
       <hr />
 
-      <TableView title="1週間以内の登録アカウント" items={newerItems} />
+      <TableView title="1週間以内の登録・変更アカウント" items={newerItems} />
 
       <hr />
 
