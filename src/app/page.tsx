@@ -139,7 +139,7 @@ export default async function Home() {
       </div>
 
       <p className={styles.updatedTime}>
-        <time>{time} 時点の最新データ（1日2回最新化されます）</time>
+        <time>{time} 時点の最新データ（3時間おきに最新化されます）</time>
       </p>
 
       <hr />
