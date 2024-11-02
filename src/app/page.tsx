@@ -1,10 +1,11 @@
-import { fetchNotion } from "../lib/fetchNotion";
+import { fetchAccounts, fetchNews } from "../lib/fetchNotion";
 import { Metadata } from "next";
 import Image from "next/image";
 import styles from "./page.module.scss";
 import { TableView } from "src/components/TableView";
 import Link from "next/link";
 import { ShareButtons } from "src/components/ShareButtons";
+import { News } from "src/models/News";
 
 export const revalidate = 3600;
 
@@ -15,7 +16,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const { updatedTime, items } = await fetchNotion(10000);
+  const { updatedTime, items } = await fetchAccounts(10000);
+  const news = await fetchNews();
 
   const time = new Intl.DateTimeFormat("ja-JP", {
     year: "numeric",
@@ -141,6 +143,21 @@ export default async function Home() {
       <p className={styles.updatedTime}>
         <time>{time} 時点の最新データ（3時間おきに最新化されます）</time>
       </p>
+
+      <hr />
+
+      <div className={styles.news}>
+        <h3>全体の更新情報</h3>
+        {news.length > 0 ? (
+          <ul>
+            {news.map((a: News) => (
+              <li key={a.id}>
+                {a.date} {a.name}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
 
       <hr />
 

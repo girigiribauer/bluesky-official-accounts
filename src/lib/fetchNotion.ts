@@ -2,6 +2,7 @@ import "server-only";
 
 import { Client } from "@notionhq/client";
 import { NotionResponse, NotionItem } from "../models/Notion";
+import { News } from "../models/News";
 
 export type FetchDataResponse = {
   updatedTime: string;
@@ -12,8 +13,11 @@ const notion = new Client({
   auth: process.env.NOTION_API_KEY,
 });
 
-const query = async (databaseId: string, cursor?: string | null) => {
-  return await notion.databases.query({
+const fetchAccountsOnce = async (
+  cursor?: string | null
+): Promise<NotionResponse> => {
+  const databaseId = process.env.ACCOUNTLIST_DATABASE || "DEFAULT_DATABASE_ID";
+  const notionResponse = await notion.databases.query({
     database_id: databaseId,
     page_size: 100, // 上限100
     start_cursor: cursor ?? undefined,
@@ -35,13 +39,6 @@ const query = async (databaseId: string, cursor?: string | null) => {
       },
     },
   });
-};
-
-const fetchNotionOnce = async (
-  cursor?: string | null
-): Promise<NotionResponse> => {
-  const databaseId = process.env.DB_URL || "DEFAULT_DATABASE_ID";
-  const notionResponse = await query(databaseId, cursor);
 
   const Response: NotionItem[] = await Promise.all(
     notionResponse.results.map(async (result: any) => {
@@ -62,7 +59,7 @@ const fetchNotionOnce = async (
   };
 };
 
-export const fetchNotion = async (limit: number) => {
+export const fetchAccounts = async (limit: number) => {
   let allItems: NotionItem[] = [];
   let nextCursor: string | null = null;
 
@@ -72,7 +69,7 @@ export const fetchNotion = async (limit: number) => {
         // 連続してリクエストを送ると弾かれるらしいのでちょっと待つ
         await new Promise((r) => setTimeout(r, 3000));
       }
-      const { items, cursor } = await fetchNotionOnce(nextCursor);
+      const { items, cursor } = await fetchAccountsOnce(nextCursor);
       allItems = allItems.concat(items);
 
       if (allItems.length >= limit) break;
@@ -87,4 +84,25 @@ export const fetchNotion = async (limit: number) => {
     console.error(error);
     throw new Error(`Notion Request failed: ${error}`);
   }
+};
+
+export const fetchNews = async () => {
+  const databaseId = process.env.NEWS_DATABASE || "DEFAULT_DATABASE_ID";
+  const notionResponse = await notion.databases.query({
+    database_id: databaseId,
+    page_size: 5,
+    sorts: [
+      {
+        property: "Date",
+        direction: "descending",
+      },
+    ],
+  });
+
+  return notionResponse.results.map<News>((result: any) => {
+    const id = result?.id ?? "";
+    const name = result?.properties["Name"]?.title[0]?.plain_text ?? "";
+    const date = result?.properties["Date"]?.date?.start ?? "";
+    return { id, name, date };
+  }) as News[];
 };
