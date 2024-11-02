@@ -101,7 +101,10 @@ export const fetchNews = async () => {
 
   return notionResponse.results.map<News>((result: any) => {
     const id = result?.id ?? "";
-    const name = result?.properties["Name"]?.title[0]?.plain_text ?? "";
+    const name =
+      result?.properties["Name"]?.title
+        .map((a: any) => a.plain_text)
+        .join("") ?? "";
     const date = result?.properties["Date"]?.date?.start ?? "";
     return { id, name, date };
   }) as News[];
