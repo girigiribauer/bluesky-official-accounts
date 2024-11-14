@@ -109,12 +109,3 @@ export const fetchNews = async () => {
     return { id, name, date };
   }) as News[];
 };
-
-export const fetchDuplicateAccounts = async () => {
-  const databaseId = process.env.DUPLICATE_DATABASE || "DEFAULT_DATABASE_ID";
-  const notionResponse = await notion.databases.query({
-    database_id: databaseId,
-  });
-
-  return JSON.stringify(notionResponse.results);
-};

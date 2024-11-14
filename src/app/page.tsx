@@ -7,8 +7,6 @@ import Link from "next/link";
 import { ShareButtons } from "src/components/ShareButtons";
 import { News } from "src/models/News";
 
-export const revalidate = 3600;
-
 export const metadata: Metadata = {
   title: "Bluesky 公式アカウント移行まとめ",
   description:
@@ -73,6 +71,20 @@ export default async function Home() {
           →投稿用フォーム
         </a>
       </p>
+
+      <div className={styles.attention}>
+        <p>
+          現在投稿が急増してチェックが追いついてません！以下を十分確認の上ご投稿ください！
+        </p>
+        <ul>
+          <li>
+            すでに登録してあるアカウントの重複投稿（ステータス変更を除く）
+          </li>
+          <li>
+            『漫画家・イラストレーター』や『小説家・作家』などで、明らかに趣味と判断されるアカウントの自薦含む投稿（目安として何らか商業に関わるか否か）
+          </li>
+        </ul>
+      </div>
 
       <p>
         また、合わせて{" "}
