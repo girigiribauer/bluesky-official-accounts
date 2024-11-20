@@ -11,10 +11,10 @@
 }
 
 .attention {
-  border: 3px double var(--color-attention);
+  border: 3px double rgb(var(--color-attention));
   padding: 0.5rem 1rem;
   font-weight: bold;
-  color: var(--color-attention);
+  color: rgb(var(--color-attention));
   font-size: 0.875rem;
 }
 

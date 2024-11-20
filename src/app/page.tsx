@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   title: "Bluesky 公式アカウント移行まとめ",
   description:
     "X（Twitter）からBlueskyへの移行を促進するために、公式アカウントの移行状況をまとめています。有志でまとめていますので、みんなで移行を促進していきましょう！",
+  openGraph: {
+    title: "Bluesky 公式アカウント移行まとめ #青空公式アカウント",
+  },
 };
 
 export default async function Home() {
@@ -185,9 +188,11 @@ export default async function Home() {
 
       <hr />
 
-      <p>
-        <Link href={"/contribution"}>移行まとめで協力できること</Link>
-      </p>
+      <ul>
+        <li>
+          <Link href={"/contribution"}>移行まとめで協力できること</Link>
+        </li>
+      </ul>
 
       <ShareButtons />
     </div>

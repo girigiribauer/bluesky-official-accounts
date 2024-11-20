@@ -1,8 +1,8 @@
 :root {
-  --color-border: #eee;
-  --color-emphasis: #298fef;
-  --color-attention: #ef294a;
-  --color-link: #37352f;
+  --color-border: 238 238 238;
+  --color-emphasis: 41 143 239;
+  --color-attention: 239 41 74;
+  --color-link: 55 53 47;
 }
 
 html {
@@ -29,23 +29,25 @@ h2 {
 
 hr {
   margin: 3rem 0;
-  border: 1px solid var(--color-border);
+  border: 1px solid rgb(var(--color-border));
 }
 
 p {
   margin: 1rem 0;
+  word-break: break-word;
 }
 
 strong {
-  color: var(--color-emphasis);
+  color: rgb(var(--color-emphasis));
+  background: rgb(var(--color-emphasis) / 0.15);
 }
 
 a {
-  color: var(--color-link);
+  color: rgb(var(--color-link));
   text-decoration: underline;
 }
 
-ul {
+ul, ol {
   padding-left: 1rem;
 }
 
@@ -78,4 +80,21 @@ ul {
     background: #d3e5ef;
     color: #183347;
   }
+}
+
+.heroimage {
+  & > img {
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  }
+  & > p {
+    margin-top: 0;
+    font-size: 0.75rem;
+  }
+}
+
+.back {
+  text-align: right;
+  font-size: 0.75rem;
 }

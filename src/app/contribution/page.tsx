@@ -7,18 +7,22 @@ export const metadata: Metadata = {
   title: "移行まとめで協力できること - Bluesky 公式アカウント移行まとめ",
   description:
     "X（Twitter）からBlueskyへの移行を促進するために、公式アカウントの移行状況をまとめています。有志でまとめていますので、みんなで移行を促進していきましょう！",
+  openGraph: {
+    title:
+      "移行まとめで協力できること - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
+  },
 };
 
 export default async function Home() {
   return (
     <div className={styles.container}>
-      <p className={styles.back}>
+      <p className="back">
         <Link href={"/"}>Bluesky 公式アカウント移行まとめに戻る</Link>
       </p>
 
       <h1>移行まとめで協力できること</h1>
 
-      <div className={styles.image}>
+      <div className="heroimage">
         <Image
           src="/contribution/opengraph-image.jpg"
           alt="公式アカウントをみんなでまとめてリストを X(Twitter) でシェアすると、企業でアカウント運用の検討が始まる / Bluesky 上に公式アカウントが増える / Bluesky に行ってもいいかなと思う人が増える / 有志でまとめていますので、みんなで移行を促進していきましょう！"
@@ -26,6 +30,7 @@ export default async function Home() {
           height={450}
         />
       </div>
+
       <ul>
         <li>
           <a href="#share">来て欲しいアカウントの宣伝</a>
@@ -34,10 +39,10 @@ export default async function Home() {
           <a href="#post">公式アカウントのフォーム投稿</a>
         </li>
         <li>
-          <a href="#identification">未確認アカウントの本人確認</a>
+          <a href="#identification">未移行（未確認）アカウントの同一性の確認</a>
         </li>
         <li>
-          <a href="#categorize">アカウントの分類整理と投稿チェック</a>
+          <a href="#categorize">投稿された内容のチェックと分類整理</a>
         </li>
       </ul>
 
@@ -102,7 +107,7 @@ export default async function Home() {
 
       <hr />
 
-      <h2 id="identification">未確認アカウントの本人確認</h2>
+      <h2 id="identification">未移行（未確認）アカウントの同一性の確認</h2>
       <p>
         X(Twitter), Bluesky の両方のアカウントがあるものの、ステータスが
         <span className="status" data-status="未移行（未確認）">
@@ -113,30 +118,55 @@ export default async function Home() {
       </p>
       <p>
         中には偽物が偽っているケースなども考えられるため、可能であれば
-        <strong>本人確認</strong>をお願いしたいです。
+        <strong>同一性の確認（本人確認）</strong>をお願いしたいです。
       </p>
 
       <div className={styles.image}>
         <Image
           src="/verification.png"
-          alt="本人確認"
+          alt="同一性の確認"
           width={350}
           height={290}
         />
-        <p>https://bsky.app/profile/sankei.com/post/3kmerch4mvc2d より</p>
+        <p>例: https://bsky.app/profile/sankei.com/post/3kmerch4mvc2d より</p>
       </div>
 
+      <p>方法としては大きく2つあります。</p>
+
+      <ul>
+        <li>
+          X（旧Twitter）側から Bluesky アカウントを言及してもらう（例:
+          プロフィール追記、 Bluesky アカウント名の投稿）
+        </li>
+        <li>
+          公式アカウントが所有しているドメインをカスタムドメインとして設定
+        </li>
+      </ul>
+
       <p>
-        <strong>ただし依頼する場合は丁寧なやりとりをお願いします。</strong>
+        <strong>上記を依頼する場合は丁寧なやりとりをお願いします。</strong>
         ここのページを引用しつつ、X(Twitter) 側から Bluesky
         アカウントへの言及をお願いしたり、あるいはカスタムドメインの検討を勧めたりといった、複数の選択肢を提示することをお勧めします。
       </p>
 
+      <p>
+        なお、{" "}
+        <strong>
+          Bluesky 側で「本物です！」と発言したり、 Bluesky
+          側からX（旧Twitter）アカウントへのリンクを貼る行為は誰でも（偽物でも）できる
+        </strong>
+        ため、X（旧Twitter）と Bluesky
+        アカウントが同一であることの証明にはなりません。
+      </p>
+      <p>
+        「同じ発言をしているので本人です」という投稿も多いですが、それも同様です。
+      </p>
+
       <hr />
 
-      <h2 id="categorize">アカウントの分類整理と投稿チェック</h2>
+      <h2 id="categorize">投稿された内容のチェックと分類整理</h2>
       <p>
-        人によって思う公式アカウントは大きく異なるため、様々な分野での分類整理が必要となってきます。また、分類ごとに細分化するしないの判断が必要になってきます。
+        人によって思う公式アカウントは大きく異なるため、様々な分野での分類整理が必要となってきます。また、分類ごとに全体のバランスを見ながら細分化するしないの判断も必要になってきます。
         <br />
         面倒なタスクではありますが、1件公開するまで極力手間がかからないよう最適化してあるので、
         <strong>空き時間に時々チェック</strong>
@@ -160,22 +190,9 @@ export default async function Home() {
             @amanatsu-mikan.bsky.social
           </a>
         </li>
-        <li>
-          <a href="https://bsky.app/profile/schwarzewald.com" target="_blank">
-            @schwarzewald.com
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://bsky.app/profile/grouser-ts.bsky.social"
-            target="_blank"
-          >
-            @grouser-ts.bsky.social
-          </a>
-        </li>
       </ul>
 
-      <p className={styles.back}>
+      <p className="back">
         <Link href={"/"}>Bluesky 公式アカウント移行まとめに戻る</Link>
       </p>
     </div>
