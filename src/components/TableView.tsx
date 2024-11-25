@@ -1,35 +1,44 @@
 "use client";
 
-import { NotionItem, NotionItemsWithLabel } from "src/models/Notion";
+import { NotionItem, CategorizedNotionItems } from "src/models/Notion";
 import Image from "next/image";
 import styles from "./TableView.module.scss";
 import { extractBluesky, extractTwitter } from "src/lib/extractFromURL";
 import { promoteBlueskyURL, promoteTwitterURL } from "src/lib/promotion";
-import { useState } from "react";
+import { categoryCriteria } from "src/constants/categoryCriteria";
+import { useEffect, useState } from "react";
 
 export type TableViewProps = {
-  title: string;
   items: NotionItem[];
-  isFiltered?: boolean;
+  updatedTime: string;
 };
 
-export const TableView = ({
-  title,
-  items,
-  isFiltered = false,
-}: TableViewProps) => {
-  const [filter, setFilter] = useState<string>("");
+export const TableView = ({ items, updatedTime }: TableViewProps) => {
+  // アカウントリストに変更があったら一旦全部閉じる
+  useEffect(() => {
+    setOpen({});
+  }, [items]);
+
+  const [open, setOpen] = useState<Record<string, boolean>>({});
+
+  const time = new Intl.DateTimeFormat("ja-JP", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Tokyo",
+  }).format(new Date(updatedTime));
 
   const blueskyAccounts = items.filter((a) => a.status !== "未移行（未確認）");
-  const filteredItems =
-    isFiltered && filter !== ""
-      ? items.filter((v) => v.name.toLowerCase().includes(filter.toLowerCase()))
-      : items;
-  const categorizedItems = filteredItems.reduce<NotionItemsWithLabel[]>(
+  const categorizedItems = items.reduce<CategorizedNotionItems[]>(
     (acc, item) => {
-      let found = acc.find((v) => v.label === item.category);
+      let found = acc.find((v) => v.title === item.category);
       if (!found) {
-        found = { label: item.category, items: [] };
+        const criteria = categoryCriteria[item.category];
+        found = { title: item.category, criteria, items: [] };
         acc.push(found);
       }
       found.items.push(item);
@@ -38,38 +47,87 @@ export const TableView = ({
     []
   );
 
+  const handleSelectAllCategory = () => {
+    const categoryTitles = categorizedItems.reduce((acc, item) => {
+      return { ...acc, [item.title]: true };
+    }, {});
+    setOpen(categoryTitles);
+  };
+
+  const handleUnselectAllCategory = () => {
+    setOpen({});
+  };
+
+  const handleSelectCategory = (category: string) => {
+    const newOpen = { ...open };
+
+    if (category in open) {
+      delete newOpen[category];
+    } else {
+      newOpen[category] = true;
+    }
+    setOpen(newOpen);
+  };
+
   return (
     <div className={styles.tableView}>
-      <header className={styles.tableHeader}>
-        <h3 className={styles.tableTitle}>{title}</h3>
-        <p className={styles.tableDesc}>
-          本人確認済み:
-          {blueskyAccounts.length} 件 / 全登録数: {items.length} 件
-        </p>
+      <header className={styles.tableSummaryHeader}>
+        <div className={styles.tableSummaryButtons}>
+          <button
+            className={styles.tableSummaryButton}
+            onClick={handleSelectAllCategory}
+          >
+            <div className={styles.icon}>
+              <i className="fa-solid fa-caret-down" />
+            </div>
+            <span className={styles.tableSummaryButtonLabel}>すべて開く</span>
+          </button>
+          <button
+            className={styles.tableSummaryButton}
+            onClick={handleUnselectAllCategory}
+          >
+            <div className={styles.icon}>
+              <i className="fa-solid fa-caret-up" />
+            </div>
+            <span className={styles.tableSummaryButtonLabel}>すべて閉じる</span>
+          </button>
+        </div>
+        <div className={styles.tableSummaryStatus}>
+          <p className={styles.tableSummaryTotal}>
+            {blueskyAccounts.length > 0
+              ? `確認済み: ${blueskyAccounts.length} 件 / `
+              : null}
+            全登録数: {items.length} 件
+          </p>
+          <time className={styles.tableSummaryUpdate}>{time}</time>
+        </div>
       </header>
 
-      {isFiltered ? (
-        <div className={styles.filterBlock}>
-          <input
-            type="text"
-            value={filter}
-            onChange={(e) => {
-              setFilter(e.target.value);
+      {categorizedItems.map(({ title, criteria, items }) => (
+        <details className={styles.tableWrapper} key={title} open={open[title]}>
+          <summary
+            className={styles.tableGroupedHeader}
+            onClick={(e) => {
+              handleSelectCategory(title);
+              e.preventDefault();
             }}
-          />
-          <span>で絞り込み</span>
-          {filter !== "" ? <span>: {filteredItems.length} 件</span> : null}
-        </div>
-      ) : null}
-
-      {categorizedItems.map(({ label, items }) => (
-        <details className={styles.databaseDetails} key={label}>
-          <summary className={styles.header}>
-            <h2 className={styles.heading}>{label}</h2>
-            <span className={styles.total}>{items.length}</span>
+          >
+            <div className={styles.tableGroupedLabel}>
+              <h2 className={styles.tableGroupedHeading}>{title}</h2>
+              <span className={styles.tableGroupedTotal}>{items.length}</span>
+              {criteria ? (
+                <span className={styles.tableGroupedCriteria}>
+                  掲載基準: {criteria}
+                </span>
+              ) : null}
+            </div>
+            <div className={[styles.icon, styles.tableGroupedIcon].join(" ")}>
+              <i className="fa-solid fa-caret-down" />
+            </div>
           </summary>
-          <table>
-            <thead>
+
+          <table className={styles.table}>
+            <thead className={styles.tableHeader}>
               <tr>
                 <th className={styles.cellName}>名前</th>
                 <th className={styles.cellStatus}>ステータス</th>
@@ -77,7 +135,8 @@ export const TableView = ({
                 <th className={styles.cellBs}>Bluesky</th>
               </tr>
             </thead>
-            <tbody>
+
+            <tbody className={styles.tableBody}>
               {items.map((item) => {
                 const { id, name, status, twitter, bluesky } = item;
                 return (
@@ -92,9 +151,9 @@ export const TableView = ({
                     </td>
                     <td className={styles.cellLink}>
                       {twitter ? (
-                        <div className={styles.link}>
+                        <div className={styles.cellLinkGroup}>
                           <Image
-                            className={styles.icon}
+                            className={styles.cellLinkIcon}
                             src="/icon-x.svg"
                             alt="X(Twitter)"
                             width={16}
@@ -114,9 +173,9 @@ export const TableView = ({
                     </td>
                     <td className={styles.cellLink}>
                       {bluesky ? (
-                        <div className={styles.link}>
+                        <div className={styles.cellLinkGroup}>
                           <Image
-                            className={styles.icon}
+                            className={styles.cellLinkIcon}
                             src="/icon-bluesky.svg"
                             alt="Bluesky"
                             width={16}

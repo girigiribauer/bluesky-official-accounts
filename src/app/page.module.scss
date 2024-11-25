@@ -10,19 +10,54 @@
   }
 }
 
+.shareButtons {
+  margin: 30px 0;
+}
+
+.linkForm {
+  margin: 30px 0 10px 0;
+}
+
 .attention {
   border: 3px double rgb(var(--color-attention));
-  padding: 0.5rem 1rem;
+  padding: 10px;
   font-weight: bold;
   color: rgb(var(--color-attention));
-  font-size: 0.875rem;
+
+  p {
+    margin: 0;
+    font-size: 0.75rem;
+  }
+
+  ul {
+    margin: 10px 0 0 0;
+  }
+
+  li {
+    margin: 0;
+    font-size: 0.75rem;
+  }
+}
+
+.news {
+  margin: 30px 0 10px 0;
+
+  ul {
+    margin: 10px 0 0 0;
+  }
+
+  li {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
 }
 
 .statusSamples {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin: 2rem 0;
+  margin: 30px 0;
   padding: 0;
 
   dl {
@@ -57,18 +92,6 @@
   }
 }
 
-.updatedTime {
-  margin: 2rem 0;
-  font-size: 1rem;
-  text-align: right;
-}
-
-.news {
-  h3 {
-    font-size: 1rem;
-  }
-
-  li {
-    font-size: 0.75rem;
-  }
+.table {
+  margin: 30px 0;
 }

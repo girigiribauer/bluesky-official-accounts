@@ -12,10 +12,12 @@ export type NotionItem = {
   status: TransitionStatus;
   twitter: string;
   bluesky: string;
+  createdTime: string;
   updatedTime: string;
 };
 
-export type NotionItemsWithLabel = {
-  label: string;
+export type CategorizedNotionItems = {
+  title: string;
+  criteria?: string;
   items: NotionItem[];
 };

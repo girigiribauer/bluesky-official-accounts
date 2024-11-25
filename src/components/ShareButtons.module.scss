@@ -1,10 +1,15 @@
 .buttons {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 1rem;
   padding: 0;
-  margin: 2rem 0;
+  margin: 0;
   list-style: none;
+}
+
+.buttons > li {
+  margin: 0;
 }
 
 .twitter {

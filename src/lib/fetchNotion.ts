@@ -3,6 +3,10 @@ import "server-only";
 import { Client } from "@notionhq/client";
 import { NotionResponse, NotionItem } from "../models/Notion";
 import { News } from "../models/News";
+import {
+  TransitionStatusCombination,
+  TransitionStatusNotyet,
+} from "src/models/TransitionStatus";
 
 export type FetchDataResponse = {
   updatedTime: string;
@@ -48,8 +52,18 @@ const fetchAccountsOnce = async (
       const status = result.properties["ステータス"]?.select?.name ?? "";
       const twitter = result.properties["Twitter/X アカウント"]?.url;
       const bluesky = result.properties["Bluesky アカウント"]?.url;
+      const createdTime = result.created_time;
       const updatedTime = result.last_edited_time;
-      return { id, name, category, status, twitter, bluesky, updatedTime };
+      return {
+        id,
+        name,
+        category,
+        status,
+        twitter,
+        bluesky,
+        createdTime,
+        updatedTime,
+      };
     })
   );
 
@@ -62,6 +76,64 @@ const fetchAccountsOnce = async (
 export const fetchAccounts = async (limit: number) => {
   let allItems: NotionItem[] = [];
   let nextCursor: string | null = null;
+
+  /*
+  return {
+    updatedTime: new Date().toISOString(),
+    items: [
+      {
+        id: "testa",
+        name: "テストアカウントa",
+        category: "政府・省庁・国会議員",
+        status: "両方運用中",
+        twitter: "@testa",
+        bluesky: "@testa.bsky.social",
+        createdTime: "2024-10-24 00:00:00",
+        updatedTime: "2024-10-24 00:00:00",
+      },
+      {
+        id: "testb",
+        name: "テストアカウントb",
+        category: "政府・省庁・国会議員",
+        status: "未移行（未確認）",
+        twitter: "@testb",
+        bluesky: "@testb.bsky.social",
+        createdTime: "2024-11-24 00:00:00",
+        updatedTime: "2024-11-24 00:00:00",
+      },
+      {
+        id: "testc",
+        name: "テストアカウントc",
+        category: "政府・省庁・国会議員",
+        status: "未移行（未確認）",
+        twitter: "@testc",
+        bluesky: "@testc.bsky.social",
+        createdTime: "2024-10-24 00:00:00",
+        updatedTime: "2024-11-24 00:00:00",
+      },
+      {
+        id: "testd",
+        name: "テストアカウントd",
+        category: "漫画家・イラストレーター",
+        status: "未移行（未確認）",
+        twitter: "@testd",
+        bluesky: "@testd.bsky.social",
+        createdTime: "2024-11-24 00:00:00",
+        updatedTime: "2024-11-24 00:00:00",
+      },
+      {
+        id: "test_z",
+        name: "きてほしいテストアカウントz",
+        category: "政府・省庁・国会議員",
+        status: "未移行（未確認）",
+        twitter: "@testz",
+        bluesky: "",
+        createdTime: "2024-10-24 00:00:00",
+        updatedTime: "2024-11-24 00:00:00",
+      },
+    ] as NotionItem[],
+  };
+   */
 
   try {
     do {

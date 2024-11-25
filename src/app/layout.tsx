@@ -31,6 +31,7 @@ export default function RootLayout({
           sizes="16x16"
           href="/favicon-16x16.png"
         />
+        <link rel="stylesheet" type="text/css" href="/css/all.min.css" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body>

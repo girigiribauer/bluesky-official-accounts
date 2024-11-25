@@ -1,0 +1,57 @@
+@import 'src/_mixin';
+
+.updatedTime {
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+.filters {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0 0 10px 0;
+  padding: 5px;
+  background: rgb(var(--color-primary-light2));
+}
+
+.filterLabel {
+  display: flex;
+  gap: 3px;
+  padding: 5px 0;
+  border-bottom: 2px solid rgb(var(--color-primary));
+  color: rgb(var(--color-primary));
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.filterList {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 3px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.filterItem {
+  margin: 0;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+  }
+
+  label:hover {
+    background: rgb(var(--color-primary-light));
+  }
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+  }
+}

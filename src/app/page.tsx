@@ -6,6 +6,7 @@ import { TableView } from "src/components/TableView";
 import Link from "next/link";
 import { ShareButtons } from "src/components/ShareButtons";
 import { News } from "src/models/News";
+import { TableViewWithFilter } from "src/components/TableViewWithFilter";
 
 export const metadata: Metadata = {
   title: "Bluesky 公式アカウント移行まとめ",
@@ -20,21 +21,18 @@ export default async function Home() {
   const { updatedTime, items } = await fetchAccounts(10000);
   const news = await fetchNews();
 
-  const time = new Intl.DateTimeFormat("ja-JP", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZone: "Asia/Tokyo",
-  }).format(new Date(updatedTime));
-
-  const newerItems = items.filter(
+  const wantsItems = items.filter(
     (a) =>
-      new Date(a.updatedTime).valueOf() >=
-      new Date(time).valueOf() - 1000 * 60 * 60 * 24 * 7
+      a !== null &&
+      a.status === "未移行（未確認）" &&
+      (a.bluesky === null || a.bluesky === "")
+  );
+  const withoutWantsItems = items.filter(
+    (a) =>
+      (a !== null && a.status !== "未移行（未確認）") ||
+      (a.status === "未移行（未確認）" &&
+        a.bluesky !== null &&
+        a.bluesky !== "")
   );
 
   return (
@@ -43,30 +41,33 @@ export default async function Home() {
         <Image
           src="/opengraph-image.jpg"
           alt="Bluesky 公式アカウント移行まとめ - X(Twitter) から Bluesky への移行状況をまとめ、移行を促進しています"
-          width={800}
-          height={450}
+          width={960}
+          height={540}
         />
       </h1>
+
+      <div className={styles.shareButtons}>
+        <ShareButtons />
+      </div>
+
       <h2>公式アカウントの投稿をお願いします！</h2>
       <p>
-        みなさんの思う公式アカウントは人それぞれ違います。様々な公式アカウントが
-        Bluesky へ移行してきてるよ！というのを可視化するために、
+        人には人の公式アカウントがあります。
+        <br />
+        様々な公式アカウントが Bluesky
+        へ移行してきてるよ！というのを可視化し、移行を促進するために、あなたが見つけた
         <strong>
-          公式アカウントがあれば、ぜひともフォームから投稿してください！
+          公式アカウントをフォームから投稿してまとめにご協力ください！
         </strong>
-        有志が時間差でチェックされたものが公開されます！
+        有志にてチェックされたものが時間差で公開されます！
+        <br />
+        なお、投稿の際は <Link href="/faq">よくある質問</Link>、
+        <Link href="/contribution">移行まとめで協力できること</Link>
+        をよく読んだ上で
+        <strong>重複投稿のないよう投稿ください！</strong>
       </p>
-      <p>
-        まだ来てないけど早く来てほしい！というアカウントも、
-        <span className="status" data-status="未移行（未確認）">
-          未移行（未確認）
-        </span>
-        のステータスで登録して、是非とも宣伝に活用してください！
-      </p>
-      <p>
-        また、すでに投稿されたものでも、本人確認が取れた、カスタムドメイン化されてアカウント名が変わった、などのステータスが変更されたものも改めて投稿をお願いします！
-      </p>
-      <p>
+
+      <p className={styles.linkForm}>
         <a
           href="https://www.notion-easy-form.com/forms/81d61322-e823-4068-afbb-ae964c2d6f3f"
           target="_blank"
@@ -75,6 +76,7 @@ export default async function Home() {
         </a>
       </p>
 
+      {/*
       <div className={styles.attention}>
         <p>
           現在投稿が急増してチェックが追いついてません！以下を十分確認の上ご投稿ください！
@@ -88,20 +90,34 @@ export default async function Home() {
           </li>
         </ul>
       </div>
+      */}
 
-      <p>
-        また、合わせて{" "}
-        <Link href={"/contribution"}>移行まとめで協力できること</Link>{" "}
-        もご覧ください。
-      </p>
-
-      <ShareButtons />
+      <div className={styles.news}>
+        <h3>全体の更新情報</h3>
+        {news.length > 0 ? (
+          <ul>
+            {news.map((a: News) => (
+              <li key={a.id}>
+                {a.date} {a.name}
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
 
       <hr />
 
-      <h2>アカウントの移行ステータスについて</h2>
+      <h2>公式アカウント一覧</h2>
+
+      <p>
+        おおむね3時間おきに最新化されます。
+        <br />
+        全体を見たい方は<strong>1週間以内に追加されたアカウント</strong>
+        の絞り込みを変更してください。
+      </p>
 
       <div className={styles.statusSamples}>
+        <h3>移行ステータスについて</h3>
         <dl>
           <dt>
             <span className="status" data-status="未移行（未確認）">
@@ -110,9 +126,12 @@ export default async function Home() {
           </dt>
           <dd>
             <p className={styles.description}>
-              Bluesky 上にアカウントが存在していない or 本物の確認が取れていない
+              Bluesky 上にアカウントが存在していない or
+              同一性の確認が取れていない
               <br />
-              ※特にマスメディアアカウントで本人確認が取れていないものにはご注意ください。
+              <strong>
+                ※特にマスメディアアカウントで確認が取れていないものにはご注意ください。
+              </strong>
             </p>
           </dd>
         </dl>
@@ -155,40 +174,35 @@ export default async function Home() {
         </dl>
       </div>
 
-      <p className={styles.updatedTime}>
-        <time>{time} 時点の最新データ（3時間おきに最新化されます）</time>
-      </p>
-
-      <hr />
-
-      <div className={styles.news}>
-        <h3>全体の更新情報</h3>
-        {news.length > 0 ? (
-          <ul>
-            {news.map((a: News) => (
-              <li key={a.id}>
-                {a.date} {a.name}
-              </li>
-            ))}
-          </ul>
-        ) : null}
+      <div className={styles.table}>
+        <TableViewWithFilter
+          items={withoutWantsItems}
+          updatedTime={updatedTime}
+        />
       </div>
 
       <hr />
 
-      <TableView title="1週間以内の登録・変更アカウント" items={newerItems} />
+      <h2>来て欲しいアカウント一覧</h2>
+      <p>
+        まだ来てないけど早く来てほしい！というアカウントも、
+        <span className="status" data-status="未移行（未確認）">
+          未移行（未確認）
+        </span>
+        のステータスで登録して、是非とも宣伝に活用してください！
+        条件なしで全部表示しています。
+      </p>
 
-      <hr />
-
-      <TableView
-        title="すべての登録アカウント"
-        items={items}
-        isFiltered={true}
-      />
+      <div className={styles.table}>
+        <TableView items={wantsItems} updatedTime={updatedTime} />
+      </div>
 
       <hr />
 
       <ul>
+        <li>
+          <Link href={"/faq"}>よくある質問</Link>
+        </li>
         <li>
           <Link href={"/contribution"}>移行まとめで協力できること</Link>
         </li>

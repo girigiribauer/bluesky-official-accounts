@@ -1,11 +1,19 @@
+@import 'src/_mixin';
+
 :root {
-  --color-border: 238 238 238;
-  --color-emphasis: 41 143 239;
+  --color-primary: 17 133 254;
+  --color-primary-light: 184 219 255;
+  --color-primary-light2: 231 243 255;
   --color-attention: 239 41 74;
-  --color-link: 55 53 47;
+  --color-background: 249 249 249;
+  --color-link: 153 153 153;
+  --color-white: 255 255 255;
+  --color-black: 69 69 69;
+  --color-black-light: 229 229 229;
 }
 
 html {
+  color: rgb(var(--color-black));
   font-family: sans-serif;
 }
 
@@ -14,32 +22,47 @@ html, body {
 }
 
 .main {
-  max-width: 800px;
+  max-width: 960px;
   min-height: 100svh;
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 10px 10px 60px 10px;
   margin: 0 auto;
-  background: #fff;
+  background: rgb(var(--color-white));
 }
 
 h2 {
-  margin: 2rem 0;
-  font-size: 1.25rem;
+  margin: 30px 0;
+  font-size: 1.5rem;
+}
+
+h3 {
+  margin: 10px 0;
+  font-size: 1rem;
 }
 
 hr {
-  margin: 3rem 0;
-  border: 1px solid rgb(var(--color-border));
+  border: none;
+  border-top: 1px solid rgb(var(--color-black-light));
+
+  @include mq(s) {
+    margin: 30px 0;
+  }
+
+  @include mq(l) {
+    margin: 60px 0;
+  }
 }
 
 p {
   margin: 1rem 0;
+  font-size: 1rem;
+  line-height: 1.75;
   word-break: break-word;
 }
 
 strong {
-  color: rgb(var(--color-emphasis));
-  background: rgb(var(--color-emphasis) / 0.15);
+  color: rgb(var(--color-primary));
+  background: rgb(var(--color-primary-light2));
 }
 
 a {
@@ -49,6 +72,10 @@ a {
 
 ul, ol {
   padding-left: 1rem;
+}
+ul > li, ol > li {
+  margin: 0.5rem 0;
+  line-height: 1.5;
 }
 
 .status {
@@ -92,6 +119,10 @@ ul, ol {
     margin-top: 0;
     font-size: 0.75rem;
   }
+}
+
+.buttons {
+  background: #098;
 }
 
 .back {
