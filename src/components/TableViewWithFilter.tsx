@@ -71,8 +71,8 @@ export const TableViewWithFilter = ({
     <>
       <div className={styles.filters}>
         <span className={styles.filterLabel}>
-          <i className="fa-solid fa-magnifying-glass"></i>
-          絞り込み
+          <i className="fa-solid fa-magnifying-glass" />
+          <span>絞り込み</span>
         </span>
         <ul className={styles.filterList}>
           <li className={styles.filterItem}>
