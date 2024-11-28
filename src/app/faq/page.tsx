@@ -21,7 +21,7 @@ export default async function Home() {
       </p>
       <h1>よくある質問</h1>
       <div className="heroimage">
-        <Image src="/faq/opengraph-image.jpg" alt="" width={800} height={450} />
+        <Image src="/faq/opengraph-image.jpg" alt="" width={960} height={540} />
       </div>
       <p>
         有志で対応しています。手が足りてないことが多いので、困ってそうな方にこのページを案内してあげてください！

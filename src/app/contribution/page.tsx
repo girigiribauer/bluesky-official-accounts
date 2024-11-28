@@ -26,8 +26,8 @@ export default async function Home() {
         <Image
           src="/contribution/opengraph-image.jpg"
           alt="公式アカウントをみんなでまとめてリストを X(Twitter) でシェアすると、企業でアカウント運用の検討が始まる / Bluesky 上に公式アカウントが増える / Bluesky に行ってもいいかなと思う人が増える / 有志でまとめていますので、みんなで移行を促進していきましょう！"
-          width={800}
-          height={450}
+          width={960}
+          height={540}
         />
       </div>
 
@@ -139,7 +139,13 @@ export default async function Home() {
           プロフィール追記、 Bluesky アカウント名の投稿）
         </li>
         <li>
-          公式アカウントが所有しているドメインをカスタムドメインとして設定
+          公式アカウントが所有しているドメインをカスタムドメインとして設定{" "}
+          <a
+            href="https://bsky.social/about/blog/4-28-2023-domain-handle-tutorial"
+            target="_blank"
+          >
+            公式ブログ（英語）
+          </a>
         </li>
       </ul>
 
@@ -173,24 +179,20 @@ export default async function Home() {
         してくださるだけで成り立つようになっています。また、対応してくださる方が多ければ多いほど、1人あたりにかかる負担は少なくなります。
       </p>
       <p>
-        協力してもいいよ！と思っていただける方は、以下の編集権限を持っている方に直接ご連絡ください！（なお、
+        協力してもいいよ！と思っていただける方は、
+        <a
+          href="https://bsky.app/hashtag/%E9%9D%92%E7%A9%BA%E5%85%AC%E5%BC%8F%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88"
+          target="_blank"
+        >
+          #青空公式アカウント
+        </a>
+        のハッシュタグにて度々投稿されるであろう、協力募集の投稿を探して直接ご連絡ください！（なお、
         Notion のユーザー上限などの関係上、ご期待に沿えない場合もあります）
       </p>
-      <ul>
-        <li>
-          <a href="https://bsky.app/profile/girigiribauer.com" target="_blank">
-            @girigiribauer.com
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://bsky.app/profile/amanatsu-mikan.bsky.social"
-            target="_blank"
-          >
-            @amanatsu-mikan.bsky.social
-          </a>
-        </li>
-      </ul>
+      <p>
+        なお、関係者に DM
+        を送るなどの行為が散見されますので、個別の掲載内容に関する意見はお控えください。（訂正があれば投稿フォームを通してお願いします。）
+      </p>
 
       <p className="back">
         <Link href={"/"}>Bluesky 公式アカウント移行まとめに戻る</Link>
