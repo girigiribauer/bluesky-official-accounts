@@ -19,7 +19,9 @@ export const ModalSource = ({
       <div className={styles.modalContents}>
         <h2 className={styles.modalTitle}>{title}</h2>
         <pre className={styles.modalContentsInside}>
-          {source !== "" ? source : "現時点で根拠はありません。"}
+          {source !== ""
+            ? source
+            : "現時点で根拠はありません。（カスタムドメインなど明らかな場合には書いてないケースがあります）"}
         </pre>
         <button className={styles.modalClose} onClick={handleClose}>
           <i className="fa-solid fa-xmark" />
