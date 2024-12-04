@@ -12,6 +12,7 @@ export type NotionItem = {
   status: TransitionStatus;
   twitter: string;
   bluesky: string;
+  source: string;
   createdTime: string;
   updatedTime: string;
 };

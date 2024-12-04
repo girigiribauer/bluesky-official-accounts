@@ -5,8 +5,8 @@ import styles from "./page.module.scss";
 import { TableView } from "src/components/TableView";
 import Link from "next/link";
 import { ShareButtons } from "src/components/ShareButtons";
-import { News } from "src/models/News";
 import { TableViewWithFilter } from "src/components/TableViewWithFilter";
+import { NewsList } from "src/components/NewsList";
 
 export const metadata: Metadata = {
   title: "Bluesky 公式アカウント移行まとめ",
@@ -94,15 +94,10 @@ export default async function Home() {
 
       <div className={styles.news}>
         <h3>全体の更新情報</h3>
-        {news.length > 0 ? (
-          <ul>
-            {news.map((a: News) => (
-              <li key={a.id}>
-                {a.date} {a.name}
-              </li>
-            ))}
-          </ul>
-        ) : null}
+        <p>
+          分類の最適化、掲載基準の明示化について常にアップデートしていきます。再分類のご協力をお願いします！
+        </p>
+        <NewsList items={news} />
       </div>
 
       <hr />
@@ -116,8 +111,14 @@ export default async function Home() {
         の絞り込みを変更してください。
       </p>
 
+      <h3>移行ステータスについて</h3>
+      <p>
+        各公式アカウントの移行ステータスを選択すると、
+        <strong>
+          投稿された根拠（と有志による追記コメント）が確認できます。
+        </strong>
+      </p>
       <div className={styles.statusSamples}>
-        <h3>移行ステータスについて</h3>
         <dl>
           <dt>
             <span className="status" data-status="未移行（未確認）">
@@ -199,6 +200,9 @@ export default async function Home() {
 
       <hr />
 
+      <p>
+        様々な形でお手伝いいただける方を常に募集しています！特にチェックする側が足りてないのでご協力をお願いします！
+      </p>
       <ul>
         <li>
           <Link href={"/faq"}>よくある質問</Link>

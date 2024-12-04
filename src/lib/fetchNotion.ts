@@ -52,6 +52,7 @@ const fetchAccountsOnce = async (
       const status = result.properties["ステータス"]?.select?.name ?? "";
       const twitter = result.properties["Twitter/X アカウント"]?.url;
       const bluesky = result.properties["Bluesky アカウント"]?.url;
+      const source = result.properties["根拠"]?.rich_text[0]?.plain_text ?? "";
       const createdTime = result.created_time;
       const updatedTime = result.last_edited_time;
       return {
@@ -61,6 +62,7 @@ const fetchAccountsOnce = async (
         status,
         twitter,
         bluesky,
+        source,
         createdTime,
         updatedTime,
       };
@@ -88,6 +90,8 @@ export const fetchAccounts = async (limit: number) => {
         status: "両方運用中",
         twitter: "@testa",
         bluesky: "@testa.bsky.social",
+        source:
+          "テストアカウントaの根拠です\n\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です",
         createdTime: "2024-10-24 00:00:00",
         updatedTime: "2024-10-24 00:00:00",
       },
@@ -98,6 +102,7 @@ export const fetchAccounts = async (limit: number) => {
         status: "未移行（未確認）",
         twitter: "@testb",
         bluesky: "@testb.bsky.social",
+        source: "テストアカウントbの根拠です",
         createdTime: "2024-11-24 00:00:00",
         updatedTime: "2024-11-24 00:00:00",
       },
@@ -108,6 +113,7 @@ export const fetchAccounts = async (limit: number) => {
         status: "未移行（未確認）",
         twitter: "@testc",
         bluesky: "@testc.bsky.social",
+        source: "テストアカウントcの根拠です",
         createdTime: "2024-10-24 00:00:00",
         updatedTime: "2024-11-24 00:00:00",
       },
@@ -118,6 +124,7 @@ export const fetchAccounts = async (limit: number) => {
         status: "未移行（未確認）",
         twitter: "@testd",
         bluesky: "@testd.bsky.social",
+        source: "テストアカウントdの根拠です",
         createdTime: "2024-11-24 00:00:00",
         updatedTime: "2024-11-24 00:00:00",
       },
@@ -128,12 +135,13 @@ export const fetchAccounts = async (limit: number) => {
         status: "未移行（未確認）",
         twitter: "@testz",
         bluesky: "",
+        source: "テストアカウントzの根拠です",
         createdTime: "2024-10-24 00:00:00",
         updatedTime: "2024-11-24 00:00:00",
       },
     ] as NotionItem[],
   };
-   */
+  */
 
   try {
     do {
@@ -162,7 +170,7 @@ export const fetchNews = async () => {
   const databaseId = process.env.NEWS_DATABASE || "DEFAULT_DATABASE_ID";
   const notionResponse = await notion.databases.query({
     database_id: databaseId,
-    page_size: 5,
+    page_size: 100,
     sorts: [
       {
         property: "Date",

@@ -7,6 +7,7 @@ import { extractBluesky, extractTwitter } from "src/lib/extractFromURL";
 import { promoteBlueskyURL, promoteTwitterURL } from "src/lib/promotion";
 import { categoryCriteria } from "src/constants/categoryCriteria";
 import { useEffect, useState } from "react";
+import { ModalSource } from "./ModalSource";
 
 export type TableViewProps = {
   items: NotionItem[];
@@ -16,10 +17,11 @@ export type TableViewProps = {
 export const TableView = ({ items, updatedTime }: TableViewProps) => {
   // アカウントリストに変更があったら一旦全部閉じる
   useEffect(() => {
-    setOpen({});
+    setToggleStates({});
   }, [items]);
 
-  const [open, setOpen] = useState<Record<string, boolean>>({});
+  const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({});
+  const [popupID, setPopupID] = useState<string | null>(null);
 
   const time = new Intl.DateTimeFormat("ja-JP", {
     year: "numeric",
@@ -51,22 +53,31 @@ export const TableView = ({ items, updatedTime }: TableViewProps) => {
     const categoryTitles = categorizedItems.reduce((acc, item) => {
       return { ...acc, [item.title]: true };
     }, {});
-    setOpen(categoryTitles);
+    setToggleStates(categoryTitles);
   };
 
   const handleUnselectAllCategory = () => {
-    setOpen({});
+    setToggleStates({});
   };
 
-  const handleSelectCategory = (category: string) => {
-    const newOpen = { ...open };
+  const handleSelectCategory = (title: string) => {
+    const newToggleStates = { ...toggleStates };
 
-    if (category in open) {
-      delete newOpen[category];
+    if (title in toggleStates) {
+      delete newToggleStates[title];
     } else {
-      newOpen[category] = true;
+      newToggleStates[title] = true;
     }
-    setOpen(newOpen);
+    setToggleStates(newToggleStates);
+
+    const element = document.getElementById(title);
+    element?.scrollIntoView({
+      behavior: "instant",
+    });
+  };
+
+  const handleShowPopup = (id: string | null) => {
+    setPopupID(id);
   };
 
   return (
@@ -104,7 +115,12 @@ export const TableView = ({ items, updatedTime }: TableViewProps) => {
       </header>
 
       {categorizedItems.map(({ title, criteria, items }) => (
-        <details className={styles.tableWrapper} key={title} open={open[title]}>
+        <details
+          className={styles.tableWrapper}
+          id={title}
+          key={title}
+          open={toggleStates[title]}
+        >
           <summary
             className={styles.tableGroupedHeader}
             onClick={(e) => {
@@ -130,7 +146,7 @@ export const TableView = ({ items, updatedTime }: TableViewProps) => {
             <thead className={styles.tableHeader}>
               <tr>
                 <th className={styles.cellName}>名前</th>
-                <th className={styles.cellStatus}>ステータス</th>
+                <th className={styles.cellStatus}>ステータス（根拠）</th>
                 <th className={styles.cellTw}>X(Twitter)</th>
                 <th className={styles.cellBs}>Bluesky</th>
               </tr>
@@ -138,16 +154,28 @@ export const TableView = ({ items, updatedTime }: TableViewProps) => {
 
             <tbody className={styles.tableBody}>
               {items.map((item) => {
-                const { id, name, status, twitter, bluesky } = item;
+                const { id, name, status, twitter, bluesky, source } = item;
                 return (
                   <tr key={id} className={styles.item}>
                     <td className={styles.cellName}>
                       <h3 className={styles.accountName}>{name}</h3>
                     </td>
                     <td className={styles.cellStatus}>
-                      <span className="status" data-status={status}>
+                      <span
+                        className={["status", styles.status].join(" ")}
+                        data-status={status}
+                        onClick={() => handleShowPopup(id)}
+                      >
                         {status}
                       </span>
+
+                      {popupID === id ? (
+                        <ModalSource
+                          title={`${name}の根拠`}
+                          source={source}
+                          handleClose={() => handleShowPopup(null)}
+                        />
+                      ) : null}
                     </td>
                     <td className={styles.cellLink}>
                       {twitter ? (
