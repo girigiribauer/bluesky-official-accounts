@@ -95,7 +95,7 @@ export default async function Home() {
       <div className={styles.news}>
         <h3>全体の更新情報</h3>
         <p>
-          分類の最適化、掲載基準の明示化について常にアップデートしていきます。再分類のご協力をお願いします！
+          分類とその掲載基準については常にアップデートしていきます。再分類のご協力をお願いします！
         </p>
         <NewsList items={news} />
       </div>
@@ -195,7 +195,7 @@ export default async function Home() {
       </p>
 
       <div className={styles.table}>
-        <TableView items={wantsItems} updatedTime={updatedTime} />
+        <TableView prefix="b" items={wantsItems} updatedTime={updatedTime} />
       </div>
 
       <hr />

@@ -10,11 +10,12 @@ import { useEffect, useState } from "react";
 import { ModalSource } from "./ModalSource";
 
 export type TableViewProps = {
+  prefix: string;
   items: NotionItem[];
   updatedTime: string;
 };
 
-export const TableView = ({ items, updatedTime }: TableViewProps) => {
+export const TableView = ({ prefix, items, updatedTime }: TableViewProps) => {
   // アカウントリストに変更があったら一旦全部閉じる
   useEffect(() => {
     setToggleStates({});
@@ -60,17 +61,17 @@ export const TableView = ({ items, updatedTime }: TableViewProps) => {
     setToggleStates({});
   };
 
-  const handleSelectCategory = (title: string) => {
+  const handleSelectCategory = (titleWithPrefix: string) => {
     const newToggleStates = { ...toggleStates };
 
-    if (title in toggleStates) {
-      delete newToggleStates[title];
+    if (titleWithPrefix in toggleStates) {
+      delete newToggleStates[titleWithPrefix];
     } else {
-      newToggleStates[title] = true;
+      newToggleStates[titleWithPrefix] = true;
     }
     setToggleStates(newToggleStates);
 
-    const element = document.getElementById(title);
+    const element = document.getElementById(titleWithPrefix);
     element?.scrollIntoView({
       behavior: "instant",
     });
@@ -117,14 +118,14 @@ export const TableView = ({ items, updatedTime }: TableViewProps) => {
       {categorizedItems.map(({ title, criteria, items }) => (
         <details
           className={styles.tableWrapper}
-          id={title}
-          key={title}
-          open={toggleStates[title]}
+          id={`${prefix}_${title}`}
+          key={`${prefix}_${title}`}
+          open={toggleStates[`${prefix}_${title}`]}
         >
           <summary
             className={styles.tableGroupedHeader}
             onClick={(e) => {
-              handleSelectCategory(title);
+              handleSelectCategory(`${prefix}_${title}`);
               e.preventDefault();
             }}
           >
