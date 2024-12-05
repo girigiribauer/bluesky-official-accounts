@@ -52,7 +52,7 @@ export const TableView = ({ prefix, items, updatedTime }: TableViewProps) => {
 
   const handleSelectAllCategory = () => {
     const categoryTitles = categorizedItems.reduce((acc, item) => {
-      return { ...acc, [item.title]: true };
+      return { ...acc, [`${prefix}_${item.title}`]: true };
     }, {});
     setToggleStates(categoryTitles);
   };
