@@ -72,7 +72,7 @@ export default async function Home() {
           href="https://www.notion-easy-form.com/forms/81d61322-e823-4068-afbb-ae964c2d6f3f"
           target="_blank"
         >
-          →投稿用フォーム
+          →アカウント投稿用フォーム
         </a>
       </p>
 
@@ -200,6 +200,24 @@ export default async function Home() {
 
       <hr />
 
+      <h3>分類草案の募集について</h3>
+      <p>
+        分類に関しては混乱を招かないよう慎重に検討しているため、あくまで
+        <strong>参考意見として分類草案を募集</strong>
+        しています！（採用されないことがほとんどです！）また、分野分けはあるべき論ではなく、
+        <strong>みんなが興味を持つ分野ごと</strong>
+        に切り出しています。その点しっかり理解した上でそれでも協力したいという方は、以下の分類草案用のフォームより投稿ください！
+      </p>
+      <p>
+        <a
+          href="https://www.notion-easy-form.com/forms/155ec3b2-73dd-801f-af2c-c11b5da5f597"
+          target="_blank"
+        >
+          →分類草案投稿用フォーム
+        </a>
+      </p>
+
+      <h3>お手伝いについて</h3>
       <p>
         様々な形でお手伝いいただける方を常に募集しています！特にチェックする側が足りてないのでご協力をお願いします！
       </p>
