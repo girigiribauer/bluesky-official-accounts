@@ -129,6 +129,17 @@ export const fetchAccounts = async (limit: number) => {
         updatedTime: "2024-11-24 00:00:00",
       },
       {
+        id: "teste",
+        name: "テストアカウントe",
+        category: "漫画家・イラストレーター",
+        status: "両方運用中",
+        twitter: "@teste",
+        bluesky: "@teste.bsky.social",
+        source: "テストアカウントeの根拠です",
+        createdTime: "2024-12-10 00:00:00",
+        updatedTime: "2024-12-10 00:00:00",
+      },
+      {
         id: "test_z",
         name: "きてほしいテストアカウントz",
         category: "政府・省庁・国会議員",
