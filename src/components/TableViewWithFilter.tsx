@@ -76,7 +76,7 @@ export const TableViewWithFilter = ({
         </span>
         <ul className={styles.filterList}>
           <li className={styles.filterItem}>
-            <label>
+            <label className={styles.filterBlink}>
               <input
                 type="checkbox"
                 defaultChecked={isNewer}

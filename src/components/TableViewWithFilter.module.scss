@@ -47,11 +47,33 @@
   }
 
   label:hover {
-    background: rgb(var(--color-primary-light));
+    background: rgb(var(--color-primary-light)) !important;
+  }
+
+  .filterBlink:has(input[type="checkbox"]:checked) {
+    animation: 700ms linear 0s infinite alternate blink;
   }
 
   input[type="checkbox"] {
     width: 16px;
     height: 16px;
+  }
+}
+
+@keyframes blink {
+  0% {
+    background: rgb(var(--color-primary-light));
+  }
+
+  50% {
+    background: rgb(var(--color-primary-light));
+  }
+
+  51% {
+    background: inherit;
+  }
+
+  100% {
+    background: inherit;
   }
 }
