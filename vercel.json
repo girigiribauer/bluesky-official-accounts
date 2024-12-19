@@ -1,9 +1,3 @@
 {
-  "trailingSlash": false,
-  "redirects": [
-    {
-      "source": "/google2bc5925b8e006321.html",
-      "destination": "/google2bc5925b8e006321/"
-    }
-  ]
+  "trailingSlash": false
 }
