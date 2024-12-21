@@ -2,7 +2,7 @@
   height: 120px;
   display: block;
   padding: 5px 5px 25px 5px;
-  background: rgb(var(--color-background));
+  background: var(--color-background);
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -39,11 +39,11 @@
   background: none;
   border: none;
   border-radius: 2px;
-  color: rgb(var(--color-link));
+  color: var(--color-link);
   font-size: 0.75rem;
   text-decoration: underline;
 
   &:hover {
-    background: rgb(var(--color-background));
+    background: var(--color-background);
   }
 }

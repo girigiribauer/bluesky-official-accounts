@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(var(--color-black) / 0.8);
+  background: rgb(var(--color-black-rgb) / 0.8);
 }
 
 .modalContents {
@@ -25,7 +25,7 @@
   z-index: 3;
   margin: auto;
   padding: 0;
-  background: rgb(var(--color-white));
+  background: var(--color-white);
 
   @include mq(s) {
     width: calc(100dvw - 40px);
@@ -45,9 +45,9 @@
   align-items: center;
   margin: 0;
   padding: 0 30px 0 20px;
-  background: rgb(var(--color-primary-light2));
-  border-bottom: 1px solid rgb(var(--color-primary));
-  color: rgb(var(--color-black));
+  background: var(--color-primary-light2);
+  border-bottom: 1px solid var(--color-primary);
+  color: var(--color-black);
   font-size: 0.75rem;
   font-weight: bold;
 }
@@ -59,7 +59,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  color: rgb(var(--color-black));
+  color: var(--color-black);
   font-size: 0.75rem;
   overflow-x: hidden;
   overflow-y: auto;
@@ -86,5 +86,5 @@
   justify-content: center;
   background: none;
   border: none;
-  color: rgb(var(--color-black));
+  color: var(--color-black);
 }

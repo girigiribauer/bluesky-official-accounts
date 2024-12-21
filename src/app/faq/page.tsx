@@ -1,15 +1,16 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import styles from "./page.module.scss";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "よくある質問 - Bluesky 公式アカウント移行まとめ",
+  title: "よくある質問 - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
   description:
-    "X（Twitter）からBlueskyへの移行を促進するために、公式アカウントの移行状況をまとめています。有志でまとめていますので、みんなで移行を促進していきましょう！",
+    "移行まとめでいつも聞かれる質問を随時更新しています。フォーム投稿や情報シェアをする前に一度お読みいただけると嬉しいです",
   openGraph: {
     title:
       "よくある質問 - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
+    url: "https://bluesky-official-accounts.vercel.app/faq",
+    type: "website",
   },
 };
 

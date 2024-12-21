@@ -11,15 +11,15 @@
   gap: 0.25rem;
   margin: 0 0 10px 0;
   padding: 5px;
-  background: rgb(var(--color-primary-light2));
+  background: var(--color-primary-light2);
 }
 
 .filterLabel {
   display: flex;
   gap: 3px;
   padding: 5px 0;
-  border-bottom: 2px solid rgb(var(--color-primary));
-  color: rgb(var(--color-primary));
+  border-bottom: 2px solid var(--color-primary);
+  color: var(--color-primary);
   font-size: 0.75rem;
   font-weight: bold;
   line-height: 1;
@@ -47,7 +47,7 @@
   }
 
   label:hover {
-    background: rgb(var(--color-primary-light)) !important;
+    background: var(--color-primary-light) !important;
   }
 
   .filterBlink:has(input[type="checkbox"]:checked) {
@@ -62,11 +62,11 @@
 
 @keyframes blink {
   0% {
-    background: rgb(var(--color-primary-light));
+    background: var(--color-primary-light);
   }
 
   50% {
-    background: rgb(var(--color-primary-light));
+    background: var(--color-primary-light);
   }
 
   51% {

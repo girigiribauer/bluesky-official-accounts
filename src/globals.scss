@@ -2,20 +2,21 @@
 @import 'src/_mixin';
 
 :root {
-  --color-primary: 17 133 254;
-  --color-primary-light: 184 219 255;
-  --color-primary-light2: 231 243 255;
-  --color-attention: 239 41 74;
-  --color-attention-light: 255 240 242;
-  --color-background: 249 249 249;
-  --color-link: 153 153 153;
-  --color-white: 255 255 255;
-  --color-black: 69 69 69;
-  --color-black-light: 229 229 229;
+  --color-primary: rgb(17 133 254);
+  --color-primary-light: rgb(184 219 255);
+  --color-primary-light2: rgb(231 243 255);
+  --color-attention: rgb(239 41 74);
+  --color-attention-light: rgb(255 240 242);
+  --color-background: rgb(249 249 249);
+  --color-link: rgb(153 153 153);
+  --color-white: rgb(255 255 255);
+  --color-black: rgb(69 69 69);
+  --color-black-rgb: 69 69 69;
+  --color-black-light: rgb(229 229 229);
 }
 
 html {
-  color: rgb(var(--color-black));
+  color: var(--color-black);
   font-family: sans-serif;
 }
 
@@ -29,7 +30,7 @@ html, body {
   box-sizing: border-box;
   padding: 10px 10px 60px 10px;
   margin: 0 auto;
-  background: rgb(var(--color-white));
+  background: var(--color-white);
 }
 
 h2 {
@@ -44,7 +45,7 @@ h3 {
 
 hr {
   border: none;
-  border-top: 1px solid rgb(var(--color-black-light));
+  border-top: 1px solid var(--color-black-light);
 
   @include mq(s) {
     margin: 30px 0;
@@ -63,12 +64,12 @@ p {
 }
 
 strong {
-  color: rgb(var(--color-primary));
-  background: rgb(var(--color-primary-light2));
+  color: var(--color-primary);
+  background: var(--color-primary-light2);
 }
 
 a {
-  color: rgb(var(--color-link));
+  color: var(--color-link);
   text-decoration: underline;
 }
 

@@ -19,14 +19,14 @@
 }
 
 .attention {
-  background: rgb(var(--color-attention-light));
-  border: 3px double rgb(var(--color-attention));
+  background: var(--color-attention-light);
+  border: 3px double var(--color-attention);
   margin: 30px 0;
   padding: 10px;
 
   h3 {
     margin: 0 0 10px 0;
-    color: rgb(var(--color-attention));
+    color: var(--color-attention);
     font-weight: bold;
   }
 
@@ -45,7 +45,7 @@
   }
 
   strong {
-    color: rgb(var(--color-attention));
+    color: var(--color-attention);
     background: none;
   }
 }

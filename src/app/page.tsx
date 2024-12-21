@@ -9,11 +9,13 @@ import { TableViewWithFilter } from "src/components/TableViewWithFilter";
 import { NewsList } from "src/components/NewsList";
 
 export const metadata: Metadata = {
-  title: "Bluesky 公式アカウント移行まとめ",
+  title: "Bluesky 公式アカウント移行まとめ #青空公式アカウント",
   description:
-    "X（Twitter）からBlueskyへの移行を促進するために、公式アカウントの移行状況をまとめています。有志でまとめていますので、みんなで移行を促進していきましょう！",
+    "もうみなさんBlueskyへ移行されてます！様々な分野の公式アカウントの移行状況のまとめサイトです！X（旧Twitter）からの移行の検討にご活用ください！",
   openGraph: {
     title: "Bluesky 公式アカウント移行まとめ #青空公式アカウント",
+    url: "https://bluesky-official-accounts.vercel.app/",
+    type: "website",
   },
 };
 

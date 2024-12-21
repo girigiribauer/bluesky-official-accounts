@@ -4,12 +4,15 @@ import styles from "./page.module.scss";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "移行まとめで協力できること - Bluesky 公式アカウント移行まとめ",
+  title:
+    "移行まとめで協力できること - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
   description:
-    "X（Twitter）からBlueskyへの移行を促進するために、公式アカウントの移行状況をまとめています。有志でまとめていますので、みんなで移行を促進していきましょう！",
+    "X（旧Twitter）からBlueskyへの移行を促進するために、みんなで協力し合っていることをまとめてあります！ぜひご一読ください！",
   openGraph: {
     title:
       "移行まとめで協力できること - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
+    url: "https://bluesky-official-accounts.vercel.app/contribution",
+    type: "website",
   },
 };
 
