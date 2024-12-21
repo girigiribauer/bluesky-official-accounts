@@ -7,6 +7,7 @@ import {
   TransitionStatusCombination,
   TransitionStatusNotyet,
 } from "src/models/TransitionStatus";
+import { Criteria } from "src/models/Criteria";
 
 export type FetchDataResponse = {
   updatedTime: string;
@@ -199,4 +200,25 @@ export const fetchNews = async () => {
     const date = result?.properties["Date"]?.date?.start ?? "";
     return { id, name, date };
   }) as News[];
+};
+
+export const fetchCriteria = async () => {
+  const databaseId = process.env.CRITERIA_DATABASE || "DEFAULT_DATABASE_ID";
+  const notionResponse = await notion.databases.query({
+    database_id: databaseId,
+    page_size: 100,
+  });
+
+  return notionResponse.results.map<Criteria>((result: any) => {
+    const id = result?.id ?? "";
+    const category =
+      result?.properties["分類名"]?.title
+        .map((a: any) => a.plain_text)
+        .join("") ?? "";
+    const criteria =
+      result?.properties["掲載基準（公開されます）"]?.rich_text[0]
+        ?.plain_text ?? "";
+
+    return { id, category, criteria };
+  }) as Criteria[];
 };

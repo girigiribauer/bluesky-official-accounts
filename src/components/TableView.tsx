@@ -5,17 +5,24 @@ import Image from "next/image";
 import styles from "./TableView.module.scss";
 import { extractBluesky, extractTwitter } from "src/lib/extractFromURL";
 import { promoteBlueskyURL, promoteTwitterURL } from "src/lib/promotion";
-import { categoryCriteria } from "src/constants/categoryCriteria";
+// import { categoryCriteria } from "src/constants/categoryCriteria";
 import { useEffect, useState } from "react";
 import { ModalSource } from "./ModalSource";
+import { Criteria } from "src/models/Criteria";
 
 export type TableViewProps = {
   prefix: string;
   items: NotionItem[];
+  criteriaList?: Criteria[];
   updatedTime: string;
 };
 
-export const TableView = ({ prefix, items, updatedTime }: TableViewProps) => {
+export const TableView = ({
+  prefix,
+  items,
+  criteriaList = [],
+  updatedTime,
+}: TableViewProps) => {
   // アカウントリストに変更があったら一旦全部閉じる
   useEffect(() => {
     setToggleStates({});
@@ -40,7 +47,9 @@ export const TableView = ({ prefix, items, updatedTime }: TableViewProps) => {
     (acc, item) => {
       let found = acc.find((v) => v.title === item.category);
       if (!found) {
-        const criteria = categoryCriteria[item.category];
+        const criteria =
+          criteriaList.find(({ category }) => category === item.category)
+            ?.criteria ?? "";
         found = { title: item.category, criteria, items: [] };
         acc.push(found);
       }

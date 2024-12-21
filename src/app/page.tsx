@@ -1,4 +1,4 @@
-import { fetchAccounts, fetchNews } from "../lib/fetchNotion";
+import { fetchAccounts, fetchCriteria, fetchNews } from "../lib/fetchNotion";
 import { Metadata } from "next";
 import Image from "next/image";
 import styles from "./page.module.scss";
@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const { updatedTime, items } = await fetchAccounts(10000);
   const news = await fetchNews();
+  const criteriaList = await fetchCriteria();
 
   const wantsItems = items.filter(
     (a) =>
@@ -200,6 +201,7 @@ export default async function Home() {
       <div className={styles.table}>
         <TableViewWithFilter
           items={withoutWantsItems}
+          criteriaList={criteriaList}
           updatedTime={updatedTime}
         />
       </div>

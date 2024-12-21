@@ -5,20 +5,25 @@ import styles from "./TableViewWithFilter.module.scss";
 import { useState } from "react";
 import { TableView } from "./TableView";
 import { DebouncedInput } from "./DebouncedInput";
+import { Criteria } from "src/models/Criteria";
 
 export type TableViewWithFilterProps = {
   items: NotionItem[];
+  criteriaList: Criteria[];
   updatedTime: string;
 };
 
 export const TableViewWithFilter = ({
   items,
+  criteriaList,
   updatedTime,
 }: TableViewWithFilterProps) => {
   const [title, setTitle] = useState<string>("");
   const [isNewer, setNewer] = useState<boolean>(true);
   const [isUpdate, setUpdate] = useState<boolean>(false);
   const [isCustomDomain, setCustomDomain] = useState<boolean>(false);
+
+  const oneWeekAgo = new Date(updatedTime).valueOf() - 1000 * 60 * 60 * 24 * 7;
 
   const titleFilter = (items: NotionItem[], title: string): NotionItem[] => {
     return title !== ""
@@ -27,10 +32,8 @@ export const TableViewWithFilter = ({
   };
 
   const newerFilter = (items: NotionItem[], isNewer: boolean): NotionItem[] => {
-    const limit = new Date(updatedTime).valueOf() - 1000 * 60 * 60 * 24 * 7;
-
     return isNewer
-      ? items.filter((a) => new Date(a.createdTime).valueOf() >= limit)
+      ? items.filter((a) => new Date(a.createdTime).valueOf() >= oneWeekAgo)
       : items;
   };
 
@@ -38,10 +41,8 @@ export const TableViewWithFilter = ({
     items: NotionItem[],
     isUpdate: boolean
   ): NotionItem[] => {
-    const limit = new Date(updatedTime).valueOf() - 1000 * 60 * 60 * 24 * 7;
-
     return isUpdate
-      ? items.filter((a) => new Date(a.updatedTime).valueOf() >= limit)
+      ? items.filter((a) => new Date(a.updatedTime).valueOf() >= oneWeekAgo)
       : items;
   };
 
@@ -117,7 +118,12 @@ export const TableViewWithFilter = ({
         </ul>
       </div>
 
-      <TableView prefix="a" items={filteredItems} updatedTime={updatedTime} />
+      <TableView
+        prefix="a"
+        items={filteredItems}
+        criteriaList={criteriaList}
+        updatedTime={updatedTime}
+      />
     </>
   );
 };
