@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   description:
     "移行まとめでいつも聞かれる質問を随時更新しています。フォーム投稿や情報シェアをする前に一度お読みいただけると嬉しいです",
   openGraph: {
+    siteName: "Bluesky 公式アカウント移行まとめ",
     title:
       "よくある質問 - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
     url: "https://bluesky-official-accounts.vercel.app/faq",

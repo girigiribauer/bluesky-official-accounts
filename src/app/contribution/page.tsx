@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   description:
     "X（旧Twitter）からBlueskyへの移行を促進するために、みんなで協力し合っていることをまとめてあります！ぜひご一読ください！",
   openGraph: {
+    siteName: "Bluesky 公式アカウント移行まとめ",
     title:
       "移行まとめで協力できること - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
     url: "https://bluesky-official-accounts.vercel.app/contribution",
