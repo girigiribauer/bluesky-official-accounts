@@ -16,6 +16,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Bluesky 公式アカウント移行まとめ",
+    alternateName: "Bluesky 公式アカウント移行まとめ",
     url: "https://bluesky-official-accounts.vercel.app/",
   };
 
