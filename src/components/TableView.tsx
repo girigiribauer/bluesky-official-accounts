@@ -42,7 +42,9 @@ export const TableView = ({
     timeZone: "Asia/Tokyo",
   }).format(new Date(updatedTime));
 
-  const blueskyAccounts = items.filter((a) => a.status !== "未移行（未確認）");
+  const blueskyAccounts = items.filter(
+    (a) => a.status !== "未移行（未確認）" && a.status !== "確認不能"
+  );
   const categorizedItems = items.reduce<CategorizedNotionItems[]>(
     (acc, item) => {
       let found = acc.find((v) => v.title === item.category);
@@ -171,13 +173,15 @@ export const TableView = ({
                       <h3 className={styles.accountName}>{name}</h3>
                     </td>
                     <td className={styles.cellStatus}>
-                      <span
-                        className={["status", styles.status].join(" ")}
-                        data-status={status}
+                      <div
+                        className={styles.statusLabel}
                         onClick={() => handleShowPopup(id)}
                       >
-                        {status}
-                      </span>
+                        <span className="status" data-status={status}>
+                          {status}
+                        </span>
+                        {source !== "" ? <i className="hint">?</i> : null}
+                      </div>
 
                       {popupID === id ? (
                         <ModalSource

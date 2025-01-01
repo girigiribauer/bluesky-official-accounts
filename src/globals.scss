@@ -111,6 +111,25 @@ ul > li, ol > li {
     background: #d3e5ef;
     color: #183347;
   }
+
+  &[data-status*="確認不能"] {
+    background: #815b4c;
+    color: #ff9d78;
+  }
+}
+
+.hint {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-link);
+  border-radius: 8px;
+  color: var(--color-white);
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: bold;
 }
 
 .heroimage {

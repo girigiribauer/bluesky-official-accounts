@@ -283,6 +283,10 @@
   }
 }
 
-.status {
+.statusLabel {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
   cursor: pointer;
 }
