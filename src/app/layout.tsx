@@ -56,7 +56,7 @@ export default function RootLayout({
             {children}
           </Suspense>
         </main>
-        <Analytics />
+        {process.env.NODE_ENV === "production" ? <Analytics /> : null}
       </body>
     </html>
   );

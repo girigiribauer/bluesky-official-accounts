@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import styles from "./ModalSource.module.scss";
 
 export type ModalSourceProps = {
@@ -13,6 +14,21 @@ export const ModalSource = ({
   source,
   handleClose,
 }: ModalSourceProps) => {
+  const handleKeyEsc = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      handleClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyEsc, false);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyEsc);
+    };
+  }, []);
+
   return (
     <>
       <div className={styles.modalBackground} onClick={handleClose} />

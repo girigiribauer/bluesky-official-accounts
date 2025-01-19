@@ -1,0 +1,74 @@
+@import 'src/_mixin';
+
+.header {
+  min-height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 10px;
+  background: var(--color-primary-light2);
+  border-bottom: 1px solid var(--color-primary-light);
+  margin: 0;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.buttonLabel {
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  border-radius: 8px;
+  color: var(--color-white);
+  font-size: 0.625rem;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.total {
+  margin: 0;
+  font-size: 0.625rem;
+  line-height: 1;
+
+  @include mq(s) {
+    text-align: right;
+  }
+}
+
+.updatedTime {
+  margin: 0;
+  font-size: 0.625rem;
+  line-height: 1;
+
+  @include mq(s) {
+    text-align: right;
+  }
+}

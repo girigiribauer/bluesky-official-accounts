@@ -1,0 +1,95 @@
+@import 'src/_mixin';
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.filterLabel {
+  width: 120px;
+  height: 24px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  background: var(--color-primary-light2);
+  border-top: 2px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.filterLabelIcon {
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.filterLabelText {
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.filterList {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 2px 10px;
+  background: var(--color-primary-light2);
+  list-style: none;
+}
+
+.filterItem {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+  margin: 0;
+  padding: 5px 0;
+  border-top: 1px solid var(--color-primary-light);
+
+  &:first-child {
+    border-top: none;
+  }
+}
+
+.filterItemIcon {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  border-radius: 7px;
+  color: var(--color-white);
+  font-size: 0.5rem;
+  line-height: 18px;
+}
+
+.filterSelectable {
+  background: none;
+  border: none;
+  color: var(--color-link);
+  text-decoration: underline;
+  font-size: 0.75rem;
+  line-height: 18px;
+}
+
+.filterItemInput {
+  width: 140px;
+  height: 18px;
+  background: var(--color-white);
+  border: 1px solid var(--color-black-light2);
+}
+
+.filterItemText {
+  font-size: 0.75rem;
+  line-height: 18px;
+}
+
+.filterItemNote {
+  font-size: 0.625rem;
+  line-height: 18px;
+}

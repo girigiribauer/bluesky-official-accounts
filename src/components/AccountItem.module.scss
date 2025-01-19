@@ -1,0 +1,98 @@
+@import 'src/_mixin';
+
+.container {
+  padding: 3px 0;
+  border-bottom: 1px solid var(--color-black-light2);
+
+  @include mq(l) {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.accountColumn {
+  box-sizing: border-box;
+  word-break: break-all;
+  font-weight: normal;
+  text-align: left;
+
+  @include mq(s) {
+    display: inline-block;
+    margin-right: 0.25rem;
+  }
+
+  @include mq(l) {
+    flex: 1 1 31.25%;
+  }
+}
+
+.transitionStatusColumn {
+  box-sizing: border-box;
+  word-break: break-all;
+  font-weight: normal;
+  text-align: left;
+
+  @include mq(s) {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  @include mq(l) {
+    flex: 1 1 18.75%;
+  }
+}
+
+.twitterColumn {
+  @include mq(s) {
+    display: block;
+    padding-top: 0.25rem;
+  }
+
+  @include mq(l) {
+    flex: 1 1 25%;
+  }
+}
+
+.blueskyColumn {
+  @include mq(s) {
+    display: block;
+    padding-top: 0.25rem;
+  }
+
+  @include mq(l) {
+    flex: 1 1 25%;
+  }
+}
+
+.name {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: normal;
+}
+
+.statusWithCriteria {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  align-items: center;
+}
+
+.socialMedia {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.75rem;
+
+  a {
+    color: var(--color-black);
+    word-break: break-word;
+  }
+}
+
+.socialMediaIcon {
+  display: inline-block;
+}
+
+.socialMediaPromo {
+  flex: 0 0 fit-content;
+}

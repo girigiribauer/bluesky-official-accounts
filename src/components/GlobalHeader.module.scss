@@ -1,0 +1,108 @@
+@import 'src/_mixin';
+
+.container {
+  width: 100%;
+  height: 51px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: var(--color-primary-light2);
+  border-bottom: 1px solid var(--color-primary);
+
+  @include mq(s) {
+    justify-content: flex-end;
+    padding: 5px 10px 5px 50px;
+  }
+
+  @include mq(l) {
+    justify-content: center;
+    padding: 5px 50px;
+  }
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 5px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+
+  > img {
+    border-radius: 4px;
+  }
+}
+
+.menu {
+  @include mq(s) {
+  }
+
+  @include mq(l) {
+    display: contents;
+  }
+}
+
+.menuList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @include mq(s) {
+    display: none;
+  }
+
+  @include mq(l) {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+  }
+}
+
+.menuItem {
+  @include mq(s) {
+  }
+
+  @include mq(l) {
+  }
+}
+
+.menuItemLink {
+  @include mq(s) {
+  }
+
+  @include mq(l) {
+    color: var(--color-black);
+    font-size: 0.875rem;
+    font-weight: bold;
+    text-decoration: none;
+    line-height: 1;
+  }
+}
+
+.menuButton {
+  width: 30px;
+  height: 30px;
+  background: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: 4px;
+
+  @include mq(s) {
+    display: block;
+  }
+
+  @include mq(l) {
+    display: none;
+  }
+
+  &:active {
+    background: var(--color-primary-light);
+  }
+
+  > i {
+    color: var(--color-white);
+    font-size: 1rem;
+    line-height: 1;
+  }
+}

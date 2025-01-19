@@ -1,0 +1,43 @@
+@import 'src/_mixin';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 10px;
+  border: 1px solid var(--color-black-light);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.term {
+  @include mq(l) {
+    flex: 0 0 20%;
+  }
+}
+
+.description {
+  margin: 0;
+}
+
+.descriptionText {
+  margin: 0;
+  font-size: 0.625rem;
+}
+
+.attention {
+  color: var(--color-attention);
+  background: var(--color-attention-light);
+}
+
+.noticeItem {
+  padding: 10px;
+  background: var(--color-attention-light);
+  font-weight: bold;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
