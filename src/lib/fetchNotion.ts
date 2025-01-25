@@ -77,22 +77,6 @@ export const fetchAccounts = async () => {
   let allItems: NotionItem[] = [];
   let nextCursor: string | null = null;
 
-  return await (await fetch(`http://localhost:3000/databaseMock.json`)).json();
-  // return {
-  //   updatedTime: new Date().toISOString(),
-  //   items: categories.map((category, i) => ({
-  //     id: `test_${i + 1}`,
-  //     name: `${category}のテストアカウント`,
-  //     category,
-  //     status: "両方運用中",
-  //     twitter: `@test_${i + 1}`,
-  //     bluesky: "@test_${i+1}.bsky.social",
-  //     source: "",
-  //     createdTime: "2025-01-18 00:00:00",
-  //     updatedTime: "2025-01-18 00:00:00",
-  //   })),
-  // };
-
   try {
     do {
       if (nextCursor) {
