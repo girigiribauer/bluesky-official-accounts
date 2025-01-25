@@ -1,0 +1,15 @@
+@import 'src/_mixin';
+
+.container h2 {
+  position: relative;
+}
+
+.container h2:before {
+  width: 0;
+  height: 0;
+  content: '';
+  display: block;
+  position: relative;
+  padding-top: calc(30px + var(--height-globalheader));
+  margin-top: calc(-1 * (30px + var(--height-globalheader)));
+}

@@ -3,7 +3,7 @@ import "server-only";
 import { Client } from "@notionhq/client";
 import { NotionResponse, NotionItem } from "../models/Notion";
 import { News } from "../models/News";
-import { Criteria } from "src/models/Criteria";
+import { Category } from "src/models/Category";
 
 export type FetchDataResponse = {
   updatedTime: string;
@@ -17,9 +17,9 @@ const notion = new Client({
 const fetchAccountsOnce = async (
   cursor?: string | null
 ): Promise<NotionResponse> => {
-  const databaseId = process.env.ACCOUNTLIST_DATABASE || "DEFAULT_DATABASE_ID";
+  const databaseID = process.env.ACCOUNTLIST_DATABASE || "DEFAULT_DATABASE_ID";
   const notionResponse = await notion.databases.query({
-    database_id: databaseId,
+    database_id: databaseID,
     page_size: 100, // 上限100
     start_cursor: cursor ?? undefined,
     sorts: [
@@ -77,78 +77,21 @@ export const fetchAccounts = async () => {
   let allItems: NotionItem[] = [];
   let nextCursor: string | null = null;
 
-  return {
-    updatedTime: new Date().toISOString(),
-    items: [
-      ...Array.from({ length: 10 }, (_, i) => ({
-        id: `test_a${i}`,
-        name: "テストアカウントa",
-        category: "政府・省庁・国会議員",
-        status: "両方運用中",
-        twitter: "@testa",
-        bluesky: "@testa.bsky.social",
-        source:
-          "テストアカウントaの根拠です\n\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です\nテストアカウントaの根拠です",
-        createdTime: "2024-12-28 00:00:00",
-        updatedTime: "2024-12-28 00:00:00",
-      })),
-      ...Array.from({ length: 10 }, (_, i) => ({
-        id: `test_b${i}`,
-        name: "テストアカウントb",
-        category: "地方自治体・地方議員",
-        status: "未移行（未確認）",
-        twitter: "@testb",
-        bluesky: "@testb.bsky.social",
-        source: "テストアカウントbの根拠です",
-        createdTime: "2024-12-28 00:00:00",
-        updatedTime: "2024-12-28 00:00:00",
-      })),
-      ...Array.from({ length: 10 }, (_, i) => ({
-        id: `test_c${i}`,
-        name: "テストアカウントc",
-        category: "報道（マスメディア）",
-        status: "未移行（未確認）",
-        twitter: "@testc",
-        bluesky: "@testc.bsky.social",
-        source: "テストアカウントcの根拠です",
-        createdTime: "2024-12-28 00:00:00",
-        updatedTime: "2024-12-28 00:00:00",
-      })),
-      ...Array.from({ length: 10 }, (_, i) => ({
-        id: `test_d${i}`,
-        name: "テストアカウントd",
-        category: "漫画家・イラストレーター",
-        status: "未移行（未確認）",
-        twitter: "@testd",
-        bluesky: "@testd.bsky.social",
-        source: "テストアカウントdの根拠です",
-        createdTime: "2024-12-28 00:00:00",
-        updatedTime: "2024-12-28 00:00:00",
-      })),
-      ...Array.from({ length: 10 }, (_, i) => ({
-        id: `test_e${i}`,
-        name: "テストアカウントe",
-        category: "小説家・作家",
-        status: "両方運用中",
-        twitter: "@teste",
-        bluesky: "@teste.bsky.social",
-        source: "テストアカウントeの根拠です",
-        createdTime: "2024-12-28 00:00:00",
-        updatedTime: "2024-12-28 00:00:00",
-      })),
-      {
-        id: "test_z",
-        name: "きてほしいテストアカウントz",
-        category: "政府・省庁・国会議員",
-        status: "未移行（未確認）",
-        twitter: "@testz",
-        bluesky: "",
-        source: "テストアカウントzの根拠です",
-        createdTime: "2024-12-28 00:00:00",
-        updatedTime: "2024-12-28 00:00:00",
-      },
-    ] as NotionItem[],
-  };
+  return await (await fetch(`http://localhost:3000/databaseMock.json`)).json();
+  // return {
+  //   updatedTime: new Date().toISOString(),
+  //   items: categories.map((category, i) => ({
+  //     id: `test_${i + 1}`,
+  //     name: `${category}のテストアカウント`,
+  //     category,
+  //     status: "両方運用中",
+  //     twitter: `@test_${i + 1}`,
+  //     bluesky: "@test_${i+1}.bsky.social",
+  //     source: "",
+  //     createdTime: "2025-01-18 00:00:00",
+  //     updatedTime: "2025-01-18 00:00:00",
+  //   })),
+  // };
 
   try {
     do {
@@ -174,9 +117,9 @@ export const fetchAccounts = async () => {
 };
 
 export const fetchNews = async (): Promise<News[]> => {
-  const databaseId = process.env.NEWS_DATABASE || "DEFAULT_DATABASE_ID";
+  const databaseID = process.env.NEWS_DATABASE || "DEFAULT_DATABASE_ID";
   const notionResponse = await notion.databases.query({
-    database_id: databaseId,
+    database_id: databaseID,
     page_size: 100,
     sorts: [
       {
@@ -197,23 +140,30 @@ export const fetchNews = async (): Promise<News[]> => {
   });
 };
 
-export const fetchCriteria = async (): Promise<Criteria[]> => {
-  const databaseId = process.env.CRITERIA_DATABASE || "DEFAULT_DATABASE_ID";
+export const fetchCategory = async (): Promise<Category[]> => {
+  const databaseID = process.env.CATEGORY_DATABASE || "DEFAULT_DATABASE_ID";
   const notionResponse = await notion.databases.query({
-    database_id: databaseId,
+    database_id: databaseID,
     page_size: 100,
+    sorts: [
+      {
+        property: "order",
+        direction: "ascending",
+      },
+    ],
   });
 
-  return notionResponse.results.map<Criteria>((result: any) => {
+  return notionResponse.results.map<Category>((result: any) => {
     const id = result?.id ?? "";
-    const category =
+    const title =
       result?.properties["分類名"]?.title
         .map((a: any) => a.plain_text)
         .join("") ?? "";
+    const order = result?.properties["order"]?.number;
     const criteria =
       result?.properties["掲載基準（公開されます）"]?.rich_text[0]
         ?.plain_text ?? "";
 
-    return { id, category, criteria };
+    return { id, title, order, criteria };
   });
 };

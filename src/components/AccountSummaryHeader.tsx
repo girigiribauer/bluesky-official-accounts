@@ -50,7 +50,7 @@ export const AccountSummaryHeader = ({
           {blueskyAccountsTotal > 0
             ? `確認済み: ${blueskyAccountsTotal} 件 / `
             : null}
-          {total} 件
+          {`全 ${total} 件`}
         </p>
         <time className={styles.updatedTime}>{time}</time>
       </div>

@@ -1,13 +1,14 @@
 "use client";
 
-import styles from "./AccountItem.module.scss";
-
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { NotionItem } from "src/models/Notion";
-import { ModalSource } from "./ModalSource";
 import { extractBluesky, extractTwitter } from "src/lib/extractFromURL";
 import { promoteBlueskyURL, promoteTwitterURL } from "src/lib/promotion";
+import { useModal } from "src/hooks/useModal";
+
+import styles from "./AccountItem.module.scss";
+import { CriteriaPopup } from "./CriteriaPopup";
 
 export type AccountItemProps = {
   item: NotionItem;
@@ -20,35 +21,29 @@ export const AccountItem = ({
   popupID,
   handleShowPopup,
 }: AccountItemProps) => {
+  const { updateModal } = useModal();
   const { id, name, status, twitter, bluesky, source } = item;
 
   return (
     <div key={id} className={styles.container}>
-      <div className={styles.accountColumn}>
-        <h3 className={styles.name}>{name}</h3>
-      </div>
-
-      <div className={styles.transitionStatusColumn}>
-        <div
-          className={styles.statusWithCriteria}
-          onClick={() => handleShowPopup(id)}
-        >
-          <span className="status" data-status={status}>
-            {status}
-          </span>
-          {source !== "" ? <i className="hint">?</i> : null}
+      <div className={styles.columnsGroup}>
+        <div className={styles.accountColumn}>
+          <h3 className={styles.name}>{name}</h3>
         </div>
 
-        {popupID === id
-          ? createPortal(
-              <ModalSource
-                title={`${name}の根拠`}
-                source={source}
-                handleClose={() => handleShowPopup(null)}
-              />,
-              document?.body
-            )
-          : null}
+        <div className={styles.transitionStatusColumn}>
+          <div
+            className={styles.statusWithCriteria}
+            onClick={() => {
+              updateModal(<CriteriaPopup title={name} source={source} />);
+            }}
+          >
+            <span className="status" data-status={status}>
+              {status}
+            </span>
+            {source !== "" ? <i className="hint">?</i> : null}
+          </div>
+        </div>
       </div>
 
       <div className={styles.twitterColumn}>

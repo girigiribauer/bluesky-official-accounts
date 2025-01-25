@@ -1,61 +1,65 @@
 "use client";
 
 import { useMemo } from "react";
-import { FilterRules } from "src/models/FilterRules";
+import { FilterRuleSet } from "src/models/FilterRuleSet";
 
-import styles from "./FilterRuleResults.module.scss";
+import styles from "./FilterRuleTags.module.scss";
 
 export type FilterRuleResultsProps = {
-  filterRules: FilterRules | null;
-  handleReset: (key: keyof FilterRules) => void;
+  filterRuleSet: FilterRuleSet | null;
+  handleReset: (key: keyof FilterRuleSet) => void;
 };
 
-export const FilterRuleResults = ({
-  filterRules,
+export const FilterRuleTags = ({
+  filterRuleSet,
   handleReset,
 }: FilterRuleResultsProps) => {
   const filterRuleTags: {
-    key: keyof FilterRules;
+    key: keyof FilterRuleSet;
     value: string;
   }[] = useMemo(() => {
     const tags: {
-      key: keyof FilterRules;
+      key: keyof FilterRuleSet;
       value: string;
     }[] = [];
-    if (!filterRules) {
+    if (!filterRuleSet) {
       return tags;
     }
 
-    if (filterRules.time === "New") {
+    if (filterRuleSet.time === "New") {
       tags.push({ key: "time", value: "1週間以内の登録" });
     }
-    if (filterRules.time === "Update") {
+    if (filterRuleSet.time === "Update") {
       tags.push({
         key: "time",
         value: "1週間以内の登録・変更",
       });
     }
 
-    if (filterRules.text !== "") {
-      tags.push({ key: "text", value: `${filterRules.text}を含む` });
+    if (filterRuleSet.text !== "") {
+      const labels = filterRuleSet.text
+        .split(" ")
+        .map((a) => `"${a}"`)
+        .join(",");
+      tags.push({ key: "text", value: `${labels}を含む` });
     }
 
-    if (filterRules.customDomain) {
+    if (filterRuleSet.customDomain) {
       tags.push({ key: "customDomain", value: "カスタムドメイン" });
     }
 
-    if (filterRules.verified) {
+    if (filterRuleSet.verified) {
       tags.push({ key: "verified", value: "確認済み" });
     }
 
     return tags;
-  }, [filterRules]);
+  }, [filterRuleSet]);
 
   return filterRuleTags.length > 0 ? (
-    <ul className={styles.filterRules}>
+    <ul className={styles.filterRuleSet}>
       {filterRuleTags.map((ruleTag, index) => {
         const classNameMapping: {
-          [K in keyof FilterRules]: string;
+          [K in keyof FilterRuleSet]: string;
         } = {
           time: "fa-solid fa-clock",
           text: "fa-solid fa-pen",

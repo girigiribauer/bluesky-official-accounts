@@ -1,23 +1,24 @@
 "use client";
 
-import { FilterRules } from "src/models/FilterRules";
+import { FilterRuleSet } from "src/models/FilterRuleSet";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 
-import styles from "./FilterRulesConfig.module.scss";
+import styles from "./FilterRuleSetConfig.module.scss";
 
-export type FilterRulesConfigProps = {
-  filterRules: FilterRules;
-  handleUpdateRules: (rules: FilterRules) => void;
+export type FilterRuleSetConfigProps = {
+  filterRuleSet: FilterRuleSet;
+  handleUpdateRules: (ruleSet: FilterRuleSet) => void;
 };
 
-export const FilterRulesConfig = ({
-  filterRules,
+export const FilterRuleSetConfig = ({
+  filterRuleSet,
   handleUpdateRules,
-}: FilterRulesConfigProps) => {
+}: FilterRuleSetConfigProps) => {
   const [text, setText] = useState<string>("");
 
-  const handleUpdate = (rules: Partial<FilterRules>) => {
-    const newRules = Object.assign({}, filterRules, rules);
+  const handleUpdate = (rules: Partial<FilterRuleSet>) => {
+    const newRules = Object.assign({}, filterRuleSet, rules);
+    console.log(newRules);
     handleUpdateRules(newRules);
   };
 
@@ -26,10 +27,24 @@ export const FilterRulesConfig = ({
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key !== "Enter" && e.key !== "Escape") {
+      return;
+    }
+    e.preventDefault();
+
+    if (e.key === "Enter" && e.nativeEvent.isComposing) {
+      return;
+    }
+
+    const currentText = text;
+    setText("");
+    const textGroup = new Set(
+      [...filterRuleSet.text.split(" "), ...currentText.split(" ")].filter(
+        (a) => a !== ""
+      )
+    );
     if (e.key === "Enter") {
-      e.preventDefault();
-      setText("");
-      handleUpdate({ text });
+      handleUpdate({ text: Array.from(textGroup).join(" ") });
     }
   };
 

@@ -1,17 +1,17 @@
 "use client";
 
 import { NotionItem } from "src/models/Notion";
-import { Criteria } from "src/models/Criteria";
+import { Category } from "src/models/Category";
 import { useMemo, useState } from "react";
 import { AccountList } from "./AccountList";
+import { FilterRuleSet } from "src/models/FilterRuleSet";
+import { FilterRuleSetConfig } from "./FilterRuleSetConfig";
 
 import styles from "./Database.module.scss";
-import { FilterRules } from "src/models/FilterRules";
-import { FilterRulesConfig } from "./FilterRulesConfig";
 
 export type DatabaseProps = {
   items: NotionItem[];
-  criteriaList: Criteria[];
+  categoryList: Category[];
   updatedTime: string;
 };
 
@@ -19,32 +19,31 @@ type DatabaseType = "standard" | "wants";
 
 export const Database = ({
   items,
-  criteriaList,
+  categoryList,
   updatedTime,
 }: DatabaseProps) => {
   const [databaseType, switchDatabase] = useState<DatabaseType>("standard");
 
-  const defaultFilterRules: FilterRules = {
+  const defaultFilterRuleSet: FilterRuleSet = {
     time: "None",
     text: "",
     customDomain: false,
     verified: false,
   };
-  const [filterRules, setFilterRules] = useState<FilterRules>({
-    ...defaultFilterRules,
-    // time: "New",
+  const [filterRuleSet, updateFilterRuleSet] = useState<FilterRuleSet>({
+    ...defaultFilterRuleSet,
+    time: "New",
   });
   const oneWeekAgo = new Date(updatedTime).valueOf() - 1000 * 60 * 60 * 24 * 7;
 
-  const handleReset = (key: keyof FilterRules) => {
-    const resetRule = { [key]: defaultFilterRules[key] };
-    console.log(resetRule);
-    setFilterRules(Object.assign({}, filterRules, resetRule));
+  const handleReset = (key: keyof FilterRuleSet) => {
+    const resetRule = { [key]: defaultFilterRuleSet[key] };
+    updateFilterRuleSet(Object.assign({}, filterRuleSet, resetRule));
   };
 
   const timeFilter = (
     items: NotionItem[],
-    rules: FilterRules
+    rules: FilterRuleSet
   ): NotionItem[] => {
     switch (rules.time) {
       case "New":
@@ -62,16 +61,22 @@ export const Database = ({
 
   const textFilter = (
     items: NotionItem[],
-    rules: FilterRules
+    rules: FilterRuleSet
   ): NotionItem[] => {
     return rules.text !== ""
-      ? items.filter((v) =>
-          v.name.toLowerCase().includes(rules.text.toLowerCase())
-        )
+      ? items.filter((v) => {
+          const words = rules.text.toLowerCase().split(" ");
+          const target = `${v.name.toLowerCase()} ${v.twitter} ${v.bluesky}`;
+
+          return words.reduce((result, word) => {
+            if (result) return result;
+            return target.includes(word);
+          }, false);
+        })
       : items;
   };
 
-  const customDomainFilter = (items: NotionItem[], rules: FilterRules) => {
+  const customDomainFilter = (items: NotionItem[], rules: FilterRuleSet) => {
     return rules.customDomain
       ? items.filter((a) => {
           return (
@@ -84,7 +89,7 @@ export const Database = ({
       : items;
   };
 
-  const verifiedFilter = (items: NotionItem[], rules: FilterRules) => {
+  const verifiedFilter = (items: NotionItem[], rules: FilterRuleSet) => {
     return rules.verified
       ? items.filter((a) => {
           return a.status !== "未移行（未確認）";
@@ -94,13 +99,9 @@ export const Database = ({
 
   const filters = [textFilter, timeFilter, customDomainFilter, verifiedFilter];
 
-  const filteredItems = useMemo(
-    () =>
-      filters.reduce((items, filter) => {
-        return filter(items, filterRules);
-      }, items),
-    [items]
-  );
+  const filteredItems = filters.reduce((items, filter) => {
+    return filter(items, filterRuleSet);
+  }, items);
 
   const standardItems = useMemo(
     () =>
@@ -146,20 +147,22 @@ export const Database = ({
           ].join(" ")}
           onClick={() => switchDatabase("wants")}
         >
-          来てほしいアカウント
+          まだ来てないアカウント
         </button>
       </div>
 
       <div className={styles.database}>
-        <FilterRulesConfig
-          filterRules={filterRules}
-          handleUpdateRules={(filterRules) => setFilterRules(filterRules)}
+        <FilterRuleSetConfig
+          filterRuleSet={filterRuleSet}
+          handleUpdateRules={(filterRuleSet) =>
+            updateFilterRuleSet(filterRuleSet)
+          }
         />
         <AccountList
-          filterRules={filterRules}
+          filterRuleSet={filterRuleSet}
           handleReset={handleReset}
           items={databaseType === "standard" ? standardItems : wantsItems}
-          criteriaList={criteriaList}
+          categoryList={categoryList}
           updatedTime={updatedTime}
         />
       </div>

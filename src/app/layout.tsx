@@ -1,7 +1,9 @@
 import { Analytics } from "@vercel/analytics/next";
 import { Suspense } from "react";
-import "../globals.scss";
 import { Metadata } from "next";
+import { ModalProvider } from "src/hooks/useModal";
+
+import "../globals.scss";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_EXTERNAL_URL ?? ""),
@@ -49,11 +51,16 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          async
+          src="https://embed.bsky.app/static/embed.js"
+          charSet="utf-8"
+        ></script>
       </head>
       <body>
         <main className="main">
           <Suspense fallback="Notion から断続的に読み込んでいます">
-            {children}
+            <ModalProvider>{children}</ModalProvider>
           </Suspense>
         </main>
         {process.env.NODE_ENV === "production" ? <Analytics /> : null}

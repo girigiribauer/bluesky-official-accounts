@@ -1,12 +1,32 @@
 @import 'src/_mixin';
 
 .container {
-  padding: 3px 0;
   border-bottom: 1px solid var(--color-black-light2);
+
+  @include mq(s) {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 10px 0;
+  }
 
   @include mq(l) {
     display: flex;
     align-items: center;
+    padding: 3px 0;
+  }
+}
+
+.columnsGroup {
+  @include mq(s) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px;
+  }
+
+  @include mq(l) {
+    display: contents;
   }
 }
 
@@ -18,7 +38,6 @@
 
   @include mq(s) {
     display: inline-block;
-    margin-right: 0.25rem;
   }
 
   @include mq(l) {
@@ -34,7 +53,6 @@
 
   @include mq(s) {
     display: inline-block;
-    vertical-align: top;
   }
 
   @include mq(l) {
@@ -44,8 +62,7 @@
 
 .twitterColumn {
   @include mq(s) {
-    display: block;
-    padding-top: 0.25rem;
+    display: flex;
   }
 
   @include mq(l) {
@@ -55,8 +72,7 @@
 
 .blueskyColumn {
   @include mq(s) {
-    display: block;
-    padding-top: 0.25rem;
+    display: flex;
   }
 
   @include mq(l) {
@@ -84,6 +100,7 @@
   font-size: 0.75rem;
 
   a {
+    background: none;
     color: var(--color-black);
     word-break: break-word;
   }

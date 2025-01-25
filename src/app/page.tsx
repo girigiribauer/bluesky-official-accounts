@@ -1,4 +1,4 @@
-import { fetchAccounts, fetchCriteria, fetchNews } from "../lib/fetchNotion";
+import { fetchAccounts, fetchCategory, fetchNews } from "../lib/fetchNotion";
 import { Metadata } from "next";
 import styles from "./page.module.scss";
 import { ShareButtons } from "src/components/ShareButtons";
@@ -6,6 +6,7 @@ import { NewsList } from "src/components/NewsList";
 import { GlobalHeader } from "src/components/GlobalHeader";
 import { TransitionStatusList } from "src/components/TransitionStatusList";
 import { Database } from "src/components/Database";
+import { ModalContents } from "src/components/ModalContents";
 
 export const metadata: Metadata = {
   title: "Bluesky 公式アカウント移行まとめ #青空公式アカウント",
@@ -22,46 +23,39 @@ export const metadata: Metadata = {
 export default async function Home() {
   const { updatedTime, items } = await fetchAccounts();
   const news = await fetchNews();
-  const criteriaList = await fetchCriteria();
+  const categoryList = await fetchCategory();
 
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
+    <>
+      <header className="header">
         <GlobalHeader />
       </header>
+      <div className={styles.container}>
+        <h1>もうみなさんBlueskyへ移行されてます！</h1>
+        <p>
+          <strong>みなさんが見つけた公式アカウントを集約しています！</strong>
+          <br />
+          Bluesky
+          への移行に踏みとどまってる方の背中を押すためにも、シェアなどの周知や各種出来ることをご協力願います！
+        </p>
 
-      <h2>もうみなさんBlueskyへ移行されてます！</h2>
-      <p>
-        <strong>みなさんが見つけた公式アカウントを集約しています！</strong>
-        <br />
-        Bluesky
-        への移行に踏みとどまってる方の背中を押すためにも、シェアなどの周知や各種出来ることをご協力願います！
-      </p>
-
-      <div className={styles.newsArea}>
-        <h3>全体の更新情報</h3>
         <NewsList items={news} />
-      </div>
 
-      <div className={styles.statusArea}>
-        <h3>
-          <span>移行ステータスについて</span>
-          <i className="hint">?</i>
-        </h3>
         <TransitionStatusList />
+
+        <hr />
+
+        <Database
+          items={items}
+          categoryList={categoryList}
+          updatedTime={updatedTime}
+        />
+
+        <hr />
+
+        <ShareButtons />
       </div>
-
-      <hr />
-
-      <Database
-        items={items}
-        criteriaList={criteriaList}
-        updatedTime={updatedTime}
-      />
-
-      <hr />
-
-      <ShareButtons />
-    </div>
+      <ModalContents />
+    </>
   );
 }

@@ -1,17 +1,20 @@
 import { Metadata } from "next";
 import Image from "next/image";
+import { GlobalHeader } from "src/components/GlobalHeader";
+
 import styles from "./page.module.scss";
-import Link from "next/link";
+import { ModalContents } from "src/components/ModalContents";
+import { ShareButtons } from "src/components/ShareButtons";
 
 export const metadata: Metadata = {
   title:
-    "移行まとめで協力できること - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
+    "投稿および協力できること - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
   description:
-    "X（旧Twitter）からBlueskyへの移行を促進するために、みんなで協力し合っていることをまとめてあります！ぜひご一読ください！",
+    "誰も投稿してない公式アカウントを見つけたら、フォームから投稿してください！他にも協力できることがたくさんあります！",
   openGraph: {
     siteName: "Bluesky 公式アカウント移行まとめ",
     title:
-      "移行まとめで協力できること - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
+      "投稿および協力できること - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
     url: "https://bluesky-official-accounts.vercel.app/contribution",
     type: "website",
   },
@@ -19,188 +22,188 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   return (
-    <div className={styles.container}>
-      <p className="back">
-        <Link href={"/"}>Bluesky 公式アカウント移行まとめに戻る</Link>
-      </p>
+    <>
+      <header className="header">
+        <GlobalHeader />
+      </header>
+      <div className={styles.container}>
+        <h1>投稿および協力できること</h1>
 
-      <h1>移行まとめで協力できること</h1>
+        <h2 id="account-form">公式アカウント登録フォーム</h2>
 
-      <div className="heroimage">
-        <Image
-          src="/contribution/opengraph-image.jpg"
-          alt="公式アカウントをみんなでまとめてリストを X(Twitter) でシェアすると、企業でアカウント運用の検討が始まる / Bluesky 上に公式アカウントが増える / Bluesky に行ってもいいかなと思う人が増える / 有志でまとめていますので、みんなで移行を促進していきましょう！"
-          width={960}
-          height={540}
-        />
-      </div>
-
-      <ul>
-        <li>
-          <a href="#share">来て欲しいアカウントの宣伝</a>
-        </li>
-        <li>
-          <a href="#post">公式アカウントのフォーム投稿</a>
-        </li>
-        <li>
-          <a href="#identification">未移行（未確認）アカウントの同一性の確認</a>
-        </li>
-        <li>
-          <a href="#categorize">投稿された内容のチェックと分類整理</a>
-        </li>
-      </ul>
-
-      <hr />
-
-      <h2 id="share">来て欲しいアカウントの宣伝</h2>
-      <p>
-        <strong>「公式アカウント来て欲しい！」</strong>
-        とポストしていらっしゃる方を数多く見かけますが、具体的にアクションを取っていらっしゃる方は残念ながらほとんどいらっしゃらないです。
-      </p>
-      <p>
-        各アカウントの横に <strong>[宣伝]</strong>{" "}
-        というリンクが用意されており、ここから X(Twitter), Bluesky
-        に投稿すると、 <strong>#青空公式アカウント</strong>{" "}
-        という共通のハッシュタグ付きのポストを行うことができます。
-      </p>
-
-      <div className={styles.image}>
-        <Image src="/appeal.png" alt="宣伝" width={600} height={400} />
-      </div>
-
-      <p>
-        また、移行ステータスに応じた文言が用意されているので、ステータスが変わった際に定期的にポストしていただけると、
-        <strong>数は力となって関係者の目に入る可能性がグッと高くなる</strong>
-        と思います！
-      </p>
-
-      <p>
-        数が多くなればなるほど、 X(Twitter) から Bluesky
-        への移行も進みますので、是非ともご協力をお願いします！
-      </p>
-
-      <hr />
-
-      <h2 id="post">公式アカウントのフォーム投稿</h2>
-      <p>
-        みなさんの思う公式アカウントは人それぞれ違います。様々な公式アカウントが
-        Bluesky へ移行してきてるよ！というのを可視化するために、
-        <strong>
-          公式アカウントがあれば、ぜひともフォームから投稿してください！
-        </strong>
-        有志が時間差でチェックされたものが公開されます！
-      </p>
-      <p>
-        まだ来てないけど早く来てほしい！というアカウントも、
-        <span className="status" data-status="未移行（未確認）">
-          未移行（未確認）
-        </span>
-        のステータスで登録して、是非とも宣伝に活用してください！
-      </p>
-      <p>
-        また、すでに投稿されたものでも、本人確認が取れた、カスタムドメイン化されてアカウント名が変わった、などのステータスが変更されたものも改めて投稿をお願いします！
-      </p>
-      <p>
         <a
+          className={styles.image}
           href="https://www.notion-easy-form.com/forms/81d61322-e823-4068-afbb-ae964c2d6f3f"
           target="_blank"
         >
-          →投稿用フォーム
+          <Image src="/account-form.jpg" alt="" width={400} height={225} />
+          <p>→公式アカウント登録フォーム</p>
         </a>
-      </p>
 
-      <hr />
+        <p>募集しているものは以下のものです。</p>
 
-      <h2 id="identification">未移行（未確認）アカウントの同一性の確認</h2>
-      <p>
-        X(Twitter), Bluesky の両方のアカウントがあるものの、ステータスが
-        <span className="status" data-status="未移行（未確認）">
-          未移行（未確認）
-        </span>
-        となっているアカウントが存在しています。これは X(Twitter) と Bluesky
-        が同一かどうかの確認が取れていないアカウントを意味します。
-      </p>
-      <p>
-        中には偽物が偽っているケースなども考えられるため、可能であれば
-        <strong>同一性の確認（本人確認）</strong>をお願いしたいです。
-      </p>
+        <h3>未登録の公式アカウント</h3>
+        <ul>
+          <li>X(Twitter) と Bluesky アカウントの URL を用意してください</li>
+          <li>
+            <span className="status" data-status="未移行（未確認）">
+              未移行（未確認）
+            </span>
+            以外のものは根拠の項目に同一である理由を書いてください
+          </li>
+          <li>
+            投稿前によくある質問を一通り読んだ上で判断してください（随時アップデートされます）
+          </li>
+        </ul>
 
-      <div className={styles.image}>
-        <Image
-          src="/verification.png"
-          alt="同一性の確認"
-          width={350}
-          height={290}
-        />
-        <p>例: https://bsky.app/profile/sankei.com/post/3kmerch4mvc2d より</p>
-      </div>
+        <h3>登録済みのアカウントの修正・削除</h3>
+        <ul>
+          <li>
+            新規投稿のときと同じ情報を入れて、変更があるところだけ変えて投稿してください
+          </li>
+          <li>
+            誰の目からも明らかに公式アカウントではないものがあれば、根拠にその点を書いて削除依頼してください
+          </li>
+        </ul>
 
-      <p>方法としては大きく2つあります。</p>
+        <h3>来て欲しいアカウント</h3>
+        <ul>
+          <li>X(Twitter) アカウントの URL のみ用意してください</li>
+          <li>来て欲しいことを可視化して宣伝に活用できます</li>
+        </ul>
 
-      <ul>
-        <li>
-          X（旧Twitter）側から Bluesky アカウントを言及してもらう（例:
-          プロフィール追記、 Bluesky アカウント名の投稿）
-        </li>
-        <li>
-          公式アカウントが所有しているドメインをカスタムドメインとして設定{" "}
+        <p className={styles.link}>
           <a
-            href="https://bsky.social/about/blog/4-28-2023-domain-handle-tutorial"
+            href="https://www.notion-easy-form.com/forms/81d61322-e823-4068-afbb-ae964c2d6f3f"
             target="_blank"
           >
-            公式ブログ（英語）
+            →公式アカウント登録フォーム
           </a>
-        </li>
-      </ul>
+        </p>
 
-      <p>
-        <strong>上記を依頼する場合は丁寧なやりとりをお願いします。</strong>
-        ここのページを引用しつつ、X(Twitter) 側から Bluesky
-        アカウントへの言及をお願いしたり、あるいはカスタムドメインの検討を勧めたりといった、複数の選択肢を提示することをお勧めします。
-      </p>
+        <hr />
 
-      <p>
-        なお、{" "}
-        <strong>
-          Bluesky 側で「本物です！」と発言したり、 Bluesky
-          側からX（旧Twitter）アカウントへのリンクを貼る行為は誰でも（偽物でも）できる
-        </strong>
-        ため、X（旧Twitter）と Bluesky
-        アカウントが同一であることの証明にはなりません。
-      </p>
-      <p>
-        「同じ発言をしているので本人です」という投稿も多いですが、それも同様です。
-      </p>
+        <h2 id="category-form">アカウント分類草案フォーム</h2>
 
-      <hr />
-
-      <h2 id="categorize">投稿された内容のチェックと分類整理</h2>
-      <p>
-        人によって思う公式アカウントは大きく異なるため、様々な分野での分類整理が必要となってきます。また、分類ごとに全体のバランスを見ながら細分化するしないの判断も必要になってきます。
-        <br />
-        面倒なタスクではありますが、1件公開するまで極力手間がかからないよう最適化してあるので、
-        <strong>空き時間に時々チェック</strong>
-        してくださるだけで成り立つようになっています。また、対応してくださる方が多ければ多いほど、1人あたりにかかる負担は少なくなります。
-      </p>
-      <p>
-        協力してもいいよ！と思っていただける方は、
         <a
-          href="https://bsky.app/hashtag/%E9%9D%92%E7%A9%BA%E5%85%AC%E5%BC%8F%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88"
+          className={styles.image}
+          href="https://www.notion-easy-form.com/forms/155ec3b2-73dd-801f-af2c-c11b5da5f597"
           target="_blank"
         >
-          #青空公式アカウント
+          <Image src="/category-form.jpg" alt="" width={400} height={225} />
+          <p>→アカウント分類草案フォーム</p>
         </a>
-        のハッシュタグにて度々投稿されるであろう、協力募集の投稿を探して直接ご連絡ください！（なお、
-        Notion のユーザー上限などの関係上、ご期待に沿えない場合もあります）
-      </p>
-      <p>
-        なお、関係者に DM
-        を送るなどの行為が散見されますので、個別の掲載内容に関する意見はお控えください。（訂正があれば投稿フォームを通してお願いします。）
-      </p>
 
-      <p className="back">
-        <Link href={"/"}>Bluesky 公式アカウント移行まとめに戻る</Link>
-      </p>
-    </div>
+        <p>参考意見として分類草案を募集しています！</p>
+
+        <ul>
+          <li>
+            あくまで移行の促進が目的で、綺麗に並べることが目的ではありません
+          </li>
+          <li>
+            特にその他に入っている分類は、適切な興味分野が切り出せていないものです
+          </li>
+          <li>
+            興味を持った分野ごとに切り出すと、公式アカウントの登録がしやすくなります
+          </li>
+        </ul>
+
+        <p className={styles.link}>
+          <a
+            href="https://www.notion-easy-form.com/forms/155ec3b2-73dd-801f-af2c-c11b5da5f597"
+            target="_blank"
+          >
+            →アカウント分類草案フォーム
+          </a>
+        </p>
+
+        <hr />
+
+        <h2 id="inside">Notion 上での投稿チェック、分類整理</h2>
+        <p>
+          まとめサイトの情報は共有財産なので、投稿されたものは投稿した人の責任ですが、公開までに最低限の人の目を通しています。
+        </p>
+
+        <Image src="/check.jpg" alt="" width={400} height={225} />
+        <p>以下の条件で協力できる方を募集しています。</p>
+        <ul>
+          <li>
+            Notion 上に<strong>アカウントを作れる方</strong>
+            （操作は慣れてなくても OK です）
+            <ul>
+              <li>チェックは慣れれば1件あたり1分もかかりません</li>
+              <li>1回あたり10件〜数十件程度チェックしてくださると助かります</li>
+            </ul>
+          </li>
+          <li>
+            データベースを自分の好き勝手にいじろうとしない方、
+            <strong>私物化しない方</strong>
+            <ul>
+              <li>
+                上記理由から、 Bluesky
+                にアカウントを作りたての方はお断りする可能性があります
+              </li>
+            </ul>
+          </li>
+          <li>
+            いつチェックするかはお任せしますが、ちゃんと
+            <strong>負荷分散につながる方</strong>
+            <ul>
+              <li>
+                特定の人に負荷がかからないよう、みんなで負荷分散していきたいです
+              </li>
+              <li>
+                1週間に1回、1回1件程度のチェックだと、コミュニケーションコストの方が高くなるので、やっていただく際にはある程度まとめてチェックしていただくことを想定しています
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <p>
+          チェックに加えて、余裕があれば分類整理の方に加わっていただけるとありがたいです。
+          <br />
+          <strong>手伝っていただければ移行の促進につながります！</strong>
+          興味がありましたら以下のアカウントに連絡をお願いします。
+        </p>
+
+        <p className={styles.link}>
+          <a href="https://bsky.app/profile/girigiribauer.com" target="_blank">
+            →Bluesky 移行まとめサイト（ボット運用）
+          </a>
+        </p>
+
+        <hr />
+
+        <h2 id="share">各種シェアのお手伝い</h2>
+        <Image src="/share.jpg" alt="" width={400} height={225} />
+        <p>
+          最近は「公式アカウントどこー？」とポストする方も少なくなってきましたが、定期的に話題に上がってないと、新規で参加されてる方々が再び迷子になりかねません。
+          あなたにとっては既知の情報でも、知らない方に向けて
+          <strong>定期的にシェア</strong>
+          してくださると非常に助かります！（リストの充実、移行の促進にもつながります！）
+        </p>
+
+        <ul>
+          <li>
+            ハッシュタグは
+            <a
+              href="https://bsky.app/search?q=%23%E9%9D%92%E7%A9%BA%E5%85%AC%E5%BC%8F%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88"
+              target="_blank"
+            >
+              #青空公式アカウント
+            </a>
+            です
+          </li>
+          <li>
+            アカウントリストの各行に <strong>[宣伝]</strong>{" "}
+            というリンクがあり、 X(Twitter) や Bluesky にシェアできます
+          </li>
+        </ul>
+
+        <hr />
+
+        <ShareButtons />
+      </div>
+      <ModalContents />
+    </>
   );
 }

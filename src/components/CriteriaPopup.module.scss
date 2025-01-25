@@ -1,0 +1,45 @@
+@import 'src/_mixin';
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.modalTitle {
+  flex: 0 0 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0 30px 0 20px;
+  background: var(--color-primary-light2);
+  border-bottom: 1px solid var(--color-primary);
+  color: var(--color-black);
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.modalContentsInside {
+  flex: 1 1 fit-content;
+  width: 100%;
+  height: calc(100% - 30px);
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  background: var(--color-white);
+  color: var(--color-black);
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.75rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  line-height: 1.5;
+
+  @include mq(s) {
+    padding: 20px;
+  }
+
+  @include mq(l) {
+    padding: 20px;
+  }
+}

@@ -3,6 +3,7 @@
 export type AccountGroupHeaderProps = {
   title: string;
   total: number;
+  isOpen: boolean;
   criteria?: string;
   handleSelect: () => void;
 };
@@ -12,6 +13,7 @@ import styles from "./AccountGroupHeader.module.scss";
 export const AccountGroupHeader = ({
   title,
   total,
+  isOpen,
   criteria = "",
   handleSelect,
 }: AccountGroupHeaderProps) => {
@@ -31,7 +33,7 @@ export const AccountGroupHeader = ({
         ) : null}
       </div>
 
-      <div className={styles.icon}>
+      <div className={[styles.icon, isOpen ? styles.iconOpen : ""].join(" ")}>
         <i className="fa-solid fa-caret-down" />
       </div>
     </div>

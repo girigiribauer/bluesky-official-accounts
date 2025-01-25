@@ -1,6 +1,10 @@
 @import 'src/_mixin';
 
 .container {
+  margin: 30px 0;
+}
+
+.box {
   height: 120px;
   display: block;
   padding: 5px;

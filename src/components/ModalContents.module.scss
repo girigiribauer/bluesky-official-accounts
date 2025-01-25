@@ -1,6 +1,6 @@
 @import 'src/_mixin';
 
-.modalBackground {
+.background {
   width: 100dvw;
   height: 100dvh;
   position: fixed;
@@ -12,9 +12,17 @@
   align-items: center;
   justify-content: center;
   background: rgb(var(--color-black-rgb) / 0.8);
+  transition: opacity 250ms ease-out, visibility 250ms ease-out;
+
+  visibility: hidden;
+  opacity: 0;
+}
+.backgroundActive {
+  visibility: visible;
+  opacity: 1;
 }
 
-.modalContents {
+.contents {
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -25,7 +33,11 @@
   z-index: 102;
   margin: auto;
   padding: 0;
-  background: var(--color-white);
+  background: rgb(var(--color-black-rgb) / 0.5);
+  transition: opacity 250ms ease-out, visibility 250ms ease-out;
+
+  visibility: hidden;
+  opacity: 0;
 
   @include mq(s) {
     width: calc(100dvw - 40px);
@@ -37,42 +49,9 @@
     height: 400px;
   }
 }
-
-.modalTitle {
-  flex: 0 0 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0 30px 0 20px;
-  background: var(--color-primary-light2);
-  border-bottom: 1px solid var(--color-primary);
-  color: var(--color-black);
-  font-size: 0.75rem;
-  font-weight: bold;
-}
-
-.modalContentsInside {
-  flex: 1 1 fit-content;
-  width: 100%;
-  height: calc(100% - 30px);
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  color: var(--color-black);
-  font-size: 0.75rem;
-  overflow-x: hidden;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  line-height: 1.5;
-
-  @include mq(s) {
-    padding: 20px;
-  }
-
-  @include mq(l) {
-    padding: 20px;
-  }
+.contentsActive {
+  visibility: visible;
+  opacity: 1;
 }
 
 .modalClose {

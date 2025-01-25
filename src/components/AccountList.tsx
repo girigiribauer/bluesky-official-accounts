@@ -1,82 +1,100 @@
 "use client";
 
-import { NotionItem, CategorizedNotionItems } from "src/models/Notion";
-import { useEffect, useState, useId } from "react";
-import { Criteria } from "src/models/Criteria";
-import type { FilterRules } from "src/models/FilterRules";
+import { NotionItem } from "src/models/Notion";
+import { useEffect, useState, useMemo, useCallback } from "react";
+import { Category } from "src/models/Category";
+import type { FilterRuleSet } from "src/models/FilterRuleSet";
 import { GroupedVirtuoso } from "react-virtuoso";
 import { AccountGroupHeader } from "./AccountGroupHeader";
 import { AccountItem } from "./AccountItem";
-import { FilterRuleResults } from "./FilterRuleResults";
+import { FilterRuleTags } from "./FilterRuleTags";
 import { AccountSummaryHeader } from "./AccountSummaryHeader";
 
 import styles from "./AccountList.module.scss";
 
 export type AccountListProps = {
-  filterRules?: FilterRules | null;
-  handleReset?: (key: keyof FilterRules) => void;
+  filterRuleSet?: FilterRuleSet | null;
+  handleReset?: (key: keyof FilterRuleSet) => void;
   items: NotionItem[];
-  criteriaList?: Criteria[];
+  categoryList?: Category[];
   updatedTime: string;
 };
 
+type CategoryGroup = {
+  id: string;
+  title: string;
+  criteria: string;
+  items: NotionItem[];
+  total: number;
+};
+
 export const AccountList = ({
-  filterRules = null,
+  filterRuleSet = null,
   handleReset = () => {},
   items,
-  criteriaList = [],
+  categoryList = [],
   updatedTime,
 }: AccountListProps) => {
-  const prefix = useId();
-
-  const [toggleStates, setToggleStates] = useState<Record<string, boolean>>({});
-  const [popupID, setPopupID] = useState<string | null>(null);
-
-  const blueskyAccountsTotal = items.filter(
-    (a) => a.status !== "未移行（未確認）"
-  ).length;
-  const categorizedItems = items.reduce<CategorizedNotionItems[]>(
-    (acc, item) => {
-      let found = acc.find((v) => v.title === item.category);
-      if (!found) {
-        const criteria =
-          criteriaList.find(({ category }) => category === item.category)
-            ?.criteria ?? "";
-        found = { title: item.category, criteria, items: [] };
-        acc.push(found);
-      }
-      found.items.push(item);
-      return acc;
-    },
-    []
+  const originalCategorizedItems: CategoryGroup[] = useMemo(
+    () =>
+      categoryList
+        .map(({ id, title, criteria }) => {
+          const categorizedItems = items.filter((a) => a.category === title);
+          return {
+            id,
+            title,
+            criteria,
+            items: categorizedItems,
+            total: categorizedItems.length,
+          };
+        })
+        .filter((a) => a.total !== 0),
+    [items, categoryList]
   );
 
-  const groupCounts = categorizedItems.map((a) => a.items.length);
+  const [categoryToggleList, setCategoryToggleList] = useState<boolean[]>(
+    Array.from({ length: originalCategorizedItems.length }, () => false)
+  );
+  const [popupID, setPopupID] = useState<string | null>(null);
+
+  const total = useMemo(() => items.length, [items]);
+  const blueskyAccountsTotal = useMemo(
+    () => items.filter((a) => a.status !== "未移行（未確認）").length,
+    [items]
+  );
+
+  const groupCounts = originalCategorizedItems.map((a, index) =>
+    categoryToggleList[index] ? a.items.length : 0
+  );
+
+  const filteredItems = originalCategorizedItems.reduce((acc, group, index) => {
+    if (categoryToggleList[index]) {
+      return [...acc, ...group.items];
+    }
+    return acc;
+  }, [] as NotionItem[]);
 
   const handleSelectAllCategory = () => {
-    const categoryTitles = categorizedItems.reduce((acc, item) => {
-      return { ...acc, [`${prefix}_${item.title}`]: true };
-    }, {});
-    setToggleStates(categoryTitles);
+    setCategoryToggleList(
+      Array.from({ length: originalCategorizedItems.length }, () => true)
+    );
   };
 
-  const handleUnselectAllCategory = () => {
-    setToggleStates({});
-  };
+  const handleUnselectAllCategory = useCallback(() => {
+    setCategoryToggleList(
+      Array.from({ length: originalCategorizedItems.length }, () => false)
+    );
+  }, [originalCategorizedItems]);
 
-  const handleSelectCategory = (titleWithPrefix: string) => {
-    const newToggleStates = { ...toggleStates };
+  const handleSelectCategory = (title: string) => {
+    const newCategoryToggleList = categoryToggleList.map((a, i) => {
+      if (title === originalCategorizedItems[i].title) {
+        return !a;
+      }
+      return a;
+    });
 
-    if (titleWithPrefix in toggleStates) {
-      delete newToggleStates[titleWithPrefix];
-    } else {
-      newToggleStates[titleWithPrefix] = true;
-    }
-    setToggleStates(newToggleStates);
-
-    const element = document.getElementById(titleWithPrefix);
-    if (!element) return;
-    element.scrollIntoView({ behavior: "instant" });
+    setCategoryToggleList(newCategoryToggleList);
   };
 
   const handleShowPopup = (id: string | null) => {
@@ -85,44 +103,51 @@ export const AccountList = ({
 
   // アカウントリストに変更があったら一旦全部閉じる
   useEffect(() => {
-    setToggleStates({});
-  }, [items]);
+    handleUnselectAllCategory();
+  }, [items, handleUnselectAllCategory]);
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <AccountSummaryHeader
-          total={items.length}
+          total={total}
           blueskyAccountsTotal={blueskyAccountsTotal}
           updatedTime={updatedTime}
           handleOpen={handleSelectAllCategory}
           handleClose={handleUnselectAllCategory}
         />
 
-        <FilterRuleResults
-          filterRules={filterRules}
+        <FilterRuleTags
+          filterRuleSet={filterRuleSet}
           handleReset={handleReset}
         />
       </div>
 
       <GroupedVirtuoso
-        style={{ height: 400 }}
+        style={{ height: 500 }}
         className={styles.virtualScroll}
         groupCounts={groupCounts}
         groupContent={(index) => {
-          const { title, items, criteria } = categorizedItems[index];
-          const total = items.length;
+          if (index >= originalCategorizedItems.length) {
+            return null;
+          }
+
+          const { title, total, criteria } = originalCategorizedItems[index];
           return (
             <AccountGroupHeader
               title={title}
               total={total}
+              isOpen={categoryToggleList[index]}
               criteria={criteria}
-              handleSelect={() => handleSelectCategory(`${prefix}_${title}`)}
+              handleSelect={() => handleSelectCategory(title)}
             />
           );
         }}
         itemContent={(index) => {
-          const item = items[index];
+          if (filteredItems.length <= 0) {
+            return null;
+          }
+          const item = filteredItems[index];
           return (
             <AccountItem
               item={item}

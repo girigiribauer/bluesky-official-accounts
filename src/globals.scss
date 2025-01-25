@@ -10,6 +10,7 @@
   --color-background: rgb(249 249 249);
   --color-link: rgb(153 153 153);
   --color-white: rgb(255 255 255);
+  --color-white-rgb: 255 255 255;
   --color-black: rgb(69 69 69);
   --color-black-rgb: 69 69 69;
   --color-black-light: rgb(136 136 136);
@@ -30,14 +31,19 @@ html, body {
   max-width: 960px;
   min-height: 100svh;
   box-sizing: border-box;
-  padding: var(--height-globalheader) 10px 60px 10px;
+  padding: var(--height-globalheader) 10px 100px 10px;
   margin: 0 auto;
   background: var(--color-white);
 }
 
-h2 {
+h1 {
   margin: 30px 0;
   font-size: 1.125rem;
+}
+
+h2 {
+  margin: 10px 0;
+  font-size: 0.9375rem;
 }
 
 h3 {
@@ -59,13 +65,18 @@ p {
 }
 
 strong {
-  color: var(--color-primary);
+  color: var(--color-black);
   background: var(--color-primary-light2);
 }
 
 a {
-  color: var(--color-link);
+  background: var(--color-primary-light2);
+  color: var(--color-primary);
   text-decoration: underline;
+}
+
+.link {
+  padding: 0.25rem 0.5rem;
 }
 
 ul, ol {
@@ -75,6 +86,15 @@ ul > li, ol > li {
   margin: 0.5rem 0;
   font-size: 0.875rem;
   line-height: 1.5;
+}
+
+.header {
+  width: 100%;
+  height: var(--height-globalheader);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
 }
 
 .status {
