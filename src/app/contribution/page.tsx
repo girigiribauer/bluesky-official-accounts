@@ -166,8 +166,11 @@ export default async function Home() {
         </p>
 
         <p className={styles.link}>
-          <a href="https://bsky.app/profile/girigiribauer.com" target="_blank">
-            →Bluesky 移行まとめサイト（ボット運用）
+          <a
+            href="https://bsky.app/profile/official-accounts.bsky.social"
+            target="_blank"
+          >
+            →公式アカウント移行まとめ（仮運用中）
           </a>
         </p>
 
