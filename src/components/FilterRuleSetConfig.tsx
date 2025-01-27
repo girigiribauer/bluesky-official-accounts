@@ -18,7 +18,6 @@ export const FilterRuleSetConfig = ({
 
   const handleUpdate = (rules: Partial<FilterRuleSet>) => {
     const newRules = Object.assign({}, filterRuleSet, rules);
-    console.log(newRules);
     handleUpdateRules(newRules);
   };
 
