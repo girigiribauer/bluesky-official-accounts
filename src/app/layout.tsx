@@ -56,6 +56,10 @@ export default function RootLayout({
           src="https://embed.bsky.app/static/embed.js"
           charSet="utf-8"
         ></script>
+        <meta
+          name="google-site-verification"
+          content="w1ox6Vwl_FxXfyxTKWgNIkM7xnWHl7TQp1HZsrMm-O8"
+        />
       </head>
       <body>
         <main className="main">
