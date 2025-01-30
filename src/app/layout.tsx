@@ -46,6 +46,7 @@ export default function RootLayout({
           sizes="16x16"
           href="/favicon-16x16.png"
         />
+        <meta name="theme-color" content="#e7f3ff" />
         <link rel="manifest" href="/manifest.json" />
         <script
           type="application/ld+json"
