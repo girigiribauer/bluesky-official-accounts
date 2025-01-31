@@ -1,10 +1,9 @@
 import { Metadata } from "next";
 import Image from "next/image";
 import { GlobalHeader } from "src/components/GlobalHeader";
-
-import styles from "./page.module.scss";
 import { ModalContents } from "src/components/ModalContents";
 import { ShareButtons } from "src/components/ShareButtons";
+import { PageNavigation } from "src/components/PageNavigation";
 
 export const metadata: Metadata = {
   title:
@@ -26,13 +25,13 @@ export default async function Home() {
       <header className="header">
         <GlobalHeader />
       </header>
-      <div className={styles.container}>
+      <div>
         <h1>投稿および協力できること</h1>
 
         <h2 id="account-form">公式アカウント登録フォーム</h2>
 
         <a
-          className={styles.image}
+          className="cardlink"
           href="https://www.notion-easy-form.com/forms/81d61322-e823-4068-afbb-ae964c2d6f3f"
           target="_blank"
         >
@@ -72,7 +71,7 @@ export default async function Home() {
           <li>来て欲しいことを可視化して宣伝に活用できます</li>
         </ul>
 
-        <p className={styles.link}>
+        <p className="link">
           <a
             href="https://www.notion-easy-form.com/forms/81d61322-e823-4068-afbb-ae964c2d6f3f"
             target="_blank"
@@ -86,7 +85,7 @@ export default async function Home() {
         <h2 id="category-form">アカウント分類草案フォーム</h2>
 
         <a
-          className={styles.image}
+          className="cardlink"
           href="https://www.notion-easy-form.com/forms/155ec3b2-73dd-801f-af2c-c11b5da5f597"
           target="_blank"
         >
@@ -108,7 +107,7 @@ export default async function Home() {
           </li>
         </ul>
 
-        <p className={styles.link}>
+        <p className="link">
           <a
             href="https://www.notion-easy-form.com/forms/155ec3b2-73dd-801f-af2c-c11b5da5f597"
             target="_blank"
@@ -165,7 +164,7 @@ export default async function Home() {
           興味がありましたら以下のアカウントに連絡をお願いします。
         </p>
 
-        <p className={styles.link}>
+        <p className="link">
           <a
             href="https://bsky.app/profile/official-accounts.bsky.social"
             target="_blank"
@@ -201,6 +200,10 @@ export default async function Home() {
             というリンクがあり、 X(Twitter) や Bluesky にシェアできます
           </li>
         </ul>
+
+        <hr />
+
+        <PageNavigation prev="index" next="features" />
 
         <hr />
 

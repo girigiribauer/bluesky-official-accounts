@@ -2,7 +2,6 @@
 
 import { News } from "src/models/News";
 import styles from "./NewsList.module.scss";
-import { useState } from "react";
 
 export type NewsListProps = {
   items: News[];

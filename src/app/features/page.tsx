@@ -1,10 +1,9 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { GlobalHeader } from "src/components/GlobalHeader";
 import { ModalContents } from "src/components/ModalContents";
 import { ShareButtons } from "src/components/ShareButtons";
-
-import styles from "./page.module.scss";
-import Image from "next/image";
+import { PageNavigation } from "src/components/PageNavigation";
 
 export const metadata: Metadata = {
   title: "便利な機能 - Bluesky 公式アカウント移行まとめ #青空公式アカウント",
@@ -24,12 +23,12 @@ export default async function Home() {
       <header className="header">
         <GlobalHeader />
       </header>
-      <div className={styles.container}>
+      <div>
         <h1>便利な機能</h1>
 
         <h2>移行まとめサイトアカウント</h2>
         <a
-          className={styles.image}
+          className="cardlink"
           href="https://bsky.app/profile/official-accounts.bsky.social"
           target="_blank"
         >
@@ -43,7 +42,7 @@ export default async function Home() {
         </p>
         <p>今後 Bluesky アカウントを活用した他機能も提供していきます。</p>
 
-        <p className={styles.link}>
+        <p className="link">
           <a
             href="https://bsky.app/profile/official-accounts.bsky.social"
             target="_blank"
@@ -51,6 +50,10 @@ export default async function Home() {
             →公式アカウント移行まとめ（仮運用中）
           </a>
         </p>
+
+        <hr />
+
+        <PageNavigation prev="contribution" next="faq" />
 
         <hr />
 

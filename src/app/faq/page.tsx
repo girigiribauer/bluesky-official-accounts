@@ -4,6 +4,7 @@ import Link from "next/link";
 import { GlobalHeader } from "src/components/GlobalHeader";
 import { ModalContents } from "src/components/ModalContents";
 import { ShareButtons } from "src/components/ShareButtons";
+import { PageNavigation } from "src/components/PageNavigation";
 
 import styles from "./page.module.scss";
 
@@ -308,6 +309,11 @@ export default async function Home() {
           </strong>
           あたりを一旦の線引きとさせてください。（これまで投稿してくださった方、申し訳ないです）
         </p>
+
+        <hr />
+
+        <PageNavigation prev="features" />
+
         <hr />
 
         <ShareButtons />

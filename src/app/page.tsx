@@ -1,12 +1,12 @@
 import { fetchAccounts, fetchCategory, fetchNews } from "../lib/fetchNotion";
 import { Metadata } from "next";
-import styles from "./page.module.scss";
 import { ShareButtons } from "src/components/ShareButtons";
 import { NewsList } from "src/components/NewsList";
 import { GlobalHeader } from "src/components/GlobalHeader";
 import { TransitionStatusList } from "src/components/TransitionStatusList";
 import { Database } from "src/components/Database";
 import { ModalContents } from "src/components/ModalContents";
+import { PageNavigation } from "src/components/PageNavigation";
 
 export const metadata: Metadata = {
   title: "Bluesky 公式アカウント移行まとめ #青空公式アカウント",
@@ -30,7 +30,7 @@ export default async function Home() {
       <header className="header">
         <GlobalHeader />
       </header>
-      <div className={styles.container}>
+      <div>
         <h1>もうみなさんBlueskyへ移行されてます！</h1>
         <p>
           <strong>みなさんが見つけた公式アカウントを集約しています！</strong>
@@ -50,6 +50,10 @@ export default async function Home() {
           categoryList={categoryList}
           updatedTime={updatedTime}
         />
+
+        <hr />
+
+        <PageNavigation next="contribution" />
 
         <hr />
 

@@ -75,10 +75,6 @@ a {
   text-decoration: underline;
 }
 
-.link {
-  padding: 0.25rem 0.5rem;
-}
-
 ul, ol {
   padding-left: 1rem;
 }
@@ -86,6 +82,11 @@ ul > li, ol > li {
   margin: 0.5rem 0;
   font-size: 0.875rem;
   line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+  display: block;
 }
 
 .header {
@@ -158,6 +159,30 @@ ul > li, ol > li {
   & > p {
     margin-top: 0;
     font-size: 0.75rem;
+  }
+}
+
+.link {
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-align: right;
+
+  a {
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+.cardlink {
+  max-width: 400px;
+  height: auto;
+  margin: 0;
+  display: block;
+
+  p {
+    margin-top: 0;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    text-align: right;
   }
 }
 

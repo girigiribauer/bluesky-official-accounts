@@ -1,0 +1,39 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--color-primary);
+  border-radius: 2px;
+  background: var(--color-primary-light2);
+  text-decoration: none;
+}
+.linkPrev {
+  margin-right: auto;
+  text-align: left;
+}
+.linkNext {
+  margin-left: auto;
+  text-align: right;
+}
+
+.direction {
+  color: var(--color-primary-light);
+  font-weight: bold;
+  font-size: 0.625rem;
+  line-height: 1;
+}
+
+.label {
+  color: var(--color-primary);
+  font-weight: bold;
+  font-size: 0.75rem;
+  line-height: 1;
+}
