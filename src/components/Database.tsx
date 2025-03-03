@@ -30,10 +30,8 @@ export const Database = ({
     customDomain: false,
     verified: false,
   };
-  const [filterRuleSet, updateFilterRuleSet] = useState<FilterRuleSet>({
-    ...defaultFilterRuleSet,
-    time: "New",
-  });
+  const [filterRuleSet, updateFilterRuleSet] =
+    useState<FilterRuleSet>(defaultFilterRuleSet);
   const oneWeekAgo = new Date(updatedTime).valueOf() - 1000 * 60 * 60 * 24 * 7;
 
   const handleReset = (key: keyof FilterRuleSet) => {
