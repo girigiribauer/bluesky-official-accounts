@@ -42,13 +42,15 @@ export const Database = ({ accountList, categoryList }: DatabaseProps) => {
   ): NotionItem[] => {
     switch (rules.time) {
       case "New":
-        return items.filter(
-          (a) => new Date(a.createdTime).valueOf() >= oneWeekAgo
-        );
+        return items.filter((a) => {
+          const d = new Date(a.createdTime);
+          return !Number.isNaN(d.getTime()) && d.valueOf() >= oneWeekAgo;
+        });
       case "Update":
-        return items.filter(
-          (a) => new Date(a.updatedTime).valueOf() >= oneWeekAgo
-        );
+        return items.filter((a) => {
+          const d = new Date(a.updatedTime);
+          return !Number.isNaN(d.getTime()) && d.valueOf() >= oneWeekAgo;
+        });
       case "None":
         return items;
     }
@@ -60,35 +62,35 @@ export const Database = ({ accountList, categoryList }: DatabaseProps) => {
   ): NotionItem[] => {
     return rules.text !== ""
       ? items.filter((v) => {
-          const words = rules.text.toLowerCase().split(" ");
-          const target = `${v.name.toLowerCase()} ${v.twitter} ${v.bluesky}`;
+        const words = rules.text.toLowerCase().split(" ");
+        const target = `${v.name.toLowerCase()} ${v.twitter} ${v.bluesky}`;
 
-          return words.reduce((result, word) => {
-            if (result) return result;
-            return target.includes(word);
-          }, false);
-        })
+        return words.reduce((result, word) => {
+          if (result) return result;
+          return target.includes(word);
+        }, false);
+      })
       : items;
   };
 
   const customDomainFilter = (items: NotionItem[], rules: FilterRuleSet) => {
     return rules.customDomain
       ? items.filter((a) => {
-          return (
-            a.bluesky !== null &&
-            !a.bluesky
-              .replace(".bsky.social/", ".bsky.social")
-              .endsWith(".bsky.social")
-          );
-        })
+        return (
+          a.bluesky !== null &&
+          !a.bluesky
+            .replace(".bsky.social/", ".bsky.social")
+            .endsWith(".bsky.social")
+        );
+      })
       : items;
   };
 
   const verifiedFilter = (items: NotionItem[], rules: FilterRuleSet) => {
     return rules.verified
       ? items.filter((a) => {
-          return a.status !== "未移行（未確認）";
-        })
+        return a.status !== "未移行（未確認）";
+      })
       : items;
   };
 

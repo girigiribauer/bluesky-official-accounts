@@ -17,16 +17,21 @@ export const AccountSummaryHeader = ({
   handleOpen,
   handleClose,
 }: AccountSummaryHeaderProps) => {
-  const time = new Intl.DateTimeFormat("ja-JP", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-    timeZone: "Asia/Tokyo",
-  }).format(new Date(updatedTime));
+  const d = new Date(updatedTime);
+  const isValidDate = !Number.isNaN(d.getTime());
+
+  const time = isValidDate
+    ? new Intl.DateTimeFormat("ja-JP", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+      timeZone: "Asia/Tokyo",
+    }).format(d)
+    : "-";
 
   return (
     <header className={styles.header}>
