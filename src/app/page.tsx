@@ -1,4 +1,4 @@
-import { fetchAccounts, fetchCategory, fetchNews } from "../lib/fetchNotion";
+import { fetchAccounts, fetchCategories, fetchNews } from "../lib/fetchNotion";
 import { Metadata } from "next";
 import { ShareButtons } from "src/components/ShareButtons";
 import { NewsList } from "src/components/NewsList";
@@ -21,9 +21,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const { updatedTime, items } = await fetchAccounts();
+  const accountList = await fetchAccounts();
   const news = await fetchNews();
-  const categoryList = await fetchCategory();
+  const categoryList = await fetchCategories();
 
   return (
     <>
@@ -45,11 +45,7 @@ export default async function Home() {
 
         <hr />
 
-        <Database
-          items={items}
-          categoryList={categoryList}
-          updatedTime={updatedTime}
-        />
+        <Database accountList={accountList} categoryList={categoryList} />
 
         <hr />
 

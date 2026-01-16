@@ -10,9 +10,9 @@ import { AccountItem } from "./AccountItem";
 import { FilterRuleTags } from "./FilterRuleTags";
 import { AccountSummaryHeader } from "./AccountSummaryHeader";
 
-import styles from "./AccountList.module.scss";
+import styles from "./AccountListView.module.scss";
 
-export type AccountListProps = {
+export type AccountListViewProps = {
   filterRuleSet?: FilterRuleSet | null;
   handleReset?: (key: keyof FilterRuleSet) => void;
   items: NotionItem[];
@@ -28,13 +28,13 @@ type CategoryGroup = {
   total: number;
 };
 
-export const AccountList = ({
+export const AccountListView = ({
   filterRuleSet = null,
   handleReset = () => {},
   items,
   categoryList = [],
   updatedTime,
-}: AccountListProps) => {
+}: AccountListViewProps) => {
   const originalCategorizedItems: CategoryGroup[] = useMemo(
     () =>
       categoryList

@@ -1,9 +1,11 @@
 import "server-only";
 
 import { Client } from "@notionhq/client";
-import { NotionResponse, NotionItem } from "../models/Notion";
+import { NotionItem } from "../models/Notion";
 import { News } from "../models/News";
 import { Category } from "src/models/Category";
+import { AccountList } from "src/models/AccountList";
+import { readFile } from "fs/promises";
 
 export type FetchDataResponse = {
   updatedTime: string;
@@ -14,90 +16,29 @@ const notion = new Client({
   auth: process.env.NOTION_API_KEY,
 });
 
-const fetchAccountsOnce = async (
-  cursor?: string | null
-): Promise<NotionResponse> => {
-  const databaseID = process.env.ACCOUNTLIST_DATABASE || "DEFAULT_DATABASE_ID";
-  const notionResponse = await notion.databases.query({
-    database_id: databaseID,
-    page_size: 100, // 上限100
-    start_cursor: cursor ?? undefined,
-    sorts: [
-      {
-        property: "分類",
-        direction: "ascending",
-      },
-      {
-        property: "名前",
-        direction: "ascending",
-      },
-    ],
-    in_trash: false,
-    filter: {
-      property: "公開",
-      checkbox: {
-        equals: true,
-      },
-    },
-  });
-
-  const Response: NotionItem[] = await Promise.all(
-    notionResponse.results.map(async (result: any) => {
-      const id = result.id;
-      const name = result.properties["名前"]?.title[0]?.plain_text ?? "";
-      const category = result.properties["分類"]?.select?.name ?? "";
-      const status = result.properties["ステータス"]?.select?.name ?? "";
-      const twitter = result.properties["Twitter/X アカウント"]?.url;
-      const bluesky = result.properties["Bluesky アカウント"]?.url;
-      const source = result.properties["根拠"]?.rich_text[0]?.plain_text ?? "";
-      const createdTime = result.created_time;
-      const updatedTime = result.last_edited_time;
-      return {
-        id,
-        name,
-        category,
-        status,
-        twitter,
-        bluesky,
-        source,
-        createdTime,
-        updatedTime,
-      };
-    })
+export const fetchAccounts = async (): Promise<AccountList> => {
+  console.log(
+    `call src/lib/fetchAccounts ${process.cwd() + "/data/accounts.json"}`
   );
-
-  return {
-    items: Response,
-    cursor: notionResponse.has_more ? notionResponse.next_cursor : null,
-  };
-};
-
-export const fetchAccounts = async () => {
-  const limit = 1_000_000;
-  let allItems: NotionItem[] = [];
-  let nextCursor: string | null = null;
-
+  let accounts: AccountList;
   try {
-    do {
-      if (nextCursor) {
-        // 連続してリクエストを送ると弾かれるらしいのでちょっと待つ
-        await new Promise((r) => setTimeout(r, 3000));
-      }
-      const { items, cursor } = await fetchAccountsOnce(nextCursor);
-      allItems = allItems.concat(items);
-
-      if (allItems.length >= limit) break;
-      nextCursor = cursor;
-    } while (nextCursor);
-
-    return {
-      updatedTime: new Date().toISOString(),
-      items: allItems,
+    accounts = JSON.parse(
+      await readFile(process.cwd() + "/data/accounts.json", "utf-8")
+    ) as unknown as AccountList;
+  } catch (e) {
+    accounts = {
+      updatedTime: "",
+      total: 0,
+      checkedTotal: 0,
+      customDomainAccounts: 0,
+      weeklyPostedAccounts: 0,
+      monthlyPostedAccounts: 0,
+      accounts: [],
     };
-  } catch (error) {
-    console.error(error);
-    throw new Error(`Notion Request failed: ${error}`);
   }
+
+  // TODO: types
+  return accounts;
 };
 
 export const fetchNews = async (): Promise<News[]> => {
@@ -124,7 +65,7 @@ export const fetchNews = async (): Promise<News[]> => {
   });
 };
 
-export const fetchCategory = async (): Promise<Category[]> => {
+export const fetchCategories = async (): Promise<Category[]> => {
   const databaseID = process.env.CATEGORY_DATABASE || "DEFAULT_DATABASE_ID";
   const notionResponse = await notion.databases.query({
     database_id: databaseID,

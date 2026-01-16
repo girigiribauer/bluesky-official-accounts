@@ -3,25 +3,22 @@
 import { NotionItem } from "src/models/Notion";
 import { Category } from "src/models/Category";
 import { useMemo, useState } from "react";
-import { AccountList } from "./AccountList";
+import { AccountListView } from "./AccountListView";
 import { FilterRuleSet } from "src/models/FilterRuleSet";
 import { FilterRuleSetConfig } from "./FilterRuleSetConfig";
 
 import styles from "./Database.module.scss";
+import { AccountList } from "src/models/AccountList";
 
 export type DatabaseProps = {
-  items: NotionItem[];
+  accountList: AccountList;
   categoryList: Category[];
-  updatedTime: string;
 };
 
 type DatabaseType = "standard" | "wants";
 
-export const Database = ({
-  items,
-  categoryList,
-  updatedTime,
-}: DatabaseProps) => {
+export const Database = ({ accountList, categoryList }: DatabaseProps) => {
+  const { updatedTime, accounts } = accountList;
   const [databaseType, switchDatabase] = useState<DatabaseType>("standard");
 
   const defaultFilterRuleSet: FilterRuleSet = {
@@ -97,31 +94,31 @@ export const Database = ({
 
   const filters = [textFilter, timeFilter, customDomainFilter, verifiedFilter];
 
-  const filteredItems = filters.reduce((items, filter) => {
-    return filter(items, filterRuleSet);
-  }, items);
+  const filteredAccounts = filters.reduce((accounts, filter) => {
+    return filter(accounts, filterRuleSet);
+  }, accounts);
 
   const standardItems = useMemo(
     () =>
-      filteredItems.filter(
+      filteredAccounts.filter(
         (a) =>
           (a !== null && a.status !== "未移行（未確認）") ||
           (a.status === "未移行（未確認）" &&
             a.bluesky !== null &&
             a.bluesky !== "")
       ),
-    [filteredItems]
+    [filteredAccounts]
   );
 
   const wantsItems = useMemo(
     () =>
-      filteredItems.filter(
+      filteredAccounts.filter(
         (a) =>
           a !== null &&
           a.status === "未移行（未確認）" &&
           (a.bluesky === null || a.bluesky === "")
       ),
-    [filteredItems]
+    [filteredAccounts]
   );
 
   return (
@@ -156,7 +153,7 @@ export const Database = ({
             updateFilterRuleSet(filterRuleSet)
           }
         />
-        <AccountList
+        <AccountListView
           filterRuleSet={filterRuleSet}
           handleReset={handleReset}
           items={databaseType === "standard" ? standardItems : wantsItems}

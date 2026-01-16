@@ -6,12 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fetch": "tsx scripts/fetchAccountList.ts"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
     "@vercel/analytics": "^1.4.1",
-    "next": "14.2.4",
+    "next": "^14.2.23",
     "react": "^18",
     "react-dom": "^18",
     "react-virtuoso": "^4.12.3",
@@ -21,9 +22,11 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "dotenv": "^16.4.7",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
+    "tsx": "^4.19.2",
     "typescript": "^5",
-    "vercel": "^35.0.3"
+    "vercel": "^32.3.0"
   }
 }
