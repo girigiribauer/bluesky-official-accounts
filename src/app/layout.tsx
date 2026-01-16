@@ -1,4 +1,4 @@
-import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import { Suspense } from "react";
 import { Metadata } from "next";
 import { ModalProvider } from "src/hooks/useModal";
@@ -61,7 +61,13 @@ export default function RootLayout({
           name="google-site-verification"
           content="w1ox6Vwl_FxXfyxTKWgNIkM7xnWHl7TQp1HZsrMm-O8"
         />
-        <script defer src="https://analytics.girigiribauer.com/script.js" data-website-id="c8be324f-6a9c-4331-9132-3f9e49c8effa"></script>
+        {process.env.NODE_ENV === "production" ? (
+          <Script
+            src="https://analytics.girigiribauer.com/script.js"
+            data-website-id="c8be324f-6a9c-4331-9132-3f9e49c8effa"
+            strategy="afterInteractive"
+          />
+        ) : null}
       </head>
       <body>
         <main className="main">
@@ -69,7 +75,6 @@ export default function RootLayout({
             <ModalProvider>{children}</ModalProvider>
           </Suspense>
         </main>
-        {process.env.NODE_ENV === "production" ? <Analytics /> : null}
       </body>
     </html>
   );
