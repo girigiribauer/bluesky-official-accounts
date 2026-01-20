@@ -141,5 +141,8 @@ const fetchAccountList = async (
   }
 
   const accounts = await fetchAccountList(client, databaseID);
+  if (!fs.existsSync("data")) {
+    fs.mkdirSync("data");
+  }
   fs.writeFileSync("data/accounts.json", JSON.stringify(accounts, null, 2));
 })();
