@@ -39,13 +39,13 @@ export default async function Home() {
           への移行に踏みとどまってる方の背中を押すためにも、シェアなどの周知や各種出来ることをご協力願います！
         </p>
 
-        <NewsList items={news} />
-
         <TransitionStatusList />
 
         <hr />
 
         <Database accountList={accountList} categoryList={categoryList} />
+
+        <NewsList items={news} />
 
         <hr />
 
