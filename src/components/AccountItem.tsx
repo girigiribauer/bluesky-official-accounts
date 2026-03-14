@@ -1,27 +1,18 @@
 "use client";
 
-import { createPortal } from "react-dom";
 import Image from "next/image";
+import Link from "next/link";
 import { NotionItem } from "src/models/Notion";
 import { extractBluesky, extractTwitter } from "src/lib/extractFromURL";
-import { promoteBlueskyURL, promoteTwitterURL } from "src/lib/promotion";
-import { useModal } from "src/hooks/useModal";
 
 import styles from "./AccountItem.module.scss";
-import { CriteriaPopup } from "./CriteriaPopup";
+import { AnnotationButton } from "./AnnotationButton";
 
 export type AccountItemProps = {
   item: NotionItem;
-  popupID: string | null;
-  handleShowPopup: (id: string | null) => void;
 };
 
-export const AccountItem = ({
-  item,
-  popupID,
-  handleShowPopup,
-}: AccountItemProps) => {
-  const { updateModal } = useModal();
+export const AccountItem = ({ item }: AccountItemProps) => {
   const { id, name, status, twitter, bluesky, source } = item;
 
   return (
@@ -32,17 +23,33 @@ export const AccountItem = ({
         </div>
 
         <div className={styles.transitionStatusColumn}>
-          <div
-            className={styles.statusWithCriteria}
-            onClick={() => {
-              updateModal(<CriteriaPopup title={name} source={source} />);
-            }}
-          >
-            <span className="status" data-status={status}>
-              {status}
-            </span>
-            {source !== "" ? <i className="hint">?</i> : null}
-          </div>
+          <span className={`status ${styles.statusLabel}`} data-status={status}>
+            {status}
+          </span>
+        </div>
+
+        <div className={styles.evidenceColumn}>
+          {source !== "" ? (
+            <AnnotationButton
+              className={styles.evidenceButton}
+              label="根拠"
+            >
+              <section className="page-section">
+                <h2 className="page-section-title">
+                  <span>{name} の根拠</span>
+                  <span className={[`status ${styles.statusLabel}`, styles.evidenceStatusLabel].join(" ")} data-status={status}>
+                    {status}
+                  </span>
+                </h2>
+                <textarea readOnly className={styles.evidenceText}>
+                  {source || "現時点で根拠はありません。（カスタムドメインなど明らかな場合には書いてないケースがあります）"}
+                </textarea>
+                <p className={styles.evidenceNote}>
+                  客観的に根拠として判断でき、別の人間が目を通したものを掲載しています。ただし、有志による投稿のため、正確性は保証できません。誤りがあった場合は『<Link className={styles.menuItemLink} href="/contribution">あなたが貢献できること</Link>』から投稿をお願いします。
+                </p>
+              </section>
+            </AnnotationButton>
+          ) : null}
         </div>
       </div>
 
@@ -58,13 +65,6 @@ export const AccountItem = ({
             />
             <a href={twitter} target="_blank">
               {twitter ? extractTwitter(twitter) : ""}
-            </a>
-            <a
-              className={styles.socialMediaPromo}
-              href={twitter ? promoteTwitterURL(item) : "#"}
-              target="_blank"
-            >
-              [宣伝]
             </a>
           </div>
         ) : null}
@@ -82,9 +82,6 @@ export const AccountItem = ({
             />
             <a href={bluesky} target="_blank">
               {bluesky ? extractBluesky(bluesky) : ""}
-            </a>
-            <a href={bluesky ? promoteBlueskyURL(item) : "#"} target="_blank">
-              [宣伝]
             </a>
           </div>
         ) : null}

@@ -2,6 +2,7 @@ import Script from "next/script";
 import { Suspense } from "react";
 import { Metadata } from "next";
 import { ModalProvider } from "src/hooks/useModal";
+import { ModalContents } from "src/components/ModalContents";
 
 import "../globals.scss";
 
@@ -29,6 +30,8 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
+        {/* eslint-disable-next-line @next/next/no-css-tags */}
+        <link rel="stylesheet" href="/css/all.min.css" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
@@ -61,18 +64,21 @@ export default function RootLayout({
           name="google-site-verification"
           content="w1ox6Vwl_FxXfyxTKWgNIkM7xnWHl7TQp1HZsrMm-O8"
         />
-        {process.env.NODE_ENV === "production" ? (
+        {process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID ? (
           <Script
             src="https://analytics.girigiribauer.com/script.js"
-            data-website-id="c8be324f-6a9c-4331-9132-3f9e49c8effa"
+            data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
             strategy="afterInteractive"
           />
         ) : null}
       </head>
       <body>
         <main className="main">
-          <Suspense fallback="Notion から断続的に読み込んでいます">
-            <ModalProvider>{children}</ModalProvider>
+          <Suspense fallback={null}>
+            <ModalProvider>
+              {children}
+              <ModalContents />
+            </ModalProvider>
           </Suspense>
         </main>
       </body>

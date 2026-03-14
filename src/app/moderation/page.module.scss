@@ -1,0 +1,17 @@
+@import 'src/_mixin';
+
+.planningArea {
+  width: 100%;
+  max-width: 500px;
+  height: 300px;
+  padding: 8px;
+  box-sizing: border-box;
+  background: var(--color-white);
+  border: 1px solid var(--color-link-lighter);
+  border-radius: 2px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-black);
+  resize: none;
+}

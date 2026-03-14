@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 10px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -19,9 +20,9 @@
   align-items: center;
   gap: 4px;
   padding: 1px 12px 1px 12px;
-  background: #000;
+  background: #000; /* X brand color */
   border-radius: 9999px;
-  color: #fff;
+  color: var(--color-white);
   font-size: 0.75rem;
   text-decoration: none;
   font-weight: 500;
@@ -33,9 +34,9 @@
   align-items: center;
   gap: 8px;
   padding: 1px 8px;
-  background: #1185fe;
+  background: var(--color-primary);
   border-radius: 4px;
-  color: #fff;
+  color: var(--color-white);
   font-size: 0.75rem;
   text-decoration: none;
 }

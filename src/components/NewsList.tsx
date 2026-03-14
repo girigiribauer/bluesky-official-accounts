@@ -10,10 +10,7 @@ export type NewsListProps = {
 export const NewsList = ({ items }: NewsListProps) => {
   return (
     <div className={styles.container}>
-      <h2>更新情報</h2>
-      <p>
-        投稿されたアカウントは随時反映されています！全体の更新情報のみこちらをご覧ください！
-      </p>
+      <h2 className={styles.heading}>全体の更新情報</h2>
 
       {items.length > 0 ? (
         <div className={styles.box}>

@@ -55,7 +55,6 @@ export const AccountListView = ({
   const [categoryToggleList, setCategoryToggleList] = useState<boolean[]>(
     Array.from({ length: originalCategorizedItems.length }, () => false)
   );
-  const [popupID, setPopupID] = useState<string | null>(null);
 
   const total = useMemo(() => items.length, [items]);
   const blueskyAccountsTotal = useMemo(
@@ -97,11 +96,7 @@ export const AccountListView = ({
     setCategoryToggleList(newCategoryToggleList);
   };
 
-  const handleShowPopup = (id: string | null) => {
-    setPopupID(id);
-  };
-
-  // アカウントリストに変更があったら一旦全部閉じる
+  //アカウントリストに変更があったら一旦全部閉じる
   useEffect(() => {
     handleUnselectAllCategory();
   }, [items, handleUnselectAllCategory]);
@@ -151,8 +146,6 @@ export const AccountListView = ({
           return (
             <AccountItem
               item={item}
-              popupID={popupID}
-              handleShowPopup={handleShowPopup}
             />
           );
         }}

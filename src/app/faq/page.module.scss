@@ -1,15 +1,36 @@
 @import 'src/_mixin';
 
-.container h2 {
-  position: relative;
+.toc {
+  margin: 0;
+  padding-left: 1.8rem;
+
+  li {
+    margin: 0.5rem 0;
+    font-size: 1rem;
+    line-height: 1.5;
+
+    @include mq(l) {
+      font-size: 1.125rem;
+    }
+  }
 }
 
-.container h2:before {
-  width: 0;
-  height: 0;
-  content: '';
-  display: block;
-  position: relative;
-  padding-top: calc(30px + var(--height-globalheader));
-  margin-top: calc(-1 * (30px + var(--height-globalheader)));
+.faqSection {
+  h2 {
+    scroll-margin-top: calc(30px + var(--height-globalheader));
+  }
+
+  ul>li {
+    font-size: 1rem;
+    line-height: 1.8;
+
+    @include mq(l) {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.backToTop {
+  text-align: right;
+  font-size: 0.875rem;
 }

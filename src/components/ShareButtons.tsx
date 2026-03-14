@@ -2,7 +2,7 @@ import styles from "./ShareButtons.module.scss";
 
 export const ShareButtons = () => {
   const encodedText = encodeURIComponent(
-    `Bluesky 公式アカウント移行まとめ ${process.env.NEXT_PUBLIC_EXTERNAL_URL} #青空公式アカウント`
+    `Bluesky 公式アカウント移行まとめ ${process.env.NEXT_PUBLIC_EXTERNAL_URL} #移行まとめ`
   );
 
   return (
@@ -35,6 +35,21 @@ export const ShareButtons = () => {
             height="14"
           />
           <span>Bluesky でポスト</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://bsky.app/profile/official-accounts.bsky.social"
+          className={styles.bluesky}
+          target="_blank"
+        >
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAcCAYAAAAAwr0iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAGkSURBVHgBvZeBVcIwEIb/+hygI9QNcIO6gRv4mAA3aJ0AmQCZgOcEZQPcoHWC4gTnHT2eEUKai+D33rWlyd39Cek1BREVbFsakPNc7uHCcMycrWJrnVyFNDR0inR6xoXgWDO23pOnAYWR2ciRiI56GYjfjwkQtikiNPl2LLh07C8tIjY56Qy0FMfaIGAdGbNFpNID84jklSFeY1F74CmQfGYLRc0N+33Bxit56oTeq2GjEwEdbMhi9K2HRtssfIqAHexMeMT14QdfV3wqYGeXsfMj/CMadWa71+sWaTzc8uEDach0L2H/C126/ZH874NrI2sGmQooMSyi/+Quy7L9UwC+2PBpirQFaUVyTCX5SQsNe4M3ii/PFuSd460hXlTM+g9ievWVpBNYoPMbiFRait3g0LAJuRbVWPKSrk/p5rw50lDCxkbNQomAAOtjuGJ7h43ubAsNW6nYxdfS8KRYfKRf4eb8NQNcHGQGXhDHSoqJ+iwifRbeAnQMq6wjRp87/XMarxc1LAREnEyj9p8ERKR95NBPae7VGgqUUqc/Of2DVfAbQ2HzAOmkFq8AAAAASUVORK5CYII="
+            alt=""
+            width="16"
+            height="14"
+          />
+          <span>移行まとめをフォロー</span>
         </a>
       </li>
     </ul>

@@ -126,26 +126,14 @@ export const Database = ({ accountList, categoryList }: DatabaseProps) => {
   return (
     <>
       <div className={styles.databaseType}>
-        <button
-          type="button"
-          className={[
-            styles.databaseTypeButton,
-            databaseType === "standard" ? styles.active : undefined,
-          ].join(" ")}
-          onClick={() => switchDatabase("standard")}
+        <select
+          className={styles.databaseTypeSelect}
+          value={databaseType}
+          onChange={(e) => switchDatabase(e.currentTarget.value as DatabaseType)}
         >
-          投稿されたアカウント
-        </button>
-        <button
-          type="button"
-          className={[
-            styles.databaseTypeButton,
-            databaseType === "wants" ? styles.active : undefined,
-          ].join(" ")}
-          onClick={() => switchDatabase("wants")}
-        >
-          まだ来てないアカウント
-        </button>
+          <option value="standard">移行アカウント一覧</option>
+          <option value="wants">来て欲しいアカウント一覧</option>
+        </select>
       </div>
 
       <div className={styles.database}>

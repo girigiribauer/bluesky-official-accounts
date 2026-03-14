@@ -1,94 +1,71 @@
 import "server-only";
 
-import { Client } from "@notionhq/client";
-import { NotionItem } from "../models/Notion";
+import { unstable_cache } from "next/cache";
+import { readFile } from "fs/promises";
 import { News } from "../models/News";
 import { Category } from "src/models/Category";
 import { AccountList } from "src/models/AccountList";
-import { readFile } from "fs/promises";
 
-export type FetchDataResponse = {
-  updatedTime: string;
-  items: NotionItem[];
+const GITHUB_RAW_BASE =
+  "https://raw.githubusercontent.com/girigiribauer/bluesky-official-accounts/data/data";
+
+// dev環境: data/*.json があればそれを返す
+const readLocalJson = async <T>(filename: string): Promise<T | null> => {
+  try {
+    const raw = await readFile(process.cwd() + `/data/${filename}`, "utf-8");
+    return JSON.parse(raw) as T;
+  } catch {
+    return null;
+  }
 };
 
-const notion = new Client({
-  auth: process.env.NOTION_API_KEY,
-});
+// 本番環境: data ブランチの JSON を取得
+const fetchFromGitHub = async <T>(filename: string): Promise<T> => {
+  const res = await fetch(`${GITHUB_RAW_BASE}/${filename}`, {
+    next: { revalidate: 0 },
+  });
+  if (!res.ok) throw new Error(`GitHub fetch failed: ${res.status}`);
+  return res.json();
+};
+
+// ---------- accounts ----------
+
+const _fetchAccountsCached = unstable_cache(
+  () => fetchFromGitHub<AccountList>("accounts.json"),
+  ["accounts"],
+  { revalidate: 3600 }
+);
 
 export const fetchAccounts = async (): Promise<AccountList> => {
-  console.log(
-    `call src/lib/fetchAccounts ${process.cwd() + "/data/accounts.json"}`
-  );
-  let accounts: AccountList;
-  try {
-    accounts = JSON.parse(
-      await readFile(process.cwd() + "/data/accounts.json", "utf-8")
-    ) as unknown as AccountList;
-  } catch (e) {
-    accounts = {
-      updatedTime: "",
-      total: 0,
-      checkedTotal: 0,
-      customDomainAccounts: 0,
-      weeklyPostedAccounts: 0,
-      monthlyPostedAccounts: 0,
-      accounts: [],
-    };
-  }
-
-  // TODO: types
-  return accounts;
+  const local = await readLocalJson<AccountList>("accounts.json");
+  if (local) return local;
+  return _fetchAccountsCached();
 };
+
+// ---------- news ----------
+
+const _fetchNewsCached = unstable_cache(
+  () => fetchFromGitHub<News[]>("news.json"),
+  ["news"],
+  { revalidate: 3600 }
+);
 
 export const fetchNews = async (): Promise<News[]> => {
-  const databaseID = process.env.NEWS_DATABASE || "DEFAULT_DATABASE_ID";
-  const notionResponse = await notion.databases.query({
-    database_id: databaseID,
-    page_size: 100,
-    sorts: [
-      {
-        property: "Date",
-        direction: "descending",
-      },
-    ],
-  });
-
-  return notionResponse.results.map<News>((result: any) => {
-    const id = result?.id ?? "";
-    const name =
-      result?.properties["Name"]?.title
-        .map((a: any) => a.plain_text)
-        .join("") ?? "";
-    const date = result?.properties["Date"]?.date?.start ?? "";
-    return { id, name, date };
-  });
+  const local = await readLocalJson<News[]>("news.json");
+  if (local) return local;
+  return _fetchNewsCached();
 };
 
+// ---------- categories ----------
+
+const _fetchCategoriesCached = unstable_cache(
+  () => fetchFromGitHub<Category[]>("categories.json"),
+  ["categories"],
+  { revalidate: 3600 }
+);
+
 export const fetchCategories = async (): Promise<Category[]> => {
-  const databaseID = process.env.CATEGORY_DATABASE || "DEFAULT_DATABASE_ID";
-  const notionResponse = await notion.databases.query({
-    database_id: databaseID,
-    page_size: 100,
-    sorts: [
-      {
-        property: "order",
-        direction: "ascending",
-      },
-    ],
-  });
-
-  return notionResponse.results.map<Category>((result: any) => {
-    const id = result?.id ?? "";
-    const title =
-      result?.properties["分類名"]?.title
-        .map((a: any) => a.plain_text)
-        .join("") ?? "";
-    const order = result?.properties["order"]?.number;
-    const criteria =
-      result?.properties["掲載基準（公開されます）"]?.rich_text[0]
-        ?.plain_text ?? "";
-
-    return { id, title, order, criteria };
-  });
+  const local = await readLocalJson<Category[]>("categories.json");
+  if (local) return local;
+  return _fetchCategoriesCached();
 };

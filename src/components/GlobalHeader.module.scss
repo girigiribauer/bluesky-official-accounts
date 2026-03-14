@@ -7,8 +7,8 @@
   display: flex;
   align-items: center;
   position: relative;
-  background: var(--color-primary-light2);
-  border-bottom: 1px solid var(--color-primary);
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-black-lighter2);
 
   @include mq(s) {
     justify-content: flex-end;
@@ -36,8 +36,7 @@
 }
 
 .menu {
-  @include mq(s) {
-  }
+  @include mq(s) {}
 
   @include mq(l) {
     display: contents;
@@ -62,14 +61,17 @@
   @include mq(l) {
     display: flex;
     flex-direction: row;
-    gap: 30px;
+    justify-content: center;
+    gap: clamp(5px, 3vw, 30px);
   }
 }
+
 .headerWrapped .menuList {
   @include mq(s) {
     display: none;
   }
 }
+
 .modalWrapped .menuList {
   @include mq(s) {
     width: 100%;
@@ -85,6 +87,7 @@
 .menuItem {
   margin: 0;
   padding: 0;
+  flex: 0 0 auto;
 }
 
 .menuItemLink {
@@ -106,9 +109,9 @@
 .menuButton {
   width: 30px;
   height: 30px;
-  background: var(--color-primary);
-  border: 2px solid var(--color-primary);
-  border-radius: 4px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
 
   @include mq(s) {
     display: flex;
@@ -120,13 +123,9 @@
     display: none;
   }
 
-  &:active {
-    background: var(--color-primary-light);
-  }
-
-  > i {
-    color: var(--color-white);
-    font-size: 1rem;
+  >i {
+    color: var(--color-black);
+    font-size: 1.25rem;
     line-height: 1;
   }
 }

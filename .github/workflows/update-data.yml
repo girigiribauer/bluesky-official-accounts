@@ -1,13 +1,13 @@
-name: Deploy
+name: Update Data
 
 on:
   schedule:
-    - cron: "0 * * * *" # 1時間おき
+    - cron: "0 * * * *"
   workflow_dispatch:
 
 jobs:
-  build:
-    name: build
+  update:
+    name: update
     runs-on: ubuntu-latest
 
     steps:
@@ -48,14 +48,13 @@ jobs:
           TIME_CATEGORY=$(fetch_latest_time "$CATEGORY_DATABASE")
           echo "CATEGORY time: $TIME_CATEGORY"
 
-          # 結合してハッシュ化（比較用の一意な文字列を作る）
           COMBINED_TIME="${TIME_ACCOUNT}_${TIME_NEWS}_${TIME_CATEGORY}"
           echo "Combined string: $COMBINED_TIME"
           LATEST_HASH=$(echo -n "$COMBINED_TIME" | sha256sum | awk '{print $1}')
 
           echo "latest_hash=$LATEST_HASH" >> "$GITHUB_OUTPUT"
 
-      - name: Restoring previous hash from cache
+      - name: Restore previous hash from cache
         id: cache_restore
         uses: actions/cache/restore@v4
         with:
@@ -64,8 +63,8 @@ jobs:
           restore-keys: |
             notion-cache-
 
-      - name: Check Diff & Trigger Vercel
-        id: trigger
+      - name: Check if update needed
+        id: check_diff
         run: |
           PREVIOUS_HASH=""
           if [ -f .notion-cache/latest_hash.txt ]; then
@@ -78,21 +77,69 @@ jobs:
           echo "Latest Hash: $LATEST_HASH"
 
           if [ "$PREVIOUS_HASH" != "$LATEST_HASH" ]; then
-            echo "Changes detected! Triggering Vercel deployment..."
-            curl -X POST ${{ secrets.VERCEL_WEBHOOK_URL }}
-
-            # ハッシュを保存するためのディレクトリとファイルを作成
-            mkdir -p .notion-cache
-            echo "$LATEST_HASH" > .notion-cache/latest_hash.txt
-
+            echo "Changes detected!"
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           else
-            echo "No changes detected. Skipping deployment."
+            echo "No changes detected. Skipping."
             echo "has_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Checkout repository
+        if: steps.check_diff.outputs.has_changes == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        if: steps.check_diff.outputs.has_changes == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        if: steps.check_diff.outputs.has_changes == 'true'
+        run: npm ci
+
+      - name: Fetch data from Notion
+        if: steps.check_diff.outputs.has_changes == 'true'
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          ACCOUNTLIST_DATABASE: ${{ secrets.ACCOUNTLIST_DATABASE }}
+          NEWS_DATABASE: ${{ secrets.NEWS_DATABASE }}
+          CATEGORY_DATABASE: ${{ secrets.CATEGORY_DATABASE }}
+        run: npm run fetch
+
+      - name: Push data to data branch
+        if: steps.check_diff.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # data/ を一時退避
+          cp -r data /tmp/notion-data
+
+          # data ブランチへ切り替え（なければ orphan で作成）
+          if git ls-remote --exit-code origin data; then
+            git checkout data
+          else
+            git checkout --orphan data
+            git rm -rf . 2>/dev/null || true
+          fi
+
+          mkdir -p data
+          cp /tmp/notion-data/*.json data/
+
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No file changes."
+          else
+            git commit -m "chore: update data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push origin data
+          fi
+
       - name: Save new hash to cache
-        if: steps.trigger.outputs.has_changes == 'true'
+        if: steps.check_diff.outputs.has_changes == 'true'
         uses: actions/cache/save@v4
         with:
           path: .notion-cache

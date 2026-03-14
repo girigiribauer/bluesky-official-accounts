@@ -1,0 +1,31 @@
+@import 'src/_mixin';
+
+.accountListArea {
+  background: var(--color-white);
+  margin: 0 -10px;
+  border-top: 1px solid var(--color-black-lighter2);
+  border-bottom: 1px solid var(--color-black-lighter2);
+}
+
+.accountListInner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px;
+
+  @include mq(s) {
+    padding: 30px 10px;
+  }
+}
+
+.highlight {
+  color: var(--color-primary);
+  font-weight: 700;
+  background: none;
+}
+
+.butterfly {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 8px;
+  margin-top: -4px;
+}

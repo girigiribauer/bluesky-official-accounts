@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { useModal } from "src/hooks/useModal";
 
 import styles from "./ModalContents.module.scss";
@@ -8,7 +9,12 @@ import styles from "./ModalContents.module.scss";
 export type ModalContentsProps = {};
 
 export const ModalContents = ({}: ModalContentsProps) => {
-  const { contents, color, updateModal } = useModal();
+  const { contents, updateModal } = useModal();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    updateModal(null);
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClose = useCallback(() => {
     updateModal(null);
@@ -34,25 +40,31 @@ export const ModalContents = ({}: ModalContentsProps) => {
 
   const isShown = !!contents;
 
+  useEffect(() => {
+    document.body.style.overflow = isShown ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isShown]);
+
   return (
-    <>
+    <div
+      className={[styles.overlay, isShown ? styles.overlayActive : ""].join(" ")}
+      onClick={handleClose}
+    >
       <div
-        className={[
-          styles.background,
-          isShown ? styles.backgroundActive : "",
-        ].join(" ")}
-        onClick={handleClose}
-      />
-      <div
-        className={[styles.contents, isShown ? styles.contentsActive : ""].join(
-          " "
-        )}
+        className={styles.dialog}
+        onClick={(e) => e.stopPropagation()}
       >
-        {contents}
-        <button className={styles.modalClose} onClick={handleClose}>
-          <i className="fa-solid fa-xmark" style={{ color }} />
-        </button>
+        <div className={styles.closeRow}>
+          <button className={styles.modalClose} onClick={handleClose} aria-label="閉じる">
+            <i className="fa-solid fa-xmark" />
+          </button>
+        </div>
+        <div className={styles.scrollArea}>
+          {contents}
+        </div>
       </div>
-    </>
+    </div>
   );
 };

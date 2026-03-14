@@ -9,36 +9,33 @@ import { useModal } from "src/hooks/useModal";
 export type GlobalHeaderProps = {};
 
 export const GlobalHeader = ({}: GlobalHeaderProps) => {
-  const { updateModal, clearModal } = useModal();
+  const { updateModal } = useModal();
 
   const menuList = (
     <ul className={styles.menuList}>
       <li className={styles.menuItem}>
-        <Link className={styles.menuItemLink} href="/" onClick={clearModal}>
+        <Link className={styles.menuItemLink} href="/">
           アカウント一覧
         </Link>
       </li>
       <li className={styles.menuItem}>
-        <Link
-          className={styles.menuItemLink}
-          href="/contribution"
-          onClick={clearModal}
-        >
-          投稿および協力できること
+        <Link className={styles.menuItemLink} href="/open-public">
+          企業・組織の皆様へ
         </Link>
       </li>
       <li className={styles.menuItem}>
-        <Link
-          className={styles.menuItemLink}
-          href="/features"
-          onClick={clearModal}
-        >
-          便利な機能
+        <Link className={styles.menuItemLink} href="/contribution">
+          あなたが貢献できること
         </Link>
       </li>
       <li className={styles.menuItem}>
-        <Link className={styles.menuItemLink} href="/faq" onClick={clearModal}>
-          よくある質問
+        <Link className={styles.menuItemLink} href="/faq">
+          よくあるご質問
+        </Link>
+      </li>
+      <li className={styles.menuItem}>
+        <Link className={styles.menuItemLink} href="/moderation">
+          モデレーション
         </Link>
       </li>
     </ul>
@@ -62,6 +59,7 @@ export const GlobalHeader = ({}: GlobalHeaderProps) => {
         <button
           type="button"
           className={styles.menuButton}
+          aria-label="メニューを開く"
           onClick={() => {
             updateModal(
               <div className={styles.modalWrapped}>{menuList}</div>,

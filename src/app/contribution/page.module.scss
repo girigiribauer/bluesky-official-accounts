@@ -1,0 +1,27 @@
+@import 'src/_mixin';
+
+.cautionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 10px;
+  vertical-align: middle;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-link);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100px;
+  background: var(--color-black-lighter2);
+
+  @include mq(l) {
+    height: 200px;
+  }
+}

@@ -1,30 +1,11 @@
-"use client";
-
-import { useModal } from "src/hooks/useModal";
-
 import styles from "./TransitionStatusList.module.scss";
-import { CriteriaPopup } from "./CriteriaPopup";
+import { AnnotationButton } from "./AnnotationButton";
 
 export type TransitionStatusListProps = {};
 
 export const TransitionStatusList = ({}: TransitionStatusListProps) => {
-  const { updateModal } = useModal();
-
-  const title = "移行ステータスについて";
-  const description = `ユーザーから投稿されたものがステータスとして表示されています。
-  投稿フォームへは根拠付きで投稿してもらっているため、なぜその移行ステータスになっているかは、ステータスラベルを選択すると詳しく確認できます。\n\nまた、可能な限りミスのないよう運用していますが、投稿してくださる方もチェックしている方も人間です。根拠が間違っているなどのケースがあった場合は、みんなで作っているリストなので、文句を言うだけに留まらずに、修正投稿をフォームよりしていただけると嬉しいです。（Wikipedia などと同様です）\n\nなお、怪しいモデレーションリストを使用しているアカウントに関しては、チェックした方がブロックされており投稿を確認しようがないため、やむを得ず『確認不能』の移行ステータスをつけています。意図せず無関係の他者をブロックしていることに気づいてない可能性が高いため、別の方からの注意喚起をお願いします。`;
   return (
     <div className={styles.container}>
-      <h2
-        className={styles.heading}
-        onClick={() => {
-          updateModal(<CriteriaPopup title={title} source={description} />);
-        }}
-      >
-        <span>移行ステータスについて</span>
-        <i className="hint">?</i>
-      </h2>
-
       <div className={styles.box}>
         <dl className={styles.item}>
           <dt className={styles.term}>
@@ -35,10 +16,6 @@ export const TransitionStatusList = ({}: TransitionStatusListProps) => {
           <dd className={styles.description}>
             <p className={styles.descriptionText}>
               Bluesky 上にアカウントがない or 同一性の確認が取れていない
-              <br />
-              <strong className={styles.attention}>
-                ※本人確認が取れていないものにはご注意ください。
-              </strong>
             </p>
           </dd>
         </dl>
@@ -78,11 +55,41 @@ export const TransitionStatusList = ({}: TransitionStatusListProps) => {
             </p>
           </dd>
         </dl>
-        <div className={styles.noticeItem}>
-          <strong className={styles.attention}>
-            怪しいモデレーションリスト
-          </strong>
-          の利用はチェックの支障となるため、注意喚起にご協力願います
+
+        <div className={styles.footer}>
+          <AnnotationButton
+            className={styles.caution}
+            label="利用上の注意について"
+          >
+            <section className="page-section">
+              <h2>同一性の確認が取れていないものにはご注意ください</h2>
+              <p>
+                移行ステータスが{" "}
+                <span className="status" data-status="未移行（未確認）">未確認</span>
+                {" "}または{" "}
+                <span className="status" data-status="未移行（未確認）">来て欲しい</span>
+                {" "}ものはいずれも X(Twitter) との同一性の確認が取れていないアカウントです。
+                中には悪意のあるアカウントもありますので、同じ投稿をしているからといって無条件に信じないようにしてください。
+              </p>
+            </section>
+            <section className="page-section">
+              <h2>怪しいモデレーションリストにご注意ください</h2>
+              <p>
+                Bluesky には、誰もがアカウントのリストを作り、まとめてミュート、まとめてブロックなどを行えるモデレーションリストという機能があります。
+              </p>
+              <p>
+                中には恣意的な運用をしているモデレーションリストを利用し、多くの無関係な方が意図せずブロックされるという現象が起きており、チェックにも支障が出てきています。（知り合いでもなんでもないのにブロックされて確認できないなど）
+              </p>
+              <p>
+                やむを得ず{" "}
+                <span className="status" data-status="確認不能">確認不能</span>
+                {" "}のステータスを付与しています。怪しいモデレーションリストの利用はお控えくださるよう、周りにも注意喚起をお願いします。
+              </p>
+            </section>
+            <p>
+              その他、運用の仕方についてのご質問は一通り『<a href="/faq">よくあるご質問</a>』にまとめてありますので、そちらをご参照ください。
+            </p>
+          </AnnotationButton>
         </div>
       </div>
     </div>

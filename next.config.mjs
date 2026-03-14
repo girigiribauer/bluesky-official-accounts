@@ -1,8 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   staticPageGenerationTimeout: 600,
-  output: "export",
-  images: { unoptimized: true },
+
+  async redirects() {
+    return [
+      {
+        source: '/features',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
+
   logging: {
     fetches: {
       fullUrl: true,
