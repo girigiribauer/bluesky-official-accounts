@@ -48,6 +48,9 @@ export default function RequestPage() {
               <a href="/faq">よくあるご質問</a>
               』のページをよく読んで、掲載すべきアカウントかどうかをしっかりと確認してから投稿ください。
             </p>
+            <p>
+              ※フォームを内製に切り替えました。万が一正しく動かない場合は Bluesky アカウントまで直接お知らせください。
+            </p>
           </section>
 
           <div className={styles.formArea}>
