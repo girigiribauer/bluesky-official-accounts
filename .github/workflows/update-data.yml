@@ -121,7 +121,7 @@ jobs:
 
           # data ブランチへ切り替え（なければ orphan で作成）
           if git ls-remote --exit-code origin data; then
-            git checkout data
+            git switch data
           else
             git checkout --orphan data
             git rm -rf . 2>/dev/null || true
