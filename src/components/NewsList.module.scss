@@ -38,10 +38,11 @@
 }
 
 .newsDate {
-  flex: 0 0 fit-content;
+  flex: 0 0 auto;
   font-weight: bold;
 }
 
 .newsContent {
-  flex: 1 1 max-content;
+  flex: 1 1 0;
+  min-width: 0;
 }
