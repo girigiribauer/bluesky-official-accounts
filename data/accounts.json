@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-03-13T15:31:02.245Z",
-  "total": 3507,
+  "updatedTime": "2026-03-19T08:07:28.139Z",
+  "total": 3520,
   "checkedTotal": 2632,
   "customDomainAccounts": 436,
-  "weeklyPostedAccounts": 11,
-  "monthlyPostedAccounts": 76,
+  "weeklyPostedAccounts": 16,
+  "monthlyPostedAccounts": 67,
   "accounts": [
     {
       "id": "156ec3b2-73dd-81ec-a552-dbd4d334e788",
@@ -3043,6 +3043,17 @@
       "updatedTime": "2024-12-08T08:28:00.000Z"
     },
     {
+      "id": "325ec3b2-73dd-8155-958e-da576f42750d",
+      "name": "TBS",
+      "category": "報道（マスメディア）",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/tbs_pr",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-16T12:19:00.000Z",
+      "updatedTime": "2026-03-17T09:18:00.000Z"
+    },
+    {
       "id": "156ec3b2-73dd-8141-956d-d75b4257429f",
       "name": "The Associated Press (AP通信)",
       "category": "報道（マスメディア）",
@@ -3239,6 +3250,17 @@
       "source": "→ 言及がなかったので未確認で公開\n\n新規追加ではなく修正もしくは更新です。両方運用されています。\n→根拠がないので未確認に変更（誤って修正されていた点失礼しました）",
       "createdTime": "2024-12-08T06:10:00.000Z",
       "updatedTime": "2024-12-08T11:02:00.000Z"
+    },
+    {
+      "id": "325ec3b2-73dd-8136-8f50-ece7d73fef79",
+      "name": "フジテレビ",
+      "category": "報道（マスメディア）",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/fujitv",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-16T12:20:00.000Z",
+      "updatedTime": "2026-03-17T09:18:00.000Z"
     },
     {
       "id": "17cec3b2-73dd-81ad-8bc8-de6b648df202",
@@ -29476,6 +29498,17 @@
       "updatedTime": "2024-12-08T08:36:00.000Z"
     },
     {
+      "id": "325ec3b2-73dd-81aa-9861-fde2d01e08ff",
+      "name": "DayDay.【日テレ公式】",
+      "category": "テレビ番組・実写映画",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/ntv_DayDay",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-16T12:16:00.000Z",
+      "updatedTime": "2026-03-17T09:17:00.000Z"
+    },
+    {
       "id": "6a5dca0b-f4a9-44ba-97b8-deebab271686",
       "name": "Filmarks（フィルマークス）",
       "category": "テレビ番組・実写映画",
@@ -29485,6 +29518,39 @@
       "source": "カスタムドメイン取得済\nTwitterにてアカウント報告あり\nhttps://x.com/Filmarks/status/1755554569948725290",
       "createdTime": "2024-02-23T10:37:00.000Z",
       "updatedTime": "2024-06-06T05:36:00.000Z"
+    },
+    {
+      "id": "322ec3b2-73dd-8151-8d22-c98427fc2559",
+      "name": "TBS『THE TIME, 』",
+      "category": "テレビ番組・実写映画",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/THETIME_TBS",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-13T13:43:00.000Z",
+      "updatedTime": "2026-03-16T11:06:00.000Z"
+    },
+    {
+      "id": "322ec3b2-73dd-8165-ae66-d2fb874ce950",
+      "name": "TBS公式【テレビ×ミセス】",
+      "category": "テレビ番組・実写映画",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/tbsTV_MGA",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-13T13:47:00.000Z",
+      "updatedTime": "2026-03-16T11:06:00.000Z"
+    },
+    {
+      "id": "322ec3b2-73dd-8174-a6ee-ffb262e42cf6",
+      "name": "ZIP! 【公式】",
+      "category": "テレビ番組・実写映画",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/ZIP_TV",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-13T13:44:00.000Z",
+      "updatedTime": "2026-03-16T11:06:00.000Z"
     },
     {
       "id": "b290ae06-9d62-44b6-a225-62636d609440",
@@ -29584,6 +29650,17 @@
       "source": "",
       "createdTime": "2025-02-05T20:25:00.000Z",
       "updatedTime": "2025-02-06T06:13:00.000Z"
+    },
+    {
+      "id": "322ec3b2-73dd-8137-858a-e6f4c6eca376",
+      "name": "火曜は全力！華大さんと千鳥くん【8ch】",
+      "category": "テレビ番組・実写映画",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/hanadai_chidori",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-13T13:48:00.000Z",
+      "updatedTime": "2026-03-16T11:06:00.000Z"
     },
     {
       "id": "14fec3b2-73dd-8129-ab46-ca9a2134422a",
@@ -29696,6 +29773,17 @@
       "updatedTime": "2024-12-16T04:32:00.000Z"
     },
     {
+      "id": "325ec3b2-73dd-81e2-9760-ed14d2bf0fd2",
+      "name": "Aぇ! group",
+      "category": "タレント・モデル",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/Aegroupofficial",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-16T12:16:00.000Z",
+      "updatedTime": "2026-03-17T09:17:00.000Z"
+    },
+    {
       "id": "162ec3b2-73dd-813d-9bd2-d91d36511184",
       "name": "Ben Stiller",
       "category": "タレント・モデル",
@@ -29718,6 +29806,17 @@
       "updatedTime": "2024-12-14T09:48:00.000Z"
     },
     {
+      "id": "322ec3b2-73dd-81be-9a1d-fe256147ec47",
+      "name": "M!LK OFFICIAL",
+      "category": "タレント・モデル",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/milk_info",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-13T13:58:00.000Z",
+      "updatedTime": "2026-03-16T11:06:00.000Z"
+    },
+    {
       "id": "15cec3b2-73dd-8196-842b-cecff26126a1",
       "name": "Mark Hamill",
       "category": "タレント・モデル",
@@ -29738,6 +29837,28 @@
       "source": "https://x.com/nonoa_aoi45/status/2026636656133181461",
       "createdTime": "2026-03-12T03:45:00.000Z",
       "updatedTime": "2026-03-13T08:15:00.000Z"
+    },
+    {
+      "id": "322ec3b2-73dd-810c-b17c-d8c79ea6b60b",
+      "name": "Snow Man / MENT RECORDING",
+      "category": "タレント・モデル",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/SN__20200122",
+      "bluesky": null,
+      "source": "Blueskyに来てほしい。",
+      "createdTime": "2026-03-13T13:45:00.000Z",
+      "updatedTime": "2026-03-16T11:06:00.000Z"
+    },
+    {
+      "id": "322ec3b2-73dd-81ef-8a3b-e37adcb64e30",
+      "name": "STARTO ENTERTAINMENT",
+      "category": "タレント・モデル",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/STARTO_INT",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-13T13:46:00.000Z",
+      "updatedTime": "2026-03-16T11:06:00.000Z"
     },
     {
       "id": "321ec3b2-73dd-8162-aba5-e73f0eee8080",
@@ -29936,6 +30057,17 @@
       "source": "Twitterにてアカウント報告あり\nhttps://twitter.com/kyunmao_m99/status/1755791872818311559?t=fhtL4tab5ivNXXfNbrg8sw&s=19",
       "createdTime": "2024-03-26T10:19:00.000Z",
       "updatedTime": "2024-06-06T05:36:00.000Z"
+    },
+    {
+      "id": "322ec3b2-73dd-81ee-bf03-d580de7e98fc",
+      "name": "中島健人STAFF",
+      "category": "タレント・モデル",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/KENTO_Team_N",
+      "bluesky": null,
+      "source": "",
+      "createdTime": "2026-03-13T13:54:00.000Z",
+      "updatedTime": "2026-03-16T11:06:00.000Z"
     },
     {
       "id": "a6509100-ade4-4c03-9c30-4bea20fca327",
@@ -38582,6 +38714,17 @@
       "source": "Twitterにてアカウント報告あり\nhttps://x.com/MOM_JP_koho/status/1755121441350250835\n架空の機関なのでその他作品に分類しておきます",
       "createdTime": "2024-03-19T06:01:00.000Z",
       "updatedTime": "2024-06-06T05:41:00.000Z"
+    },
+    {
+      "id": "322ec3b2-73dd-81e0-a389-d46bf91cfcd4",
+      "name": "めざましテレビ",
+      "category": "",
+      "status": "未移行（未確認）",
+      "twitter": "https://x.com/cx_mezamashi",
+      "bluesky": null,
+      "source": "めざましテレビに来てほしい",
+      "createdTime": "2026-03-13T13:43:00.000Z",
+      "updatedTime": "2026-03-16T11:06:00.000Z"
     }
   ]
 }
