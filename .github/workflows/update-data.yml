@@ -9,6 +9,8 @@ jobs:
   update:
     name: update
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Fetch latest edited time from Notion DBs
