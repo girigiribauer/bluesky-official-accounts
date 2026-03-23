@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-03-23T07:19:33.513Z",
-  "total": 3520,
-  "checkedTotal": 2632,
-  "customDomainAccounts": 436,
-  "weeklyPostedAccounts": 4,
-  "monthlyPostedAccounts": 36,
+  "updatedTime": "2026-03-23T09:04:32.479Z",
+  "total": 3522,
+  "checkedTotal": 2634,
+  "customDomainAccounts": 438,
+  "weeklyPostedAccounts": 6,
+  "monthlyPostedAccounts": 38,
   "accounts": [
     {
       "id": "156ec3b2-73dd-81ec-a552-dbd4d334e788",
@@ -24273,6 +24273,17 @@
       "updatedTime": "2026-03-04T14:14:00.000Z"
     },
     {
+      "id": "32cec3b2-73dd-815e-ba66-e75f7fd802ef",
+      "name": "大蔵財務協会",
+      "category": "出版・書店",
+      "status": "アカウント作成済",
+      "twitter": "https://x.com/zaikyo",
+      "bluesky": "https://bsky.app/profile/www.zaikyo.or.jp",
+      "source": "公式サイトのドメインを利用。",
+      "createdTime": "2026-03-23T01:05:00.000Z",
+      "updatedTime": "2026-03-23T08:57:00.000Z"
+    },
+    {
       "id": "318ec3b2-73dd-81bc-9684-f11f80ed1757",
       "name": "大阪大学出版会",
       "category": "出版・書店",
@@ -30684,6 +30695,17 @@
       "source": "カスタムドメイン",
       "createdTime": "2026-01-30T04:33:00.000Z",
       "updatedTime": "2026-02-01T04:37:00.000Z"
+    },
+    {
+      "id": "32bec3b2-73dd-814b-b83c-d0a8b9ccec8b",
+      "name": "OpenJS Foundation",
+      "category": "テクノロジー（個人・団体・技術領域）",
+      "status": "両方運用中",
+      "twitter": "https://x.com/openjsf",
+      "bluesky": "https://bsky.app/profile/openjsf.org",
+      "source": "カスタムドメインのため",
+      "createdTime": "2026-03-22T08:29:00.000Z",
+      "updatedTime": "2026-03-23T08:56:00.000Z"
     },
     {
       "id": "1aeec3b2-73dd-8147-b41a-c97a995088fa",
