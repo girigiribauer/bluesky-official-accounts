@@ -31,7 +31,7 @@ describe("registerContributionSchema", () => {
     it("fieldsを3つまで受け付ける", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        fields: ["IT・テック・Web", "法人・サービス・ビジネス", "公共・報道・インフラ"],
+        fields: ["IT・テック・Web", "企業・ブランド・サービス", "公共・報道・インフラ"],
       });
       expect(result.success).toBe(true);
     });

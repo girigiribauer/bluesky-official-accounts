@@ -1,0 +1,331 @@
+@import 'src/_mixin';
+
+.form {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  @include mq(l) {
+    padding: 30px 0;
+  }
+}
+
+// フォーム項目（ラベル + 説明 + 入力）
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.8;
+  color: var(--color-black);
+
+  @include mq(l) {
+    font-size: 1.25rem;
+  }
+}
+
+// 分野ラベル行
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cautionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-link);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-black);
+}
+
+// テキスト入力（1行）
+.input {
+  width: 100%;
+  height: 32px;
+  box-sizing: border-box;
+  padding: 7px 5px;
+  border: 1px solid var(--color-link-lighter);
+  border-radius: 2px;
+  font-size: 1rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--color-black);
+  background: var(--color-white);
+  outline: none;
+
+  &::placeholder {
+    color: var(--color-black-lighter);
+  }
+
+  @include mq(l) {
+    width: 500px;
+  }
+}
+
+.otherForm {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: right;
+  color: var(--color-black);
+
+  a {
+    color: var(--color-link);
+    background: transparent;
+    font-weight: 700;
+  }
+}
+
+.fieldChecking {
+  font-size: 0.875rem;
+  color: var(--color-black-lighter);
+  line-height: 1.5;
+}
+
+.fieldSuccess {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  line-height: 1.5;
+}
+
+.fieldError {
+  font-size: 0.875rem;
+  color: var(--color-attention);
+  line-height: 1.5;
+}
+
+// 入力前の空状態 / ローディングプレースホルダー
+.formEmpty {
+  width: 100%;
+  height: 180px;
+  background: var(--color-black-lighter2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formEmptyText {
+  font-size: 0.875rem;
+  font-weight: 900;
+  line-height: 1.714;
+  color: var(--color-black-lighter);
+  text-align: center;
+}
+
+// 分野チップ選択
+.chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 10px;
+}
+
+.chip {
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 5px;
+  border-radius: 4px;
+  font-size: 0.625rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: bold;
+  background: var(--color-primary-lighter2);
+  border: none;
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+  color: var(--color-black);
+  cursor: pointer;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.chipIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1px solid var(--color-primary-lighter);
+  color: var(--color-primary-lighter);
+  font-size: 8px;
+}
+
+.chipSelected {
+  box-shadow: inset 0 0 0 2px var(--color-primary);
+  color: var(--color-primary-darker);
+
+  .chipIcon {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+  }
+}
+
+.chipDisabled {
+  opacity: 0.5;
+  background: var(--color-black-lighter2);
+  box-shadow: inset 0 0 0 1px var(--color-black-lighter);
+  color: var(--color-black-lighter);
+  cursor: not-allowed;
+
+  .chipIcon {
+    border-color: var(--color-black-lighter);
+    color: var(--color-black-lighter);
+  }
+}
+
+// セレクトボックス（移行ステータス）
+.select {
+  width: 200px;
+  height: 32px;
+  box-sizing: border-box;
+  padding: 0 5px;
+  border: 1px solid var(--color-link-lighter);
+  border-radius: 2px;
+  font-size: 1rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--color-black);
+  background: var(--color-white);
+}
+
+// 根拠入力エリア
+.customTextarea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  width: 100%;
+
+  @include mq(l) {
+    width: 500px;
+  }
+}
+
+.evidenceShortcut {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1rem;
+  color: var(--color-black);
+}
+
+.selectSmall {
+  width: 200px;
+  height: 32px;
+  padding: 0 5px;
+  border: 1px solid var(--color-link-lighter);
+  border-radius: 2px;
+  font-size: 1rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--color-black);
+  background: var(--color-white);
+}
+
+// テキストエリア（根拠入力本体）
+.textarea {
+  width: 100%;
+  height: 120px;
+  box-sizing: border-box;
+  padding: 4px 5px;
+  border: 1px solid var(--color-link-lighter);
+  border-radius: 2px;
+  font-size: 1rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--color-black);
+  background: var(--color-white);
+  resize: none;
+  line-height: 1.5;
+  outline: none;
+}
+
+// 根拠の投稿済み履歴
+.readonlyItem {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.labelSmall {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-black);
+}
+
+.inputReadonly {
+  width: 100%;
+  height: 120px;
+  box-sizing: border-box;
+  padding: 4px 5px;
+  border: none;
+  border-radius: 2px;
+  font-size: 0.75rem;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--color-black);
+  background: var(--color-black-lighter2);
+  resize: none;
+  line-height: 1.5;
+
+  @include mq(l) {
+    width: 500px;
+  }
+}
+
+.separator {
+  margin: 0;
+}
+
+// 送信ボタン
+.submitButton {
+  display: block;
+  width: 200px;
+  height: 40px;
+  background: var(--color-black-lighter3);
+  border: 2px solid var(--color-black-lighter);
+  border-radius: 2px;
+  font-size: 1rem;
+  font-weight: 900;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--color-black-lighter);
+  cursor: not-allowed;
+}
+
+.submitButtonActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.submitError {
+  font-size: 0.875rem;
+  color: var(--color-attention);
+  line-height: 1.5;
+}
+
+.formSubmitting {
+  opacity: 0.6;
+  pointer-events: none;
+}

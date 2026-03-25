@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import styles from "./page.module.scss";
+import styles from "./RequestForm.module.scss";
 
 const isValidTwitterUrl = (url: string) =>
   /^https:\/\/(x|twitter)\.com\/[A-Za-z0-9_]{1,15}(\/.*)?$/.test(url.trim());

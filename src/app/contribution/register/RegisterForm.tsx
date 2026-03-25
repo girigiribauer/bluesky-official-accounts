@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { AnnotationButton } from "src/components/AnnotationButton";
 import { registerContributionSchema } from "src/lib/schemas/registerContribution";
-import styles from "./page.module.scss";
+import styles from "./RegisterForm.module.scss";
 
 type BlueskyCheckState = "idle" | "checking" | "new" | "registered" | "invalid";
 type SubmitState = "idle" | "submitting" | "error";
@@ -37,19 +37,19 @@ const fetchWithTimeout = async (url: string, options?: RequestInit) => {
 
 const FIELDS = [
   "公共・報道・インフラ",
-  "法人・サービス・ビジネス",
+  "企業・ブランド・サービス",
   "IT・テック・Web",
   "漫画・イラスト・アート",
   "映像作品（実写・アニメ）",
   "ゲーム・玩具・キャラクター",
   "音楽・声優・サウンド",
   "芸能・タレント・配信",
-  "出版・文芸・学術・教育",
+  "出版・文芸",
   "スポーツ・公営競技",
   "飲食・観光・地域文化",
   "美容・ファッション・装い",
   "暮らし・趣味・こだわり",
-  "システム・自動配信・ツール",
+  "bot・定期配信",
 ];
 
 const OLD_CATEGORIES = [
