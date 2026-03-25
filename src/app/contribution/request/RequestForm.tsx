@@ -207,20 +207,22 @@ export const RequestForm = () => {
 
       <hr className={styles.separator} />
 
-      {submitState === "error" && (
-        <p className={styles.submitError} role="alert">{errorMessage}</p>
-      )}
+      <div className={styles.submitArea}>
+        {submitState === "error" && (
+          <p className={styles.submitError} role="alert">{errorMessage}</p>
+        )}
 
-      <button
-        type="submit"
-        className={[
-          styles.submitButton,
-          canSubmit ? styles.submitButtonActive : "",
-        ].join(" ")}
-        disabled={!canSubmit}
-      >
-        {isSubmitting ? "送信中..." : "投稿する"}
-      </button>
+        <button
+          type="submit"
+          className={[
+            styles.submitButton,
+            canSubmit ? styles.submitButtonActive : "",
+          ].join(" ")}
+          disabled={!canSubmit}
+        >
+          {isSubmitting ? "送信中..." : "投稿する"}
+        </button>
+      </div>
     </form>
   );
 };

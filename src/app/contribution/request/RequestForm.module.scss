@@ -56,12 +56,10 @@
   background: var(--color-white);
   outline: none;
 
+  max-width: 500px;
+
   &::placeholder {
     color: var(--color-black-lighter);
-  }
-
-  @include mq(l) {
-    width: 500px;
   }
 }
 
@@ -100,6 +98,7 @@
 }
 
 .submitError {
+  width: 100%;
   font-size: 0.875rem;
   color: var(--color-attention);
   line-height: 1.5;
@@ -107,6 +106,13 @@
 
 .separator {
   margin: 0;
+}
+
+.submitArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 // 送信ボタン
