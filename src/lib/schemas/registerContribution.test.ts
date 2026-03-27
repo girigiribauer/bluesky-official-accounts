@@ -28,10 +28,10 @@ describe("registerContributionSchema", () => {
       expect(result.success).toBe(true);
     });
 
-    it("fieldsを3つまで受け付ける", () => {
+    it("fieldsを1つ受け付ける", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        fields: ["IT・テック・Web", "企業・ブランド・サービス", "公共・報道・インフラ"],
+        fields: ["IT・テック・Web"],
       });
       expect(result.success).toBe(true);
     });
@@ -109,10 +109,10 @@ describe("registerContributionSchema", () => {
       expect(result.success).toBe(false);
     });
 
-    it("4つ以上は拒否する", () => {
+    it("2つ以上は拒否する", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        fields: ["a", "b", "c", "d"],
+        fields: ["a", "b"],
       });
       expect(result.success).toBe(false);
     });

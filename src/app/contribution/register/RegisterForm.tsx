@@ -257,11 +257,7 @@ export const RegisterForm = () => {
   };
 
   const toggleCategory = (cat: string) => {
-    setSelectedCategories((prev) => {
-      if (prev.includes(cat)) return prev.filter((c) => c !== cat);
-      if (prev.length >= 3) return prev;
-      return [...prev, cat];
-    });
+    setSelectedCategories([cat]);
   };
 
   return (
@@ -403,7 +399,7 @@ export const RegisterForm = () => {
                     新しい分野では、分野ごとに有識者の方々が集まり、その中での分類作成や分類分けなどのモデレーションを行っていただくことを想定しています。
                   </p>
                   <p>
-                    これまで旧分類同士でどちらに属するのか曖昧になるケースが存在していましたが、<strong>新たな分野については、異なる分野で重複を許容するシステム</strong>にしていくつもりです。（例: 任天堂株式会社さんであれば、ゲームの興味分野とビジネスの興味分野のそれぞれに属する形）
+                    複数の分野にまたがると思われる場合は、最も近いと思う分野を1つ選んでください。複数分野への登録は、今後対応予定です。
                   </p>
                   <p>
                     しばらく移行期間中は新旧両方を指定していただくことになるかと思います。お手数をおかけしますが、ご協力をよろしくお願いします。
@@ -412,14 +408,13 @@ export const RegisterForm = () => {
               </AnnotationButton>
             </div>
             <p className={styles.description}>
-              そのアカウントの興味分野が一番近いものを選んでください。
+              そのアカウントの興味分野が一番近いものを1つ選んでください。
               <br />
-              <strong>どうしても迷った場合のみ複数選択</strong>してください。（最大3つ）
+              複数分野への登録は、今後対応予定です。
             </p>
             <div className={styles.chips}>
               {FIELDS.map((cat) => {
                 const isSelected = selectedCategories.includes(cat);
-                const isDisabled = !isSelected && selectedCategories.length >= 3;
                 return (
                   <button
                     key={cat}
@@ -427,10 +422,8 @@ export const RegisterForm = () => {
                     className={[
                       styles.chip,
                       isSelected ? styles.chipSelected : "",
-                      isDisabled ? styles.chipDisabled : "",
                     ].join(" ")}
                     onClick={() => toggleCategory(cat)}
-                    disabled={isDisabled}
                   >
                     <span className={styles.chipIcon}>{isSelected && "✓"}</span>
                     {cat}
