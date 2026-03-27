@@ -68,8 +68,8 @@ describe("POST /api/contribution/register", () => {
     expect(res.status).toBe(400);
   });
 
-  it("fieldsが4つ以上なら400を返す", async () => {
-    const res = await POST(makeRequest({ ...validBody, fields: ["a", "b", "c", "d"] }));
+  it("fieldsが2つ以上なら400を返す", async () => {
+    const res = await POST(makeRequest({ ...validBody, fields: ["a", "b"] }));
     expect(res.status).toBe(400);
   });
 
