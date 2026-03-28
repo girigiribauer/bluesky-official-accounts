@@ -1,7 +1,7 @@
 {
-  "updatedTime": "2026-03-28T11:33:25.461Z",
-  "total": 3522,
-  "checkedTotal": 2634,
+  "updatedTime": "2026-03-28T13:06:16.766Z",
+  "total": 3516,
+  "checkedTotal": 2631,
   "customDomainAccounts": 438,
   "weeklyPostedAccounts": 2,
   "monthlyPostedAccounts": 35,
@@ -2370,17 +2370,6 @@
       "source": "",
       "createdTime": "2025-01-07T02:12:00.000Z",
       "updatedTime": "2026-03-28T07:13:00.000Z"
-    },
-    {
-      "id": "176ec3b2-73dd-818b-9bf1-d7a87eae0f5c",
-      "name": "岐阜聖徳学園大学 落語研究会・笑タイム",
-      "category": "学生活動",
-      "status": "未移行（未確認）",
-      "twitter": "https://x.com/showtime_gisho",
-      "bluesky": "https://bsky.app/profile/su-sv.bsky.social",
-      "source": "",
-      "createdTime": "2025-01-09T02:21:00.000Z",
-      "updatedTime": "2026-03-28T07:15:00.000Z"
     },
     {
       "id": "1c2ec3b2-73dd-81c0-b143-c1d0650dd260",
@@ -7157,17 +7146,6 @@
       "updatedTime": "2026-03-28T07:00:00.000Z"
     },
     {
-      "id": "13eec3b2-73dd-817d-9894-cf7ab65c454c",
-      "name": "KanaYukino",
-      "category": "漫画家・イラストレーター",
-      "status": "両方運用中",
-      "twitter": "https://x.com/kanayukino_",
-      "bluesky": "https://bsky.app/profile/kanayukino.bsky.social",
-      "source": "Ｘの上の方に記載あったので運用確認ＯＫ",
-      "createdTime": "2024-11-14T11:25:00.000Z",
-      "updatedTime": "2026-03-28T01:30:00.000Z"
-    },
-    {
       "id": "145ec3b2-73dd-8118-b367-c0095dceda22",
       "name": "kaworu",
       "category": "漫画家・イラストレーター",
@@ -10257,17 +10235,6 @@
       "source": "X bio記載のリンク先にBlueskyあり\nhttps://potofu.me/so-ra-to",
       "createdTime": "2025-09-11T00:39:00.000Z",
       "updatedTime": "2026-03-28T08:59:00.000Z"
-    },
-    {
-      "id": "151ec3b2-73dd-8175-85ba-e6ff00a198e8",
-      "name": "ソラト",
-      "category": "漫画家・イラストレーター",
-      "status": "未移行（未確認）",
-      "twitter": "https://x.com/so_ra_to",
-      "bluesky": "https://bsky.app/profile/so-ra-to.bsky.social",
-      "source": "",
-      "createdTime": "2024-12-03T07:56:00.000Z",
-      "updatedTime": "2026-03-28T06:48:00.000Z"
     },
     {
       "id": "16cec3b2-73dd-819b-a3be-ebc30890b27c",
@@ -33249,17 +33216,6 @@
       "updatedTime": "2024-11-14T12:47:00.000Z"
     },
     {
-      "id": "d1143465-53e6-40fd-b07f-6457fb51ff58",
-      "name": "スターバックス コーヒー",
-      "category": "飲食",
-      "status": "未移行（未確認）",
-      "twitter": "https://x.com/Starbucks_J/",
-      "bluesky": null,
-      "source": "",
-      "createdTime": "2024-03-15T14:29:00.000Z",
-      "updatedTime": "2024-06-06T05:38:00.000Z"
-    },
-    {
       "id": "30aec3b2-73dd-8112-bcbc-c34afe6d139f",
       "name": "ステーキレストランそうま",
       "category": "飲食",
@@ -35248,17 +35204,6 @@
       "bluesky": "https://bsky.app/profile/linsl.bsky.social",
       "source": "",
       "createdTime": "2025-03-06T03:01:00.000Z",
-      "updatedTime": "2026-03-28T07:25:00.000Z"
-    },
-    {
-      "id": "1c2ec3b2-73dd-817e-9049-e24a67e14c47",
-      "name": "アウトレット家具のビッグウッド鳴門店",
-      "category": "雑貨・インテリア",
-      "status": "両方運用中",
-      "twitter": "https://x.com/BigwoodNaruto",
-      "bluesky": "https://bsky.app/profile/bigwoodnaruto.bsky.social",
-      "source": "https://x.com/BigwoodNaruto/status/1882655332880781612",
-      "createdTime": "2025-03-26T02:42:00.000Z",
       "updatedTime": "2026-03-28T07:25:00.000Z"
     },
     {
@@ -38241,17 +38186,6 @@
       "source": "",
       "createdTime": "2024-12-16T02:43:00.000Z",
       "updatedTime": "2026-03-28T07:01:00.000Z"
-    },
-    {
-      "id": "15dec3b2-73dd-811c-a5bf-c0d22b546a62",
-      "name": "軟体動物多様性学会【公式】",
-      "category": "その他企業・団体",
-      "status": "両方運用中",
-      "twitter": "https://x.com/SocStudMollDiv",
-      "bluesky": "https://bsky.app/profile/socstudmolldiv.bsky.social",
-      "source": "https://x.com/SocStudMollDiv/status/1866320001663390093\n→学会に相当する分類が現時点でないので、一旦その他にして公開",
-      "createdTime": "2024-12-15T14:57:00.000Z",
-      "updatedTime": "2026-03-28T06:59:00.000Z"
     },
     {
       "id": "136ec3b2-73dd-8167-b15e-cd5e4d2ee8cd",
