@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-03-29T07:12:14.874Z",
-  "total": 3516,
-  "checkedTotal": 2631,
+  "updatedTime": "2026-03-29T08:49:46.623Z",
+  "total": 3517,
+  "checkedTotal": 2632,
   "customDomainAccounts": 438,
   "weeklyPostedAccounts": 2,
-  "monthlyPostedAccounts": 35,
+  "monthlyPostedAccounts": 36,
   "accounts": [
     {
       "id": "156ec3b2-73dd-81ec-a552-dbd4d334e788",
@@ -1743,6 +1743,17 @@
       "source": "https://x.com/kasoken/status/1864268609788498125",
       "createdTime": "2024-12-20T05:40:00.000Z",
       "updatedTime": "2026-03-28T07:04:00.000Z"
+    },
+    {
+      "id": "332ec3b2-73dd-81f1-9c74-dafcbb4f9466",
+      "name": "刀剣文化研究保全機構（刀研機構）",
+      "category": "学者・研究者・科学者",
+      "status": "両方運用中",
+      "twitter": "https://x.com/toukenkikou",
+      "bluesky": "https://bsky.app/profile/toukenkikou.bsky.social",
+      "source": "X/Twitter での言及あり\nURLはhttps://x.com/toukenkikou/status/2037703385630253336\n\nです。",
+      "createdTime": "2026-03-29T07:12:00.000Z",
+      "updatedTime": "2026-03-29T08:39:00.000Z"
     },
     {
       "id": "15cec3b2-73dd-81a4-9a80-ce184c1f27cd",
