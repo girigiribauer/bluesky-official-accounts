@@ -9,19 +9,19 @@ export const TransitionStatusList = ({}: TransitionStatusListProps) => {
       <div className={styles.box}>
         <dl className={styles.item}>
           <dt className={styles.term}>
-            <span className="status" data-status="未移行（未確認）">
-              未移行（未確認）
+            <span className="status" data-status="unverified">
+              未確認
             </span>
           </dt>
           <dd className={styles.description}>
             <p className={styles.descriptionText}>
-              Bluesky 上にアカウントがない or 同一性の確認が取れていない
+              Bluesky 上にアカウントはあるが、同一性の確認が取れていない
             </p>
           </dd>
         </dl>
         <dl className={styles.item}>
           <dt className={styles.term}>
-            <span className="status" data-status="アカウント作成済">
+            <span className="status" data-status="account_created">
               アカウント作成済
             </span>
           </dt>
@@ -33,7 +33,7 @@ export const TransitionStatusList = ({}: TransitionStatusListProps) => {
         </dl>
         <dl className={styles.item}>
           <dt className={styles.term}>
-            <span className="status" data-status="両方運用中">
+            <span className="status" data-status="dual_active">
               両方運用中
             </span>
           </dt>
@@ -45,7 +45,7 @@ export const TransitionStatusList = ({}: TransitionStatusListProps) => {
         </dl>
         <dl className={styles.item}>
           <dt className={styles.term}>
-            <span className="status" data-status="Bluesky 完全移行">
+            <span className="status" data-status="migrated">
               Bluesky 完全移行
             </span>
           </dt>
@@ -65,10 +65,8 @@ export const TransitionStatusList = ({}: TransitionStatusListProps) => {
               <h2>同一性の確認が取れていないものにはご注意ください</h2>
               <p>
                 移行ステータスが{" "}
-                <span className="status" data-status="未移行（未確認）">未確認</span>
-                {" "}または{" "}
-                <span className="status" data-status="未移行（未確認）">来て欲しい</span>
-                {" "}ものはいずれも X(Twitter) との同一性の確認が取れていないアカウントです。
+                <span className="status" data-status="unverified">未確認</span>
+                {" "}のものは X(Twitter) との同一性の確認が取れていないアカウントです。
                 中には悪意のあるアカウントもありますので、同じ投稿をしているからといって無条件に信じないようにしてください。
               </p>
             </section>
@@ -82,7 +80,7 @@ export const TransitionStatusList = ({}: TransitionStatusListProps) => {
               </p>
               <p>
                 やむを得ず{" "}
-                <span className="status" data-status="確認不能">確認不能</span>
+                <span className="status" data-status="unverifiable">確認不能</span>
                 {" "}のステータスを付与しています。怪しいモデレーションリストの利用はお控えくださるよう、周りにも注意喚起をお願いします。
               </p>
             </section>

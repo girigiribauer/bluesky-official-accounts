@@ -1,5 +1,9 @@
 @import 'src/_mixin';
 
+.container.containerModeration {
+  background: var(--color-secondary-lighter2);
+}
+
 .container {
   width: 100%;
   height: 51px;
@@ -35,18 +39,39 @@
   }
 }
 
-.menu {
-  @include mq(s) {}
+.logoLink {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
 
+.menu {
   @include mq(l) {
     display: contents;
   }
 }
 
-.logoLink {
-  width: 40px;
-  height: 40px;
-  display: block;
+.headerWrapped {
+  @include mq(l) {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  @include mq(l) {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    height: 51px;
+  }
 }
 
 .modalWrapped {
@@ -62,6 +87,8 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
+    align-self: stretch;
     gap: clamp(5px, 3vw, 30px);
   }
 }
@@ -74,13 +101,12 @@
 
 .modalWrapped .menuList {
   @include mq(s) {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+    align-items: flex-start;
+    gap: 15px;
+    width: fit-content;
+    margin: 0 auto;
   }
 }
 
@@ -88,14 +114,30 @@
   margin: 0;
   padding: 0;
   flex: 0 0 auto;
+  position: relative;
+  height: 51px;
+  display: flex;
+  align-items: center;
+
+  @include mq(s) {
+    height: auto;
+  }
+}
+
+.menuItemHasSubmenu {
+  gap: 0;
 }
 
 .menuItemLink {
   background: none;
   font-size: 0.875rem;
-  font-weight: bold;
+  font-weight: 700;
   text-decoration: none;
   line-height: 1;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
 
   @include mq(s) {
     color: var(--color-white);
@@ -104,6 +146,93 @@
   @include mq(l) {
     color: var(--color-black);
   }
+}
+
+.menuItemButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-black);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chevronButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 6px;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+
+  @include mq(s) {
+    color: var(--color-white);
+  }
+
+  @include mq(l) {
+    color: var(--color-black);
+  }
+}
+
+.chevron {
+  font-size: 0.75rem;
+}
+
+.caret {
+  margin-top: 2px;
+}
+
+.caretUp {
+  transform: rotate(180deg);
+  margin-top: 0;
+  margin-bottom: 2px;
+}
+
+
+.submenu {
+  position: absolute;
+  top: 46px;
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-black-lighter2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+  white-space: nowrap;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.submenuItem {
+  display: block;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-black);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  line-height: 1.4;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.submenu li,
+.userDropdown li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .menuButton {
@@ -128,4 +257,46 @@
     font-size: 1.25rem;
     line-height: 1;
   }
+}
+
+.userMenu {
+  display: flex;
+  align-items: center;
+  height: 51px;
+  position: relative;
+}
+
+.userButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--color-primary);
+  font-size: 1.875rem;
+  line-height: 1;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.userDropdown {
+  position: absolute;
+  top: 46px;
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-black-lighter2);
+  border-radius: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+  min-width: 160px;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
 }

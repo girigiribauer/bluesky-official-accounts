@@ -1,0 +1,700 @@
+@import 'src/_mixin';
+
+.container {
+  flex: 1;
+  background: var(--color-secondary-lighter2);
+  overflow-x: hidden;
+}
+
+/* ダッシュボード上部 */
+.dashboard {
+  background: var(--color-white);
+  border-top: 1px solid var(--color-black-lighter2);
+  border-bottom: 1px solid var(--color-black-lighter2);
+}
+
+.dashboardInner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 31px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  @include mq(s) {
+    padding: 31px 10px;
+  }
+}
+
+/* フィールドセレクター */
+.fieldSelectorWrapper {
+  position: relative;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.fieldSelector {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-black);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: inherit;
+  line-height: 1.11;
+
+  >i:last-child {
+    font-size: 1rem;
+    color: var(--color-black);
+    margin-left: 3px;
+  }
+}
+
+/* Figma: icon frame 20×20px, Primary bg, borderRadius: 3px, flag icon 12×12px inside */
+.fieldIcon {
+  width: 20px;
+  height: 20px;
+  background: var(--color-primary);
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  >i {
+    font-size: 0.75rem;
+    color: var(--color-white);
+    line-height: 1;
+  }
+}
+
+.fieldMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-black-lighter2);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.fieldMenuItem {
+  display: block;
+  padding: 5px 10px;
+  font-size: 0.875rem;
+  color: var(--color-black);
+  text-decoration: none;
+  background: transparent;
+}
+
+.fieldMenuItemActive {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* rows */
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* チームエリア */
+/* Figma: TeamArea/LargeEmpty height:174px (外寸), border:2px, padding:12px */
+/* Tasks(686×150) は左、Members(190×150) は右 */
+.teamArea {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  border: 2px solid var(--color-secondary);
+  padding: 12px;
+  gap: 20px;
+  box-sizing: border-box;
+
+  @include mq(s) {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+/* Tasks（左/上） — PC:150px、SP:200px */
+.tasks {
+  flex: 1;
+  min-width: 0;
+  height: 150px;
+  position: relative;
+
+  @include mq(s) {
+    height: 200px;
+  }
+}
+
+/* CardListEmpty（0件時） */
+.cardListEmpty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: url('/images/bg-taskcard-empty.png') center / cover no-repeat;
+  box-sizing: border-box;
+}
+
+/* Figma: text style J6S2P9 — fw:700, 14px, lh:1.57, fill:White, effect: blue glow */
+.cardListEmptyText {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-white);
+  line-height: 1.57;
+  margin: 0;
+  text-shadow: 0 0 8px rgba(17, 133, 254, 1);
+}
+
+/* タスクカード（あり状態） */
+.taskCards {
+  height: 150px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 10px;
+  overflow-y: auto;
+  padding-bottom: 38px;
+  box-sizing: border-box;
+
+  @include mq(s) {
+    height: 200px;
+  }
+}
+
+.taskCardGroup {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.taskCardGroupLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-black-lighter);
+  margin: 0;
+  line-height: 1;
+  padding: 5px 0;
+}
+
+.taskCardRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.taskCard {
+  flex: 0 0 auto;
+  width: 130px;
+  height: 84px;
+  box-sizing: border-box;
+  background: var(--color-white);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1px;
+  box-shadow: 1px 1px 4px 0px rgba(69, 69, 69, 0.5);
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.taskCardActive {
+  box-shadow: 1px 1px 8px 0px rgba(108, 100, 16, 1);
+  border-left: 2px solid #e0d55f;
+  border-right: 2px solid #e0d55f;
+  border-bottom: 2px solid #e0d55f;
+
+  .taskCardBody {
+    background: #fff9ba;
+  }
+}
+
+.taskCardHeader {
+  display: block;
+  flex-shrink: 0;
+  height: 20px;
+  background: #e0d55f;
+  font-size: 0.875rem;
+  font-weight: 900;
+  color: #6c6410;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.taskCardBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.taskCardName {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--color-black);
+  line-height: 1.2;
+  word-break: break-all;
+}
+
+.taskCardHandle {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.625rem;
+  font-weight: 400;
+  color: var(--color-black-lighter);
+  line-height: 1.2;
+  word-break: break-all;
+}
+
+/* FloatingText 共通
+   Figma: position absolute, padding: 0 5px 3px, height:35
+   Tasks  内: y:105 → bottom: 150-105-35=10px, 右端寄せ
+   Members内: y:105 → bottom: 10px, 右端寄せ（右余白あり、近似で right:0）
+*/
+.floatingText {
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 3px;
+  padding: 0 5px 3px;
+  background: rgba(249, 249, 249, 0.8);
+  white-space: nowrap;
+  height: 35px;
+  box-sizing: border-box;
+}
+
+/* Figma: label — fw:700, 14px, lh:1.2 */
+.floatingLabel {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-black);
+  line-height: 1.2;
+}
+
+/* Figma: count — fw:900, 32px, lh:1, Attention color */
+.floatingCount {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--color-attention);
+  line-height: 1;
+  font-family: inherit;
+}
+
+/* Members（右/下）— PC:190×150px、SP:fill×100px */
+.members {
+  flex: 0 0 190px;
+  width: 190px;
+  height: 150px;
+  position: relative;
+
+  @include mq(s) {
+    flex: none;
+    width: 100%;
+    height: 100px;
+  }
+}
+
+/* Figma: UserList — BlackLighter3 bg, Users: row wrap, gap:5px */
+.userList {
+  width: 100%;
+  height: 100%;
+  background: var(--color-black-lighter3);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 5px;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Figma: Icon/User — 30×30px frame, Primary色 */
+.memberIcon {
+  font-size: 1.875rem;
+  /* 30px — Figma: Icon/User layout 30×30 */
+  color: var(--color-primary);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* columns: MySelfArea + ActivityArea を横並び */
+.columns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+
+  @include mq(s) {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+}
+
+/* MySelfArea — column layout: 上段(profile+日付) / 下段(カウント群) */
+.myselfArea {
+  flex: 1;
+  height: 124px;
+  border: 2px solid var(--color-secondary);
+  box-sizing: border-box;
+  padding: 11px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  @include mq(s) {
+    width: 100%;
+    flex: none;
+    height: auto;
+    gap: 10px;
+  }
+}
+
+/* 上段: プロフィール（左）と参加日（右）を space-between */
+.myselfTop {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Figma: Profile — row, alignItems:center, gap:5px */
+.profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatarIcon {
+  width: 40px;
+  height: 40px;
+  font-size: 2.5rem;
+  color: var(--color-primary);
+  line-height: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileText {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+/* Figma: handle — fw:700, 12px, lh:1, BlackLighter */
+.handle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-black-lighter);
+  margin: 0;
+  line-height: 1;
+}
+
+/* Figma: displayName — fw:700, 16px, lh:1.2, Black */
+.displayName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-black);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Figma: joinedDate — fw:700, 12px, lh:1, textAlign:RIGHT, 上端揃え */
+.joinedDate {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-black-lighter);
+  margin: 0;
+  line-height: 1;
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* 下段: レビューN回 ＋ 投稿N回 を横並び */
+.myselfBottom {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 8px;
+
+  .floatingText {
+    position: static;
+    bottom: auto;
+    right: auto;
+  }
+}
+
+/* ActivityArea — Figma: 445×120px content → height:124px */
+.activityArea {
+  flex: 1;
+  height: 124px;
+  border: 2px solid var(--color-secondary);
+  box-sizing: border-box;
+  overflow-y: auto;
+  padding: 12px;
+
+  @include mq(s) {
+    width: 100%;
+    height: 124px;
+    flex: none;
+  }
+}
+
+/* Figma: activities — column, gap:5px */
+.activityList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Figma: Activity — row, wrap, gap:5px, padding-left:25px, icon absolute at x:0 */
+.activityItem {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-black);
+  line-height: 1.5;
+  margin: 0;
+  position: relative;
+  padding-left: 25px;
+}
+
+.activityIcon {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.activityAvatar {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+/* タスクエリア
+   PC:  padding:60px 0, align-items:center
+   SP:  padding:60px 10px, height:428px固定, align-items:stretch
+*/
+.taskArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0;
+
+  @include mq(s) {
+    padding: 60px 10px;
+    height: 428px;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: stretch;
+  }
+}
+
+/* Figma: TaskEmptyState/Nothing — 700×hug, BlackLighter3 bg, BlackLighter2 border:2px, padding:60px 0 */
+.taskEmptyState {
+  width: 700px;
+  max-width: 100%;
+  background: var(--color-black-lighter3);
+  border: 2px solid var(--color-black-lighter2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  box-sizing: border-box;
+
+  @include mq(s) {
+    width: 100%;
+    flex: 1;
+  }
+}
+
+/* Figma: emptystate — column, gap:30px, alignItems:stretch */
+.taskEmptyInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Figma: emoji — 86px, center, BlackLighter2 fill (grayscale相当) */
+.taskEmptyEmoji {
+  font-size: 5.375rem;
+  line-height: 1;
+  text-align: center;
+  display: block;
+  filter: grayscale(1) opacity(0.5);
+}
+
+/* Figma: text — fw:900, 16px, lh:1.5, BlackLighter */
+.taskEmptyText {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--color-black-lighter);
+  line-height: 1.5;
+  margin: 0;
+  text-align: left;
+}
+
+/* ボトムシート */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.bottomSheet {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.35);
+  max-height: 80vh;
+  background: var(--color-white);
+  animation: slideUp 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+
+  &::before {
+    content: '';
+    display: block;
+    height: 10px;
+    flex-shrink: 0;
+    background: linear-gradient(to bottom, #6c6410 50%, #e0d55f 50%);
+  }
+}
+
+.bottomSheetClosing {
+  animation: slideDown 0.22s ease-in forwards;
+}
+
+.bottomSheetHeader {
+  flex-shrink: 0;
+  background: var(--color-white);
+  border-top: 1px solid var(--color-black-lighter2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 30px;
+  position: relative;
+}
+
+.bottomSheetTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+  color: var(--color-black);
+}
+
+.bottomSheetClose {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  background: var(--color-black-lighter2);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-black-lighter);
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.bottomSheetBody {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.bottomSheetInner {
+  max-width: 1400px;
+  margin: 0 auto;
+}

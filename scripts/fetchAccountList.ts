@@ -2,7 +2,24 @@ import fs from "fs";
 import { Client } from "@notionhq/client";
 import { NotionItem, NotionResponse } from "../src/models/Notion";
 import { AccountList } from "../src/models/AccountList";
+import { TransitionStatus } from "../src/models/TransitionStatus";
 import dotenv from "dotenv";
+
+const NOTION_STATUS_MAP: Record<string, TransitionStatus> = {
+  "未移行（未確認）": "not_migrated", // bluesky の有無で後から分離する
+  "アカウント作成済": "account_created",
+  "両方運用中": "dual_active",
+  "Bluesky 完全移行": "migrated",
+  "確認不能": "unverifiable",
+};
+
+function toTransitionStatus(notionStatus: string, bluesky: string | null): TransitionStatus {
+  const mapped = NOTION_STATUS_MAP[notionStatus];
+  if (!mapped) return "not_migrated";
+  // 旧「未移行（未確認）」を bluesky の有無で分離
+  if (mapped === "not_migrated" && bluesky) return "unverified";
+  return mapped;
+}
 
 const fetchAccountsOnce = async (
   client: Client,
@@ -37,9 +54,10 @@ const fetchAccountsOnce = async (
       const id = result.id;
       const name = result.properties["名前"]?.title[0]?.plain_text ?? "";
       const category = result.properties["分類"]?.select?.name ?? "";
-      const status = result.properties["ステータス"]?.select?.name ?? "";
+      const notionStatus = result.properties["ステータス"]?.select?.name ?? "";
       const twitter = result.properties["Twitter/X アカウント"]?.url;
       const bluesky = result.properties["Bluesky アカウント"]?.url;
+      const status = toTransitionStatus(notionStatus, bluesky ?? null);
       const source = result.properties["根拠"]?.rich_text[0]?.plain_text ?? "";
       const createdTime = result.created_time;
       const updatedTime = result.last_edited_time;
@@ -96,7 +114,7 @@ const fetchAccountList = async (
 
     const total = accounts.length;
     const checkedTotal = accounts.filter(
-      (a) => a.status !== "未移行（未確認）"
+      (a) => a.status !== "not_migrated" && a.status !== "unverified"
     ).length;
     const customDomainAccounts = accounts.filter(
       (a) =>

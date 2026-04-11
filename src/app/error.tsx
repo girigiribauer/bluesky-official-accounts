@@ -14,7 +14,7 @@ export default function Error({
       <header className="header">
         <GlobalHeader />
       </header>
-      <div>
+      <div className="mainContent">
         <div
           className="page-hero-image"
           style={{ background: "linear-gradient(160deg, var(--color-primary-lighter), var(--color-secondary-lighter))" }}

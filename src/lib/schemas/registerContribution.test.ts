@@ -7,7 +7,7 @@ const validBase = {
   accountName: "Bluesky",
   oldCategory: "テクノロジー（個人・団体・技術領域）",
   fields: ["IT・テック・Web"],
-  migrationStatus: "未移行（未確認）" as const,
+  migrationStatus: "not_migrated" as const,
   twitterUrl: "https://x.com/bluesky",
   evidence: "",
 };
@@ -22,7 +22,7 @@ describe("registerContributionSchema", () => {
     it("確認済みステータスでtwitterUrl+evidenceありを受け付ける", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        migrationStatus: "両方運用中",
+        migrationStatus: "dual_active",
         evidence: "公式サイトにリンクあり",
       });
       expect(result.success).toBe(true);
@@ -75,7 +75,7 @@ describe("registerContributionSchema", () => {
     it("未確認以外でevidenceが空なら拒否する", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        migrationStatus: "アカウント作成済",
+        migrationStatus: "account_created",
         evidence: "",
       });
       expect(result.success).toBe(false);
@@ -84,7 +84,7 @@ describe("registerContributionSchema", () => {
     it("未確認以外でevidenceがあれば受け付ける", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        migrationStatus: "Bluesky 完全移行",
+        migrationStatus: "migrated",
         evidence: "カスタムドメインのため",
       });
       expect(result.success).toBe(true);
@@ -93,7 +93,7 @@ describe("registerContributionSchema", () => {
     it("未確認ならevidenceが空でも受け付ける", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        migrationStatus: "未移行（未確認）",
+        migrationStatus: "not_migrated",
         evidence: "",
       });
       expect(result.success).toBe(true);

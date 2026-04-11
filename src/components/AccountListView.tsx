@@ -3,6 +3,7 @@
 import { NotionItem } from "src/models/Notion";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { Category } from "src/models/Category";
+import { groupAccountsByCategory } from "src/lib/groupAccountsByCategory";
 import type { FilterRuleSet } from "src/models/FilterRuleSet";
 import { GroupedVirtuoso } from "react-virtuoso";
 import { AccountGroupHeader } from "./AccountGroupHeader";
@@ -20,13 +21,8 @@ export type AccountListViewProps = {
   updatedTime: string;
 };
 
-type CategoryGroup = {
-  id: string;
-  title: string;
-  criteria: string;
-  items: NotionItem[];
-  total: number;
-};
+// react-virtuoso: 全グループのアイテム数が0だと警告が出るため、全閉じ時は先頭グループにダミーアイテムを1件入れて回避する
+const PlaceholderItem = () => <div style={{ height: 1, overflow: "hidden" }} />;
 
 export const AccountListView = ({
   filterRuleSet = null,
@@ -35,20 +31,8 @@ export const AccountListView = ({
   categoryList = [],
   updatedTime,
 }: AccountListViewProps) => {
-  const originalCategorizedItems: CategoryGroup[] = useMemo(
-    () =>
-      categoryList
-        .map(({ id, title, criteria }) => {
-          const categorizedItems = items.filter((a) => a.category === title);
-          return {
-            id,
-            title,
-            criteria,
-            items: categorizedItems,
-            total: categorizedItems.length,
-          };
-        })
-        .filter((a) => a.total !== 0),
+  const originalCategorizedItems = useMemo(
+    () => groupAccountsByCategory(items, categoryList),
     [items, categoryList]
   );
 
@@ -58,13 +42,18 @@ export const AccountListView = ({
 
   const total = useMemo(() => items.length, [items]);
   const blueskyAccountsTotal = useMemo(
-    () => items.filter((a) => a.status !== "未移行（未確認）").length,
+    () => items.filter((a) => a.status !== "not_migrated").length,
     [items]
   );
 
   const groupCounts = originalCategorizedItems.map((a, index) =>
     categoryToggleList[index] ? a.items.length : 0
   );
+
+  const isAllClosed = groupCounts.every((c) => c === 0);
+  const groupCountsWithPlaceholder = isAllClosed
+    ? groupCounts.map((c, i) => (i === 0 ? 1 : c))
+    : groupCounts;
 
   const filteredItems = originalCategorizedItems.reduce((acc, group, index) => {
     if (categoryToggleList[index]) {
@@ -121,7 +110,7 @@ export const AccountListView = ({
       <GroupedVirtuoso
         style={{ height: 500 }}
         className={styles.virtualScroll}
-        groupCounts={groupCounts}
+        groupCounts={groupCountsWithPlaceholder}
         groupContent={(index) => {
           if (index >= originalCategorizedItems.length) {
             return null;
@@ -139,15 +128,9 @@ export const AccountListView = ({
           );
         }}
         itemContent={(index) => {
-          if (filteredItems.length <= 0) {
-            return null;
-          }
           const item = filteredItems[index];
-          return (
-            <AccountItem
-              item={item}
-            />
-          );
+          if (!item) return <PlaceholderItem />;
+          return <AccountItem item={item} />;
         }}
       />
     </div>

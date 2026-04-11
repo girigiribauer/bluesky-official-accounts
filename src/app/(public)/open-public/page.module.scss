@@ -1,0 +1,12 @@
+@import 'src/_mixin';
+
+.contentImage {
+  width: 100%;
+  height: 114px;
+  object-fit: cover;
+  display: block;
+
+  @include mq(l) {
+    height: 200px;
+  }
+}

@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  PropsWithChildren,
-  ReactNode,
-  useContext,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 type ModalContextProps = {
   contents: ReactNode;
@@ -15,14 +9,14 @@ type ModalContextProps = {
   clearModal: () => void;
 };
 
-const modalContext = createContext<ModalContextProps>({
+export const modalContext = createContext<ModalContextProps>({
   contents: <></>,
   color: "",
   updateModal: () => {},
   clearModal: () => {},
 });
 
-const useModalInside = () => {
+export const useModalState = () => {
   const [contents, setContents] = useState<ReactNode>(null);
   const [color, setColor] = useState<string | undefined>("#454545");
 
@@ -36,20 +30,7 @@ const useModalInside = () => {
     setColor("#454545");
   };
 
-  return {
-    contents,
-    color,
-    updateModal,
-    clearModal,
-  };
-};
-
-export const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
-  const modal = useModalInside();
-
-  return (
-    <modalContext.Provider value={modal}>{children}</modalContext.Provider>
-  );
+  return { contents, color, updateModal, clearModal };
 };
 
 export const useModal = (): ModalContextProps => useContext(modalContext);

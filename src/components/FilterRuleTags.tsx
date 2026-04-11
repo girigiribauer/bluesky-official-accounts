@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { FilterRuleSet } from "src/models/FilterRuleSet";
+import { buildFilterRuleTags } from "src/lib/filterRuleTags";
 
 import styles from "./FilterRuleTags.module.scss";
 
@@ -14,46 +15,7 @@ export const FilterRuleTags = ({
   filterRuleSet,
   handleReset,
 }: FilterRuleResultsProps) => {
-  const filterRuleTags: {
-    key: keyof FilterRuleSet;
-    value: string;
-  }[] = useMemo(() => {
-    const tags: {
-      key: keyof FilterRuleSet;
-      value: string;
-    }[] = [];
-    if (!filterRuleSet) {
-      return tags;
-    }
-
-    if (filterRuleSet.time === "New") {
-      tags.push({ key: "time", value: "1週間以内の登録" });
-    }
-    if (filterRuleSet.time === "Update") {
-      tags.push({
-        key: "time",
-        value: "1週間以内の登録・変更",
-      });
-    }
-
-    if (filterRuleSet.text !== "") {
-      const labels = filterRuleSet.text
-        .split(" ")
-        .map((a) => `"${a}"`)
-        .join(",");
-      tags.push({ key: "text", value: `${labels}を含む` });
-    }
-
-    if (filterRuleSet.customDomain) {
-      tags.push({ key: "customDomain", value: "カスタムドメイン" });
-    }
-
-    if (filterRuleSet.verified) {
-      tags.push({ key: "verified", value: "確認済み" });
-    }
-
-    return tags;
-  }, [filterRuleSet]);
+  const filterRuleTags = useMemo(() => buildFilterRuleTags(filterRuleSet), [filterRuleSet]);
 
   return filterRuleTags.length > 0 ? (
     <ul className={styles.filterRuleSet}>

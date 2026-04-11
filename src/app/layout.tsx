@@ -1,7 +1,7 @@
 import Script from "next/script";
 import { Suspense } from "react";
 import { Metadata } from "next";
-import { ModalProvider } from "src/hooks/useModal";
+import { ModalProvider } from "src/components/ModalProvider";
 import { ModalContents } from "src/components/ModalContents";
 
 import "../globals.scss";
@@ -68,7 +68,7 @@ export default function RootLayout({
         ) : null}
       </head>
       <body>
-        <main className="main">
+        <main>
           <Suspense fallback={null}>
             <ModalProvider>
               {children}

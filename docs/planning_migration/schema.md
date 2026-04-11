@@ -22,6 +22,8 @@ Blueskyアカウントでログインした協力者。
 | did | text | Bluesky DID、ユニーク。ハンドル変更後も同一性を保つ基準 |
 | handle | text | 表示用。変更されうる |
 | display_name | text | 表示用 |
+| avatar | text | アバター画像URL。Bluesky APIから取得 |
+| is_admin | boolean | 管理者フラグ |
 | created_at | timestamptz | |
 | last_active_at | timestamptz | 非活動判定用 |
 
@@ -35,6 +37,8 @@ Blueskyアカウントでログインした協力者。
 | moderator_id | uuid | 外部キー → moderators |
 | field_id | text | 分野識別子（静的管理） |
 | joined_at | timestamptz | |
+
+※ `moderators.is_admin` が true の場合、全分野を管理対象として扱う。
 
 ### `classifications`
 
@@ -72,7 +76,7 @@ Blueskyアカウントでログインした協力者。
 | bluesky_handle | text | 表示用。変更されうる |
 | twitter_handle | text | |
 | display_name | text | 表示用。自動取得後に手動修正される場合があるため明示的に保持 |
-| migration_status | text | enum |
+| transition_status | text | enum |
 | status | text | `pending` / `published` / `rejected` |
 | submitted_by | uuid | 外部キー → moderators（null = 匿名） |
 | created_at | timestamptz | |
@@ -111,7 +115,7 @@ Blueskyアカウントでログインした協力者。
 | id | uuid | プライマリーキー |
 | entry_id | uuid | 外部キー → entries |
 | moderator_id | uuid | 外部キー → moderators |
-| action | text | `submit` / `approve` / `reject` / `edit` |
+| action | text | `approve` / `reject` / `edit` |
 | payload | jsonb | 操作内容。構造は下記参照 |
 | created_at | timestamptz | |
 
@@ -119,9 +123,8 @@ Blueskyアカウントでログインした協力者。
 
 | action | 構造 | 備考 |
 |---|---|---|
-| `submit` | `{}` | 初回投稿のため差分なし |
 | `approve` | `{}` | 承認のため差分なし |
-| `reject` | `{"reason": "..."}` | 却下理由は必須 |
+| `reject` | `{}` | |
 | `edit` | `{"display_name": {"before": "旧", "after": "新"}}` | 変更したフィールドのみ含む |
 
 ---

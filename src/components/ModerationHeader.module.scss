@@ -1,0 +1,62 @@
+@import 'src/_mixin';
+
+.container {
+  width: 100%;
+  height: 51px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  background: var(--color-secondary-lighter2);
+  border-bottom: 1px solid var(--color-black-lighter2);
+  padding: 5px 50px 5px 55px;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  left: 5px;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  width: 40px;
+  height: 40px;
+}
+
+.logoLink {
+  display: block;
+  width: 40px;
+  height: 40px;
+
+  img {
+    border-radius: 4px;
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 3vw, 30px);
+  width: 100%;
+  justify-content: center;
+}
+
+.navItem {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-black);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.navItemUser {
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

@@ -60,8 +60,26 @@ body {
 .main {
   min-height: 100svh;
   box-sizing: border-box;
-  padding: var(--height-globalheader) 10px 100px 10px;
+  padding-top: var(--height-globalheader);
   background: var(--color-black-lighter3);
+}
+
+.mainContent {
+  padding: 0 10px;
+}
+
+.moderationMain {
+  min-height: 100svh;
+  box-sizing: border-box;
+  padding-top: var(--height-globalheader);
+  background: var(--color-secondary-lighter2);
+  display: flex;
+  flex-direction: column;
+
+  >.mainContent {
+    flex: 1;
+    padding: 30px 10px;
+  }
 }
 
 h1 {
@@ -111,7 +129,7 @@ p {
 
 strong {
   color: var(--color-primary);
-  font-weight: bold;
+  font-weight: 700;
   background: transparent;
 }
 
@@ -129,8 +147,12 @@ ol {
 ul>li,
 ol>li {
   margin: 0.5rem 0;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 1rem;
+  line-height: 1.8;
+
+  @include mq(l) {
+    font-size: 1.25rem;
+  }
 }
 
 img {
@@ -157,27 +179,28 @@ img {
   word-break: keep-all;
   align-self: center;
 
-  &[data-status*="未移行（未確認）"] {
+  &[data-status="not_migrated"],
+  &[data-status="unverified"] {
     background: var(--color-status-level1);
     color: var(--color-status-level1-darker);
   }
 
-  &[data-status*="アカウント作成済"] {
+  &[data-status="account_created"] {
     background: var(--color-status-level2);
     color: var(--color-status-level2-darker);
   }
 
-  &[data-status*="両方運用中"] {
+  &[data-status="dual_active"] {
     background: var(--color-status-level3);
     color: var(--color-status-level3-darker);
   }
 
-  &[data-status*="Bluesky 完全移行"] {
+  &[data-status="migrated"] {
     background: var(--color-status-level4);
     color: var(--color-status-level4-darker);
   }
 
-  &[data-status*="確認不能"] {
+  &[data-status="unverifiable"] {
     background: var(--color-status-level0-darker);
     color: var(--color-status-level0);
   }
@@ -195,7 +218,7 @@ img {
   color: var(--color-white);
   font-size: 0.625rem;
   font-style: normal;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .heroimage {
@@ -214,7 +237,7 @@ img {
 
 .link {
   font-size: 0.875rem;
-  font-weight: bold;
+  font-weight: 700;
   text-align: right;
 
   a {
@@ -255,7 +278,7 @@ img {
 }
 
 .page-content {
-  padding: 30px 0;
+  padding: 30px 0 100px;
   display: flex;
   flex-direction: column;
   gap: 60px;

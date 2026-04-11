@@ -1,6 +1,7 @@
 "use client";
 
 import { FilterRuleSet } from "src/models/FilterRuleSet";
+import { mergeTextFilter } from "src/lib/mergeTextFilter";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 
 import styles from "./FilterRuleSetConfig.module.scss";
@@ -38,13 +39,8 @@ export const FilterRuleSetConfig = ({
 
     const currentText = text;
     setText("");
-    const textGroup = new Set(
-      [...filterRuleSet.text.split(" "), ...currentText.split(" ")].filter(
-        (a) => a !== ""
-      )
-    );
     if (e.key === "Enter") {
-      handleUpdate({ text: Array.from(textGroup).join(" ") });
+      handleUpdate({ text: mergeTextFilter(filterRuleSet.text, currentText) });
     }
   };
 

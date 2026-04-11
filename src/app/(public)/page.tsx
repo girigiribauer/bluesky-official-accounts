@@ -1,0 +1,74 @@
+import { fetchAccounts, fetchCategories, fetchNews } from "src/lib/fetchNotion";
+import { Metadata } from "next";
+import Image from "next/image";
+import { HeroImage } from "src/components/HeroImage";
+import { ShareButtons } from "src/components/ShareButtons";
+import { NewsList } from "src/components/NewsList";
+import { GlobalHeaderServer as GlobalHeader } from "src/components/GlobalHeaderServer";
+import { TransitionStatusList } from "src/components/TransitionStatusList";
+import { Database } from "src/components/Database";
+import { PageNavigation } from "src/components/PageNavigation";
+import styles from "./page.module.scss";
+
+export const revalidate = 3600;
+
+export const metadata: Metadata = {
+  title: "Bluesky公式アカウント移行まとめ",
+  description:
+    "オープン・パブリックな Bluesky の世界へ移行しよう！X(Twitter)からBlueskyへ移行した公式アカウントを集約している移行まとめです。移行の検討にご活用ください。",
+  alternates: {
+    canonical: "https://bluesky-official-accounts.vercel.app/",
+  },
+  openGraph: {
+    siteName: "Bluesky公式アカウント移行まとめ",
+    title: "Bluesky公式アカウント移行まとめ",
+    description:
+      "オープン・パブリックな Bluesky の世界へ移行しよう！X(Twitter)からBlueskyへ移行した公式アカウントを集約している移行まとめです。移行の検討にご活用ください。",
+    url: "https://bluesky-official-accounts.vercel.app/",
+    type: "website",
+  },
+};
+
+export default async function Home() {
+  const accountList = await fetchAccounts();
+  const news = await fetchNews();
+  const categoryList = await fetchCategories();
+
+  return (
+    <>
+      <header className="header">
+        <GlobalHeader />
+      </header>
+      <HeroImage id="accountlist" />
+
+      <div className="page-content">
+        <section className="page-section">
+          <h1>
+            <Image className={styles.butterfly} src="/images/butterfly.svg" alt="" width={36} height={32} aria-hidden="true" /> オープン・パブリックな Bluesky の世界へ移行しよう！
+          </h1>
+          <p>
+            あなたの企業・組織はちゃんと<span className={styles.highlight}>オープン</span>な場で情報発信できていますか？ログインなしに情報に<span className={styles.highlight}>アクセス</span>できますか？
+            <br />
+            もうすでに多くのユーザーが移行している Bluesky において、<span className={styles.highlight}>あなたの企業・組織が Bluesky で情報発信を始めるのをみなさん待ち望んでいます！</span>
+          </p>
+          <TransitionStatusList />
+        </section>
+
+        <div className={styles.accountListArea}>
+          <div className={styles.accountListInner}>
+            <Database accountList={accountList} categoryList={categoryList} />
+          </div>
+        </div>
+
+        <div className="page-section">
+          <NewsList items={news} />
+        </div>
+
+        <footer className="page-footer">
+          <PageNavigation next="open-public" />
+          <ShareButtons />
+        </footer>
+      </div>
+    </>
+  );
+}

@@ -1,6 +1,6 @@
 import styles from "./PageNavigation.module.scss";
 
-export type Page = "index" | "open-public" | "contribution" | "features" | "faq";
+export type Page = "index" | "open-public" | "contribution" | "features" | "faq" | "moderation";
 
 export type PageNavigationProps = {
   prev?: Page;
@@ -13,6 +13,7 @@ const PageTitles: Record<Page, string> = {
   contribution: "あなたが貢献できること",
   features: "便利な機能",
   faq: "よくあるご質問",
+  moderation: "モデレーション",
 };
 const PageLinks: Record<Page, string> = {
   index: "/",
@@ -20,6 +21,7 @@ const PageLinks: Record<Page, string> = {
   contribution: "/contribution",
   features: "/features",
   faq: "/faq",
+  moderation: "/moderation",
 };
 
 export const PageNavigation = ({ prev, next }: PageNavigationProps) => {

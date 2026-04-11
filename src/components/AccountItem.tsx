@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { NotionItem } from "src/models/Notion";
+import { TRANSITION_STATUS_LABELS } from "src/models/TransitionStatus";
 import { extractBluesky, extractTwitter } from "src/lib/extractFromURL";
 
 import styles from "./AccountItem.module.scss";
@@ -24,7 +25,7 @@ export const AccountItem = ({ item }: AccountItemProps) => {
 
         <div className={styles.transitionStatusColumn}>
           <span className={`status ${styles.statusLabel}`} data-status={status}>
-            {status}
+            {TRANSITION_STATUS_LABELS[status] ?? status}
           </span>
         </div>
 
@@ -38,12 +39,10 @@ export const AccountItem = ({ item }: AccountItemProps) => {
                 <h2 className="page-section-title">
                   <span>{name} の根拠</span>
                   <span className={[`status ${styles.statusLabel}`, styles.evidenceStatusLabel].join(" ")} data-status={status}>
-                    {status}
+                    {TRANSITION_STATUS_LABELS[status] ?? status}
                   </span>
                 </h2>
-                <textarea readOnly className={styles.evidenceText}>
-                  {source || "現時点で根拠はありません。（カスタムドメインなど明らかな場合には書いてないケースがあります）"}
-                </textarea>
+                <textarea readOnly className={styles.evidenceText} defaultValue={source || "現時点で根拠はありません。（カスタムドメインなど明らかな場合には書いてないケースがあります）"} />
                 <p className={styles.evidenceNote}>
                   客観的に根拠として判断でき、別の人間が目を通したものを掲載しています。ただし、有志による投稿のため、正確性は保証できません。誤りがあった場合は『<Link className={styles.menuItemLink} href="/contribution">あなたが貢献できること</Link>』から投稿をお願いします。
                 </p>
@@ -58,7 +57,7 @@ export const AccountItem = ({ item }: AccountItemProps) => {
           <div className={styles.socialMedia}>
             <Image
               className={styles.socialMediaIcon}
-              src="/icon-x.svg"
+              src="/images/icon-x.svg"
               alt="X(Twitter)"
               width={16}
               height={16}
@@ -75,7 +74,7 @@ export const AccountItem = ({ item }: AccountItemProps) => {
           <div className={styles.socialMedia}>
             <Image
               className={styles.socialMediaIcon}
-              src="/icon-bluesky.svg"
+              src="/images/icon-bluesky.svg"
               alt="Bluesky"
               width={16}
               height={16}
