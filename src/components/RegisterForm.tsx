@@ -294,7 +294,7 @@ export const RegisterForm = () => {
               value={migrationStatus}
               onChange={(e) => setMigrationStatus(e.target.value)}
             >
-              {STATUS_OPTIONS.map((opt) => (
+              {STATUS_OPTIONS.filter((opt) => opt.value !== "not_migrated").map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>

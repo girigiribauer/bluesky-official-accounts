@@ -11,6 +11,12 @@
   position: relative;
 }
 
+.placeholderItem {
+  height: 1px;
+  overflow: hidden;
+  margin-bottom: -1px;
+}
+
 .header {
   position: sticky;
   left: 0;

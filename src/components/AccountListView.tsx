@@ -22,7 +22,7 @@ export type AccountListViewProps = {
 };
 
 // react-virtuoso: 全グループのアイテム数が0だと警告が出るため、全閉じ時は先頭グループにダミーアイテムを1件入れて回避する
-const PlaceholderItem = () => <div style={{ height: 1, overflow: "hidden" }} />;
+const PlaceholderItem = () => <div className={styles.placeholderItem} />;
 
 export const AccountListView = ({
   filterRuleSet = null,

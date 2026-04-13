@@ -7,14 +7,14 @@ const validBase = {
   accountName: "Bluesky",
   oldCategory: "テクノロジー（個人・団体・技術領域）",
   fields: ["IT・テック・Web"],
-  migrationStatus: "not_migrated" as const,
+  migrationStatus: "dual_active" as const,
   twitterUrl: "https://x.com/bluesky",
-  evidence: "",
+  evidence: "カスタムドメインのため",
 };
 
 describe("registerContributionSchema", () => {
   describe("正常系", () => {
-    it("未確認ステータスでevidenceなしを受け付ける", () => {
+    it("最低限の入力を受け付ける", () => {
       const result = registerContributionSchema.safeParse(validBase);
       expect(result.success).toBe(true);
     });
@@ -71,30 +71,20 @@ describe("registerContributionSchema", () => {
     });
   });
 
-  describe("evidence の条件付き必須", () => {
-    it("未確認以外でevidenceが空なら拒否する", () => {
+  describe("evidence の必須チェック", () => {
+    it("evidenceが空なら拒否する", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        migrationStatus: "account_created",
         evidence: "",
       });
       expect(result.success).toBe(false);
     });
 
-    it("未確認以外でevidenceがあれば受け付ける", () => {
+    it("evidenceがあれば受け付ける", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
         migrationStatus: "migrated",
         evidence: "カスタムドメインのため",
-      });
-      expect(result.success).toBe(true);
-    });
-
-    it("未確認ならevidenceが空でも受け付ける", () => {
-      const result = registerContributionSchema.safeParse({
-        ...validBase,
-        migrationStatus: "not_migrated",
-        evidence: "",
       });
       expect(result.success).toBe(true);
     });

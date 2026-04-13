@@ -3,6 +3,16 @@ import { checkOrigin } from "src/lib/csrf";
 import { getNotionClient } from "src/lib/notionClient";
 import { checkRateLimit } from "src/lib/rateLimit";
 import { registerContributionSchema } from "src/lib/schemas/registerContribution";
+import type { TransitionStatus } from "src/models/TransitionStatus";
+
+const NOTION_STATUS_LABELS: Record<TransitionStatus, string> = {
+  not_migrated: "未移行（未確認）",
+  unverified: "未移行（未確認）",
+  account_created: "アカウント作成済",
+  dual_active: "両方運用中",
+  migrated: "Bluesky 完全移行",
+  unverifiable: "確認不能",
+};
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
@@ -48,7 +58,7 @@ export async function POST(req: NextRequest) {
         "Bluesky アカウント": { url: blueskyUrl },
         分類: { select: { name: oldCategory.trim() } },
         分野: { multi_select: fields.map((f) => ({ name: f.trim() })) },
-        ステータス: { select: { name: migrationStatus } },
+        ステータス: { select: { name: NOTION_STATUS_LABELS[migrationStatus] } },
         ...(twitterUrl.trim() && { "Twitter/X アカウント": { url: twitterUrl.trim() } }),
         ...(evidence.trim() && {
           根拠: { rich_text: [{ text: { content: evidence.trim() } }] },

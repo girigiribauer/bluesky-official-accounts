@@ -22,9 +22,9 @@ const validBody = {
   accountName: "Bluesky",
   oldCategory: "テクノロジー（個人・団体・技術領域）",
   fields: ["IT・テック・Web"],
-  migrationStatus: "not_migrated",
+  migrationStatus: "dual_active",
   twitterUrl: "https://x.com/bluesky",
-  evidence: "",
+  evidence: "カスタムドメインのため",
   website: "",
 };
 

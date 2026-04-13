@@ -2,7 +2,6 @@ import { z } from "zod";
 
 // transition_status の選択肢。値は DB に保存される英語値
 export const MIGRATION_STATUSES = [
-  "not_migrated",
   "account_created",
   "dual_active",
   "migrated",
@@ -26,7 +25,7 @@ export const registerContributionSchema = z
     { message: "X(Twitter) URLは必須です" }
   )
   .refine(
-    (d) => d.migrationStatus === "not_migrated" || d.evidence.length > 0,
+    (d) => d.evidence.length > 0,
     { message: "根拠は必須です" }
   )
   .refine(
