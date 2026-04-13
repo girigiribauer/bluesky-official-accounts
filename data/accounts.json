@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-04-13T03:29:12.590Z",
-  "total": 3517,
-  "checkedTotal": 2632,
+  "updatedTime": "2026-04-13T06:20:25.117Z",
+  "total": 3518,
+  "checkedTotal": 2633,
   "customDomainAccounts": 438,
-  "weeklyPostedAccounts": 0,
-  "monthlyPostedAccounts": 16,
+  "weeklyPostedAccounts": 1,
+  "monthlyPostedAccounts": 17,
   "accounts": [
     {
       "id": "156ec3b2-73dd-81ec-a552-dbd4d334e788",
@@ -2040,6 +2040,17 @@
       "source": "https://x.com/SeoLabSciTokyo/status/1899714747278540889",
       "createdTime": "2026-02-18T02:55:00.000Z",
       "updatedTime": "2026-03-28T09:03:00.000Z"
+    },
+    {
+      "id": "33fec3b2-73dd-8101-a582-e4aa85a49428",
+      "name": "産業技術総合研究所（産総研）",
+      "category": "学者・研究者・科学者",
+      "status": "dual_active",
+      "twitter": "https://x.com/AIST_JP",
+      "bluesky": "https://bsky.app/profile/aist-jp.bsky.social",
+      "source": "X/Twitter での言及あり\nURLは\nhttps://x.com/AIST_JP/status/2039123124373852426\nです。",
+      "createdTime": "2026-04-11T14:30:00.000Z",
+      "updatedTime": "2026-04-13T04:32:00.000Z"
     },
     {
       "id": "160ec3b2-73dd-8175-aabd-d15591322792",
