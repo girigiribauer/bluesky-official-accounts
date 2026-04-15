@@ -1,1 +1,0 @@
-alter table entries add column approved_at timestamptz;

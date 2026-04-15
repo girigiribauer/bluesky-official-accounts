@@ -1,4 +1,7 @@
-.PHONY: dev stop test build reset
+.PHONY: init dev stop test build reset
+
+init:
+	npm install
 
 dev:
 	npx supabase start || true

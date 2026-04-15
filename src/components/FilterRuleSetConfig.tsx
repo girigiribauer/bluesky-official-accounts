@@ -90,6 +90,7 @@ export const FilterRuleSetConfig = ({
               <i className={["fa-solid fa-pen", styles.filterItemIcon].join(" ")} />
               <input
                 type="text"
+                id="filter-text"
                 className={styles.filterItemInput}
                 onChange={handleChangeText}
                 onKeyDown={handleKeyDown}

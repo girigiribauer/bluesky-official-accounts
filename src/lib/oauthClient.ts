@@ -14,7 +14,7 @@ function getSupabase() {
 }
 
 function buildClientMetadata() {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const baseUrl = process.env.NEXT_PUBLIC_EXTERNAL_URL;
 
   if (!baseUrl || !baseUrl.startsWith("https:")) {
     // ローカル開発: ループバック用メタデータ

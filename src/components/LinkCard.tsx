@@ -1,3 +1,4 @@
+import Image from "next/image";
 import styles from "./LinkCard.module.scss";
 
 type LinkCardProps = {
@@ -21,7 +22,7 @@ export const LinkCard = ({
         <span className={styles.title}>{title}</span>
         <span className={styles.description}>{description}</span>
       </div>
-      <img className={styles.image} src={imageSrc} alt={imageAlt} />
+      <Image className={styles.image} src={imageSrc} alt={imageAlt} width={1960} height={600} />
     </a>
   );
 };

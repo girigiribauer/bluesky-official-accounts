@@ -50,12 +50,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
-          async
-          src="https://embed.bsky.app/static/embed.js"
-          charSet="utf-8"
-        ></script>
-        <meta
+<meta
           name="google-site-verification"
           content="w1ox6Vwl_FxXfyxTKWgNIkM7xnWHl7TQp1HZsrMm-O8"
         />

@@ -6,6 +6,7 @@ create table moderators (
   did            text not null unique,
   handle         text not null,
   display_name   text not null,
+  avatar         text,
   is_admin       boolean not null default false,
   created_at     timestamptz not null default now(),
   last_active_at timestamptz not null default now()
@@ -14,23 +15,17 @@ create table moderators (
 -- ---------------------------------------------------------------------------
 -- field_memberships
 -- ---------------------------------------------------------------------------
--- stage の選択可能な値:
---   novice … 入門（操作は即時反映されるが、一人前以上による後追いチェックの対象）
---   member … 一人前（自身の操作はチェック対象外。入門の後追いチェックを担う）
---   expert … 熟練（分類の新設・変更・削除、公開エントリーの編集など分野内の全権限）
 create table field_memberships (
   id           uuid primary key default gen_random_uuid(),
   moderator_id uuid not null references moderators(id),
   field_id     text not null,
-  stage        text not null default 'novice' check (stage in ('novice', 'member', 'expert')),
   joined_at    timestamptz not null default now(),
   unique (moderator_id, field_id)
 );
 
 -- ---------------------------------------------------------------------------
 -- classifications
--- 分野内の分類。熟練モデレーターのみ追加・変更・削除可能。
--- 削除は論理削除（deleted_at）で参照整合性を保つ。
+-- 分野内の分類。削除は論理削除（deleted_at）で参照整合性を保つ。
 -- ---------------------------------------------------------------------------
 create table classifications (
   id         uuid primary key default gen_random_uuid(),
@@ -121,7 +116,6 @@ create table evidences (
 -- activities
 -- 全操作の記録。action の選択可能な値:
 --   migrate … データ移行時の自動インポート
---   submit  … ユーザーからの新規投稿
 --   approve … モデレーターによる承認
 --   reject  … モデレーターによる却下
 --   edit    … モデレーターによる編集
@@ -130,7 +124,7 @@ create table activities (
   id           uuid primary key default gen_random_uuid(),
   entry_id     uuid not null references entries(id),
   moderator_id uuid references moderators(id),
-  action       text not null check (action in ('migrate', 'submit', 'approve', 'reject', 'edit')),
+  action       text not null check (action in ('migrate', 'approve', 'reject', 'edit')),
   payload      jsonb not null default '{}',
   created_at   timestamptz not null default now()
 );
@@ -140,10 +134,10 @@ create table activities (
 -- サイト全体のお知らせ。管理者が Supabase Studio または管理画面で更新する。
 -- ---------------------------------------------------------------------------
 create table news (
-  id         uuid primary key default gen_random_uuid(),
-  title      text not null,
+  id           uuid primary key default gen_random_uuid(),
+  title        text not null,
   published_at date not null,
-  created_at timestamptz not null default now()
+  created_at   timestamptz not null default now()
 );
 
 -- ---------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { GlobalHeaderServer as GlobalHeader } from "src/components/GlobalHeaderServer";
 import { HeroImage } from "src/components/HeroImage";
 import { PageNavigation } from "src/components/PageNavigation";
@@ -92,9 +93,11 @@ export default async function OpenPublicPage() {
 
           <section className="page-section">
             <h1>X(Twitter) のみに依存し続ける広報リスク</h1>
-            <img
+            <Image
               src="/images/content-sinking-ship.png"
               alt=""
+              width={1400}
+              height={400}
               className={styles.contentImage}
             />
             <p>
@@ -171,9 +174,11 @@ export default async function OpenPublicPage() {
 
           <section className="page-section">
             <h1>オープン・パブリックな Bluesky の世界へ移行しよう！</h1>
-            <img
+            <Image
               src="/images/content-noahs-ark.png"
               alt=""
+              width={1400}
+              height={400}
               className={styles.contentImage}
             />
             <p>
