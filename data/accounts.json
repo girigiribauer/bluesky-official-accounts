@@ -1,8 +1,8 @@
 {
-  "updatedTime": "2026-04-15T23:50:47.044Z",
+  "updatedTime": "2026-04-16T03:25:28.621Z",
   "total": 3518,
-  "checkedTotal": 2633,
-  "customDomainAccounts": 438,
+  "checkedTotal": 2573,
+  "customDomainAccounts": 427,
   "weeklyPostedAccounts": 1,
   "monthlyPostedAccounts": 8,
   "accounts": [
@@ -54,12 +54,12 @@
       "id": "f8754398-d5c0-40fb-806e-4a4e193673a6",
       "name": "Lula（ルーラ大統領）",
       "category": "政府・省庁・国会議員",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/LulaOficial",
-      "bluesky": "https://bsky.app/profile/lulaoficial.bsky.social",
-      "source": "Bluesky公式アカウントにて紹介されています\nhttps://x.com/bluesky/status/1778810092428931482",
+      "bluesky": null,
+      "source": "Bluesky公式アカウントにて紹介されています\nhttps://x.com/bluesky/status/1778810092428931482\nハンドル解決失敗: lulaoficial.bsky.social",
       "createdTime": "2024-04-15T00:55:00.000Z",
-      "updatedTime": "2024-06-06T05:25:00.000Z"
+      "updatedTime": "2026-04-16T00:36:00.000Z"
     },
     {
       "id": "135ec3b2-73dd-81b7-bf8f-e1c8633b4a06",
@@ -769,12 +769,12 @@
       "id": "178ec3b2-73dd-81cf-a105-f69311a04b70",
       "name": "Europa-Universität Viadrina Frankfurt (Oder)",
       "category": "教育機関",
-      "status": "migrated",
+      "status": "not_migrated",
       "twitter": "https://x.com/viadrina",
-      "bluesky": "https://bsky.app/profile/viadrina.bsky.social",
-      "source": "https://x.com/viadrina/status/1877645908516417700",
+      "bluesky": null,
+      "source": "https://x.com/viadrina/status/1877645908516417700\nハンドル解決失敗: viadrina.bsky.social",
       "createdTime": "2025-01-11T08:01:00.000Z",
-      "updatedTime": "2025-01-12T03:46:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "178ec3b2-73dd-8111-a183-ced03cd61b56",
@@ -835,12 +835,12 @@
       "id": "178ec3b2-73dd-81c2-9b28-d6dd4be04db5",
       "name": "Heinrich-Heine-Universität Düsseldorf",
       "category": "教育機関",
-      "status": "migrated",
+      "status": "not_migrated",
       "twitter": "https://x.com/HHU_de/",
-      "bluesky": "https://bsky.app/profile/hhu.bsky.social",
-      "source": "https://x.com/HHU_de/status/1877651599335518556\nhttps://www.hhu.de/social-media",
+      "bluesky": null,
+      "source": "https://x.com/HHU_de/status/1877651599335518556\nhttps://www.hhu.de/social-media\nハンドル解決失敗: hhu.bsky.social",
       "createdTime": "2025-01-11T07:54:00.000Z",
-      "updatedTime": "2025-01-12T03:46:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "1a7ec3b2-73dd-816b-aae4-c910e4c1bbc7",
@@ -868,12 +868,12 @@
       "id": "178ec3b2-73dd-817b-aaee-fc371f6e5f07",
       "name": "Hochschule für Musik und Theater Hamburg",
       "category": "教育機関",
-      "status": "migrated",
+      "status": "not_migrated",
       "twitter": "https://x.com/HfMT_Hamburg",
-      "bluesky": "https://bsky.app/profile/hfmt-hamburg.bsky.social",
-      "source": "https://x.com/HfMT_Hamburg/status/1877657670297010569",
+      "bluesky": null,
+      "source": "https://x.com/HfMT_Hamburg/status/1877657670297010569\nハンドル解決失敗: hfmt-hamburg.bsky.social",
       "createdTime": "2025-01-11T08:15:00.000Z",
-      "updatedTime": "2025-01-13T15:51:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "178ec3b2-73dd-8173-849b-c625de85ebda",
@@ -923,12 +923,12 @@
       "id": "178ec3b2-73dd-8101-8990-e65b65a35e67",
       "name": "Leibniz Centre for Tropical Marine Research (ZMT)",
       "category": "教育機関",
-      "status": "migrated",
+      "status": "not_migrated",
       "twitter": "https://x.com/LeibnizZMT",
-      "bluesky": "https://bsky.app/profile/leibniz-zmt.bsky.social",
-      "source": "研究機関\nhttps://x.com/LeibnizZMT/status/1877669212996677885\n",
+      "bluesky": null,
+      "source": "研究機関\nhttps://x.com/LeibnizZMT/status/1877669212996677885\n\nハンドル解決失敗: leibniz-zmt.bsky.social",
       "createdTime": "2025-01-11T08:32:00.000Z",
-      "updatedTime": "2025-01-13T15:51:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "178ec3b2-73dd-81c4-b468-d3ea3f7130b1",
@@ -1093,7 +1093,7 @@
       "bluesky": "https://bsky.app/profile/uniulm.bsky.social",
       "source": "https://x.com/uni_ulm/status/1849414627119043039",
       "createdTime": "2025-01-11T11:04:00.000Z",
-      "updatedTime": "2025-01-14T04:39:00.000Z"
+      "updatedTime": "2026-04-16T00:02:00.000Z"
     },
     {
       "id": "178ec3b2-73dd-8149-8c2a-dfe2570703a6",
@@ -1110,12 +1110,12 @@
       "id": "178ec3b2-73dd-81f7-9e97-def8e54ad66d",
       "name": "Universität Würzburg",
       "category": "教育機関",
-      "status": "migrated",
+      "status": "not_migrated",
       "twitter": "https://x.com/Uni_WUE",
-      "bluesky": "https://bsky.app/profile/uniwuerzburg.bsky.social",
-      "source": "https://x.com/Uni_WUE/status/1877647895966404693",
+      "bluesky": null,
+      "source": "https://x.com/Uni_WUE/status/1877647895966404693\nハンドル解決失敗: uniwuerzburg.bsky.social",
       "createdTime": "2025-01-11T11:05:00.000Z",
-      "updatedTime": "2025-01-14T04:39:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "15cec3b2-73dd-81d5-9f47-f4f118aef8eb",
@@ -1539,12 +1539,12 @@
       "id": "156ec3b2-73dd-81a6-8ede-e90a8d8178c4",
       "name": "The Lancet",
       "category": "学者・研究者・科学者",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/TheLancet",
-      "bluesky": "https://bsky.app/profile/thelancet.bsky.social",
-      "source": "分類不明。学術雑誌です。公式確認：https://x.com/TheLancet/status/1863584951154708782",
+      "bluesky": null,
+      "source": "分類不明。学術雑誌です。公式確認：https://x.com/TheLancet/status/1863584951154708782\nハンドル解決失敗: thelancet.bsky.social",
       "createdTime": "2024-12-08T06:55:00.000Z",
-      "updatedTime": "2024-12-08T07:20:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "151ec3b2-73dd-81bf-bbc5-c170604f132b",
@@ -2050,7 +2050,7 @@
       "bluesky": "https://bsky.app/profile/aist-jp.bsky.social",
       "source": "X/Twitter での言及あり\nURLは\nhttps://x.com/AIST_JP/status/2039123124373852426\nです。",
       "createdTime": "2026-04-11T14:30:00.000Z",
-      "updatedTime": "2026-04-13T04:32:00.000Z"
+      "updatedTime": "2026-04-16T00:02:00.000Z"
     },
     {
       "id": "160ec3b2-73dd-8175-aabd-d15591322792",
@@ -2232,12 +2232,12 @@
       "id": "174ec3b2-73dd-8127-963c-d8f94d19fae5",
       "name": "中央大学ドローン研究会",
       "category": "学生活動",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/chuodronecircle",
-      "bluesky": "https://bsky.app/profile/chuodronecircle.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: chuodronecircle.bsky.social",
       "createdTime": "2025-01-07T03:03:00.000Z",
-      "updatedTime": "2025-01-07T04:00:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "174ec3b2-73dd-81e4-b061-ee517eca6b8c",
@@ -2397,12 +2397,12 @@
       "id": "1c2ec3b2-73dd-81c0-b143-c1d0650dd260",
       "name": "岩手大学だめライフ愛好会",
       "category": "学生活動",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/gandame_life",
-      "bluesky": "https://bsky.app/profile/naggy1030.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: naggy1030.bsky.social",
       "createdTime": "2025-03-26T02:39:00.000Z",
-      "updatedTime": "2025-04-23T11:43:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "173ec3b2-73dd-81ca-9569-e6c6f814d49c",
@@ -2617,12 +2617,12 @@
       "id": "c86b2abe-501f-44a7-9503-7f994a786b9d",
       "name": "EWRS総合情報共有局（EGIC）",
       "category": "気象・災害",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/EGIC_Info",
-      "bluesky": "https://bsky.app/profile/ewrs.info",
-      "source": "カスタムドメイン取得済です（公式サイト https://www.ewrs.info/）",
+      "bluesky": null,
+      "source": "カスタムドメイン取得済です（公式サイト https://www.ewrs.info/）\nハンドル解決失敗: ewrs.info",
       "createdTime": "2024-03-16T00:40:00.000Z",
-      "updatedTime": "2024-11-30T08:32:00.000Z"
+      "updatedTime": "2026-04-16T00:36:00.000Z"
     },
     {
       "id": "25bec3b2-73dd-8171-83d1-dfe21e967bb3",
@@ -2749,12 +2749,12 @@
       "id": "156ec3b2-73dd-81e1-873f-c691394cf21d",
       "name": "AFP News Agency (AFP通信)",
       "category": "報道（マスメディア）",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/AFP",
-      "bluesky": "https://bsky.app/profile/afpnews.bsky.social",
-      "source": "新規追加ではなく更新です。「来て欲しいアカウント一覧」より。本人確認：https://linktr.ee/afpnews （TwitterプロフィールのURLがこちらにリダイレクトされます）\n\n公式SNS英語版のまとめページに掲載されています。\nhttps://linktr.ee/afpnews\n（このページへはX公式アカウントのヘッドからも行けます）\n\nなお仏語版のブルースカイ公式は\nhttps://bsky.app/profile/afpfr.bsky.social　です。",
+      "bluesky": null,
+      "source": "新規追加ではなく更新です。「来て欲しいアカウント一覧」より。本人確認：https://linktr.ee/afpnews （TwitterプロフィールのURLがこちらにリダイレクトされます）\n\n公式SNS英語版のまとめページに掲載されています。\nhttps://linktr.ee/afpnews\n（このページへはX公式アカウントのヘッドからも行けます）\n\nなお仏語版のブルースカイ公式は\nhttps://bsky.app/profile/afpfr.bsky.social　です。\nハンドル解決失敗: afpnews.bsky.social",
       "createdTime": "2024-12-08T08:00:00.000Z",
-      "updatedTime": "2024-12-08T10:58:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "156ec3b2-73dd-8103-9af0-c53b19cc488f",
@@ -2914,12 +2914,12 @@
       "id": "160ec3b2-73dd-8194-beab-e70f168a0dc1",
       "name": "Le Monde (英語)",
       "category": "報道（マスメディア）",
-      "status": "migrated",
+      "status": "not_migrated",
       "twitter": "https://x.com/LeMonde_EN",
-      "bluesky": "https://bsky.app/profile/lemonde-en.bsky.social",
-      "source": "https://x.com/LeMonde_EN/status/1869041141158707337\n\n同一性確認\nhttps://x.com/LeMonde_EN/status/1869041141158707337\n「Bluesky 完全移行」に更新。\nhttps://x.com/LeMonde_EN/status/1881344588339933619",
+      "bluesky": null,
+      "source": "https://x.com/LeMonde_EN/status/1869041141158707337\n\n同一性確認\nhttps://x.com/LeMonde_EN/status/1869041141158707337\n「Bluesky 完全移行」に更新。\nhttps://x.com/LeMonde_EN/status/1881344588339933619\nハンドル解決失敗: lemonde-en.bsky.social",
       "createdTime": "2024-12-18T03:09:00.000Z",
-      "updatedTime": "2025-01-24T03:59:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "156ec3b2-73dd-8123-b360-d1c2b36f058d",
@@ -3486,12 +3486,12 @@
       "id": "13bec3b2-73dd-81b4-b103-f27e3912b43a",
       "name": "高知さんさんテレビ",
       "category": "報道（マスメディア）",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/sunsuntv",
-      "bluesky": "https://bsky.app/profile/sunsuntv.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: sunsuntv.bsky.social",
       "createdTime": "2024-11-11T08:33:00.000Z",
-      "updatedTime": "2024-11-13T08:37:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "156ec3b2-73dd-8170-9640-cab41e5a9bb0",
@@ -3750,23 +3750,23 @@
       "id": "1b3ec3b2-73dd-81e7-aad2-c8580cb3dbac",
       "name": "DiscussingFilm",
       "category": "ネットメディア",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/DiscussingFilm",
-      "bluesky": "https://bsky.app/profile/discussingfilm.bsky.social",
-      "source": "X公式アカウントによるBlueskyアカウントの告知\nhttps://x.com/DiscussingFilm/status/1857166474718118029",
+      "bluesky": null,
+      "source": "X公式アカウントによるBlueskyアカウントの告知\nhttps://x.com/DiscussingFilm/status/1857166474718118029\nハンドル解決失敗: discussingfilm.bsky.social",
       "createdTime": "2025-03-11T00:20:00.000Z",
-      "updatedTime": "2025-03-17T08:58:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "c55de209-1cac-4e5a-bc62-1ae0222f20e7",
       "name": "Engadget",
       "category": "ネットメディア",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/engadget",
-      "bluesky": "https://bsky.app/profile/engadget.bsky.social",
-      "source": "https://twitter.com/engadget/status/1658856709954101249",
+      "bluesky": null,
+      "source": "https://twitter.com/engadget/status/1658856709954101249\nハンドル解決失敗: engadget.bsky.social",
       "createdTime": "2024-02-10T04:22:00.000Z",
-      "updatedTime": "2024-06-06T05:30:00.000Z"
+      "updatedTime": "2026-04-16T00:36:00.000Z"
     },
     {
       "id": "97a9c5fb-f7dc-4885-a08d-3d2a6a67a7a7",
@@ -3904,12 +3904,12 @@
       "id": "156ec3b2-73dd-81bf-9c26-d4e309542e18",
       "name": "Nature Portfolio",
       "category": "ネットメディア",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/NaturePortfolio",
-      "bluesky": "https://bsky.app/profile/natureportfolio.bsky.social",
-      "source": "複数の学術雑誌の総合アカウントです。公式確認：https://x.com/NaturePortfolio/status/1857383582861344884\n→少なくとも人ではないが、ネットメディアが比較的近そう？\n\n複数の学術雑誌の総合アカウントです。公式確認：https://x.com/NaturePortfolio/status/1857383582861344884\n\nNature誌本体に加え各種ジャーナルのアカウントも続々運用開始していますが、各種ジャーナルはたくさんあるので当アカウントのスターターパック参照：https://go.bsky.app/TxfoDzu\n※各Twitterから確認できるもの、現時点ではできないもの、共に含まれています。\n\n（新規追加ではなく根拠欄の更新です）",
+      "bluesky": null,
+      "source": "複数の学術雑誌の総合アカウントです。公式確認：https://x.com/NaturePortfolio/status/1857383582861344884\n→少なくとも人ではないが、ネットメディアが比較的近そう？\n\n複数の学術雑誌の総合アカウントです。公式確認：https://x.com/NaturePortfolio/status/1857383582861344884\n\nNature誌本体に加え各種ジャーナルのアカウントも続々運用開始していますが、各種ジャーナルはたくさんあるので当アカウントのスターターパック参照：https://go.bsky.app/TxfoDzu\n※各Twitterから確認できるもの、現時点ではできないもの、共に含まれています。\n\n（新規追加ではなく根拠欄の更新です）\nハンドル解決失敗: natureportfolio.bsky.social",
       "createdTime": "2024-12-08T23:05:00.000Z",
-      "updatedTime": "2024-12-20T03:39:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "13dec3b2-73dd-8119-91a8-d066f89c2baa",
@@ -4388,12 +4388,12 @@
       "id": "134ec3b2-73dd-8115-9257-c7a183d55667",
       "name": "ほぼ日（ほぼにち）",
       "category": "ネットメディア",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/1101complus",
-      "bluesky": "https://bsky.app/profile/hobonichi.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: hobonichi.bsky.social",
       "createdTime": "2024-11-04T00:51:00.000Z",
-      "updatedTime": "2024-11-04T03:47:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "f71153a5-be4e-4048-9f79-657ac74fa395",
@@ -5631,12 +5631,12 @@
       "id": "14eec3b2-73dd-81f0-9cc6-facc4114ab30",
       "name": "桑原哲夫 / kuwabara tetsuo",
       "category": "美術家・芸術家",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/kwbrt",
-      "bluesky": "https://bsky.app/profile/kwbrt.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: kwbrt.bsky.social",
       "createdTime": "2024-11-30T23:14:00.000Z",
-      "updatedTime": "2024-12-09T09:15:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "16bec3b2-73dd-813a-ae4e-f99f19780888",
@@ -5829,12 +5829,12 @@
       "id": "154ec3b2-73dd-81a8-929d-e3dbf7689e60",
       "name": "鷹山",
       "category": "美術家・芸術家",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/Takayama_Maaya",
-      "bluesky": "https://bsky.app/profile/takayama1.bsky.social",
-      "source": "https://x.com/Takayama_Maaya/status/1846823692208427280\n\nhttps://x.com/Takayama_Maaya/status/1846823692208427280\n登録済みアカウントの再分類です。",
+      "bluesky": null,
+      "source": "https://x.com/Takayama_Maaya/status/1846823692208427280\n\nhttps://x.com/Takayama_Maaya/status/1846823692208427280\n登録済みアカウントの再分類です。\nハンドル解決失敗: takayama1.bsky.social",
       "createdTime": "2024-12-06T07:31:00.000Z",
-      "updatedTime": "2024-12-11T05:20:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "e9b95904-ef03-4b73-8561-e82471f297c9",
@@ -7501,12 +7501,12 @@
       "id": "147ec3b2-73dd-8109-b859-dcc523144f31",
       "name": "P-POCO",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/semi_finalfight",
-      "bluesky": "https://bsky.app/profile/ppoco.bsky.social",
-      "source": "https://x.com/semi_finalfight/status/1846791186859938108\nX側からBlueskyアカウントに言及しているURLです。",
+      "bluesky": null,
+      "source": "https://x.com/semi_finalfight/status/1846791186859938108\nX側からBlueskyアカウントに言及しているURLです。\nハンドル解決失敗: ppoco.bsky.social",
       "createdTime": "2024-11-23T20:16:00.000Z",
-      "updatedTime": "2024-11-24T02:33:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "134ec3b2-73dd-814f-b133-fdc36188bf5e",
@@ -8227,12 +8227,12 @@
       "id": "13bec3b2-73dd-81f1-88f9-cf3da312e202",
       "name": "アミュー",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/amuse8",
-      "bluesky": "https://bsky.app/profile/amuse8.bsky.social",
-      "source": "https://x.com/amuse8/status/1763177013370912784\nX側からBlueskyアカウントに言及しているURLです。",
+      "bluesky": null,
+      "source": "https://x.com/amuse8/status/1763177013370912784\nX側からBlueskyアカウントに言及しているURLです。\nハンドル解決失敗: amuse8.bsky.social",
       "createdTime": "2024-11-11T15:25:00.000Z",
-      "updatedTime": "2024-11-12T00:19:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "13bec3b2-73dd-815e-bd84-ea9885f7ef63",
@@ -8601,12 +8601,12 @@
       "id": "134ec3b2-73dd-810e-acb2-c452a2e93fa1",
       "name": "おーうち",
       "category": "漫画家・イラストレーター",
-      "status": "account_created",
+      "status": "not_migrated",
       "twitter": "https://x.com/oo00063",
-      "bluesky": "https://bsky.app/profile/oo00063.bsky.social",
-      "source": "https://x.com/oo00063/status/1755192147773714792\nX側からBlueskyアカウントに言及しているURLです。",
+      "bluesky": null,
+      "source": "https://x.com/oo00063/status/1755192147773714792\nX側からBlueskyアカウントに言及しているURLです。\nハンドル解決失敗: oo00063.bsky.social",
       "createdTime": "2024-11-04T14:48:00.000Z",
-      "updatedTime": "2024-11-12T00:35:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "13eec3b2-73dd-81e6-a0c4-d3a68f466d51",
@@ -8997,12 +8997,12 @@
       "id": "137ec3b2-73dd-816b-b322-e9429f8b0ff4",
       "name": "カナエサト",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/kanae7sato",
-      "bluesky": "https://bsky.app/profile/kanaesato.bsky.social",
-      "source": "https://x.com/kanae7sato/status/1846817086376759637",
+      "bluesky": null,
+      "source": "https://x.com/kanae7sato/status/1846817086376759637\nハンドル解決失敗: kanaesato.bsky.social",
       "createdTime": "2024-11-07T05:29:00.000Z",
-      "updatedTime": "2024-11-07T06:38:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "b1cb158c-f59b-443c-b9b1-26e8c8fd28eb",
@@ -9140,12 +9140,12 @@
       "id": "15aec3b2-73dd-81e0-be39-fa0ee6ad5195",
       "name": "かわすみ",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/kawasumi3",
-      "bluesky": "https://bsky.app/profile/kawasumi3.bsky.social",
-      "source": "https://x.com/kawasumi3/status/1755357250896695386\nXにて明記",
+      "bluesky": null,
+      "source": "https://x.com/kawasumi3/status/1755357250896695386\nXにて明記\nハンドル解決失敗: kawasumi3.bsky.social",
       "createdTime": "2024-12-12T08:40:00.000Z",
-      "updatedTime": "2024-12-12T10:16:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "13bec3b2-73dd-81bd-9d55-d44bdfa0f6df",
@@ -11219,12 +11219,12 @@
       "id": "178ec3b2-73dd-81ed-85c2-fc1d56ac7b7a",
       "name": "はざま勇人",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/hazamayuu",
-      "bluesky": "https://bsky.app/profile/hazamayuto.bsky.social",
-      "source": "https://x.com/hazamayuu/status/1847072672628592760\nhttps://lit.link/hazamayuto\nXプロフィール欄リンク集にも記載",
+      "bluesky": null,
+      "source": "https://x.com/hazamayuu/status/1847072672628592760\nhttps://lit.link/hazamayuto\nXプロフィール欄リンク集にも記載\nハンドル解決失敗: hazamayuto.bsky.social",
       "createdTime": "2025-01-11T22:20:00.000Z",
-      "updatedTime": "2025-01-15T00:29:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "13eec3b2-73dd-816b-b688-d0a103be65e3",
@@ -11736,12 +11736,12 @@
       "id": "14fec3b2-73dd-81b0-ac8b-d85123730c1e",
       "name": "ふめし",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/fumesh0702",
-      "bluesky": "https://bsky.app/profile/fusan0702.bsky.social",
-      "source": "https://x.com/fumesh0702/status/1857007277879738719\nX側からBlueskyアカウントに言及しているURLです。",
+      "bluesky": null,
+      "source": "https://x.com/fumesh0702/status/1857007277879738719\nX側からBlueskyアカウントに言及しているURLです。\nハンドル解決失敗: fusan0702.bsky.social",
       "createdTime": "2024-12-01T11:03:00.000Z",
-      "updatedTime": "2024-12-02T23:16:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "14bec3b2-73dd-815f-9b2b-c7e577b95b55",
@@ -15036,12 +15036,12 @@
       "id": "15fec3b2-73dd-81e3-9926-cf314afa92cc",
       "name": "夜汽車",
       "category": "漫画家・イラストレーター",
-      "status": "account_created",
+      "status": "not_migrated",
       "twitter": "https://x.com/YOGISYA",
-      "bluesky": "https://bsky.app/profile/yogisya-art.bsky.social",
-      "source": "https://x.com/YOGISYA/status/1856121350827717060\nhttps://yogisya.art/\nXプロフィール欄のサイト内にも記載\nなりすまし防止の為にBlueskyアカウント作成と、投稿も頻繁に行われていない為ステータスを「両方運用中」→「アカウント作成済」に変更",
+      "bluesky": null,
+      "source": "https://x.com/YOGISYA/status/1856121350827717060\nhttps://yogisya.art/\nXプロフィール欄のサイト内にも記載\nなりすまし防止の為にBlueskyアカウント作成と、投稿も頻繁に行われていない為ステータスを「両方運用中」→「アカウント作成済」に変更\nハンドル解決失敗: yogisya-art.bsky.social",
       "createdTime": "2024-12-17T11:24:00.000Z",
-      "updatedTime": "2024-12-17T11:27:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "14eec3b2-73dd-818f-ba57-c9a257438210",
@@ -15817,12 +15817,12 @@
       "id": "133ec3b2-73dd-810d-901d-cf42147e0b66",
       "name": "山本四角",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/s_k_k",
-      "bluesky": "https://bsky.app/profile/yamamotoshikaku.bsky.social",
-      "source": "https://x.com/s_k_k/status/1847112386081443941",
+      "bluesky": null,
+      "source": "https://x.com/s_k_k/status/1847112386081443941\nハンドル解決失敗: yamamotoshikaku.bsky.social",
       "createdTime": "2024-11-03T22:25:00.000Z",
-      "updatedTime": "2024-11-04T06:51:00.000Z"
+      "updatedTime": "2026-04-16T00:31:00.000Z"
     },
     {
       "id": "753ab323-cc17-4fc2-991a-82e917258b87",
@@ -15927,12 +15927,12 @@
       "id": "138ec3b2-73dd-8174-b9d4-da090bebe27d",
       "name": "岡本健太郎",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/OkamotoKentarou",
-      "bluesky": "https://bsky.app/profile/okamotokentarou.bsky.social",
-      "source": "https://x.com/OkamotoKentarou/status/1755447792879956219\nX側からBlueskyアカウントに言及しているURLです。",
+      "bluesky": null,
+      "source": "https://x.com/OkamotoKentarou/status/1755447792879956219\nX側からBlueskyアカウントに言及しているURLです。\nハンドル解決失敗: okamotokentarou.bsky.social",
       "createdTime": "2024-11-08T13:51:00.000Z",
-      "updatedTime": "2024-11-12T00:26:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "145ec3b2-73dd-81df-aa9c-e9e3232f73c4",
@@ -16103,12 +16103,12 @@
       "id": "133ec3b2-73dd-8119-aef3-d5b9c17deec3",
       "name": "市川ラク",
       "category": "漫画家・イラストレーター",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/Raku_ichikawa",
-      "bluesky": "https://bsky.app/profile/rakutanbul.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: rakutanbul.bsky.social",
       "createdTime": "2024-11-03T04:56:00.000Z",
-      "updatedTime": "2024-11-03T14:40:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "13aec3b2-73dd-81c2-9c3e-f976440f7ef7",
@@ -16136,12 +16136,12 @@
       "id": "133ec3b2-73dd-816d-8c32-d9df24f11c93",
       "name": "幸村誠",
       "category": "漫画家・イラストレーター",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/makotoyukimura",
-      "bluesky": "https://bsky.app/profile/makotoyukimura.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: makotoyukimura.bsky.social",
       "createdTime": "2024-11-03T20:52:00.000Z",
-      "updatedTime": "2024-11-04T06:44:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "16eec3b2-73dd-81e9-8ba6-c0ae5c14db97",
@@ -16851,12 +16851,12 @@
       "id": "88a9db53-33f9-4723-97a1-ef6ccc627978",
       "name": "村カルキ",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/murakaruki",
-      "bluesky": "https://bsky.app/profile/murakaruki.bsky.social",
-      "source": "Twitterにてアカウント報告あり\nhttps://x.com/murakaruki/status/1760064933155484040",
+      "bluesky": null,
+      "source": "Twitterにてアカウント報告あり\nhttps://x.com/murakaruki/status/1760064933155484040\nハンドル解決失敗: murakaruki.bsky.social",
       "createdTime": "2024-02-24T14:10:00.000Z",
-      "updatedTime": "2024-06-06T05:32:00.000Z"
+      "updatedTime": "2026-04-16T00:36:00.000Z"
     },
     {
       "id": "13bec3b2-73dd-81ea-bc9d-dac0d6eceb7c",
@@ -17181,12 +17181,12 @@
       "id": "15cec3b2-73dd-81b6-9685-e1855be8e089",
       "name": "桜坂まい/SAKURAZAKA",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/houkago_danshi",
-      "bluesky": "https://bsky.app/profile/houkago-danshi.bsky.social",
-      "source": "https://lit.link/houkagodanshi\nXプロフィール欄リンク集に明記",
+      "bluesky": null,
+      "source": "https://lit.link/houkagodanshi\nXプロフィール欄リンク集に明記\nハンドル解決失敗: houkago-danshi.bsky.social",
       "createdTime": "2024-12-14T22:28:00.000Z",
-      "updatedTime": "2024-12-15T07:04:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "6e38a0b4-aece-42b4-a8aa-f2f88bb7b8ec",
@@ -17544,12 +17544,12 @@
       "id": "13aec3b2-73dd-81be-8e22-c2df646b47c4",
       "name": "武六甲理衣",
       "category": "漫画家・イラストレーター",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/Lee_Brocco",
-      "bluesky": "https://bsky.app/profile/leeborcco.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: leeborcco.bsky.social",
       "createdTime": "2024-11-10T17:41:00.000Z",
-      "updatedTime": "2024-11-11T05:11:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "137ec3b2-73dd-8154-a4ee-dc001269d35d",
@@ -18237,12 +18237,12 @@
       "id": "133ec3b2-73dd-8157-b8a5-dc3690b62dc7",
       "name": "玉置勉強",
       "category": "漫画家・イラストレーター",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/TamaokiBenkyoo",
-      "bluesky": "https://bsky.app/profile/tamaokibenkyoo.bsky.social",
-      "source": "https://x.com/TamaokiBenkyoo/status/1738703889007001872",
+      "bluesky": null,
+      "source": "https://x.com/TamaokiBenkyoo/status/1738703889007001872\nハンドル解決失敗: tamaokibenkyoo.bsky.social",
       "createdTime": "2024-11-03T04:48:00.000Z",
-      "updatedTime": "2024-11-03T14:39:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "127ec3b2-73dd-819f-be89-d1ce8ecd8b38",
@@ -20855,12 +20855,12 @@
       "id": "16bec3b2-73dd-811f-bc39-dff4e14af629",
       "name": "黒井よだか",
       "category": "漫画家・イラストレーター",
-      "status": "unverifiable",
+      "status": "not_migrated",
       "twitter": "https://x.com/k_yodaka_02",
-      "bluesky": "https://bsky.app/profile/kuroi-yodaka.bsky.social",
-      "source": "https://x.com/k_yodaka_02/status/1850901969076183432\n→怪しいモデレーションリストを使っておりブロックされているため確認できませんでした",
+      "bluesky": null,
+      "source": "https://x.com/k_yodaka_02/status/1850901969076183432\n→怪しいモデレーションリストを使っておりブロックされているため確認できませんでした\nハンドル解決失敗: kuroi-yodaka.bsky.social",
       "createdTime": "2024-12-29T04:41:00.000Z",
-      "updatedTime": "2025-01-01T04:54:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "134ec3b2-73dd-81c3-a3a8-fa4df8e32960",
@@ -20943,12 +20943,12 @@
       "id": "13bec3b2-73dd-81c7-b63c-ef5bbb39a284",
       "name": "龍幸伸",
       "category": "漫画家・イラストレーター",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/TatuYukinobu",
-      "bluesky": "https://bsky.app/profile/tatuyukinobu.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: tatuyukinobu.bsky.social",
       "createdTime": "2024-11-11T15:28:00.000Z",
-      "updatedTime": "2024-11-13T06:31:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "149ec3b2-73dd-81a2-b9d0-c2ca6c8a2c72",
@@ -21141,12 +21141,12 @@
       "id": "13dec3b2-73dd-81a5-ab38-dd0f1aca5330",
       "name": "pha",
       "category": "小説家・作家",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/pha",
-      "bluesky": "https://bsky.app/profile/pha.bsky.social",
-      "source": "https://bsky.app/profile/tomei-1111.bsky.social/post/3kxmok63xug2p",
+      "bluesky": null,
+      "source": "https://bsky.app/profile/tomei-1111.bsky.social/post/3kxmok63xug2p\nハンドル解決失敗: pha.bsky.social",
       "createdTime": "2024-11-13T12:55:00.000Z",
-      "updatedTime": "2024-11-13T14:47:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "159ec3b2-73dd-81a4-90e4-fe0b4795f8e0",
@@ -21702,12 +21702,12 @@
       "id": "151ec3b2-73dd-81f3-a68c-dc8a0a542e7b",
       "name": "加藤達也　フリーの編集ライター",
       "category": "小説家・作家",
-      "status": "migrated",
+      "status": "not_migrated",
       "twitter": "https://x.com/Tochan_Gambare/",
-      "bluesky": "https://bsky.app/profile/kato-tatsuya.bsky.social",
-      "source": "https://x.com/Tochan_Gambare/status/1863094938164175229",
+      "bluesky": null,
+      "source": "https://x.com/Tochan_Gambare/status/1863094938164175229\nハンドル解決失敗: kato-tatsuya.bsky.social",
       "createdTime": "2024-12-03T09:59:00.000Z",
-      "updatedTime": "2024-12-04T11:01:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "16cec3b2-73dd-8124-97ac-fa3855a64193",
@@ -22010,12 +22010,12 @@
       "id": "158ec3b2-73dd-8141-8697-c24955784f80",
       "name": "待川匙",
       "category": "小説家・作家",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/saji_machikawa",
-      "bluesky": "https://bsky.app/profile/sajimachikawa.bsky.social",
-      "source": "Xプロフィール欄リンク集に明記してあります。",
+      "bluesky": null,
+      "source": "Xプロフィール欄リンク集に明記してあります。\nハンドル解決失敗: sajimachikawa.bsky.social",
       "createdTime": "2024-12-10T10:03:00.000Z",
-      "updatedTime": "2024-12-11T00:24:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "179ec3b2-73dd-8177-9b69-d1574e233d56",
@@ -22461,12 +22461,12 @@
       "id": "2cf11e02-312a-4510-9094-20b44d3f2f8e",
       "name": "深緑野分",
       "category": "小説家・作家",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/fukamidori6",
-      "bluesky": "https://bsky.app/profile/fukamidori6.bsky.social",
-      "source": "Twitterにてアカウント報告あり\nhttps://x.com/fukamidori6/status/1705068945986957689\nTwitterは一応運用されていますが代理の方が担当し、ご本人はインスタやBluesky等に顔を出されるとお知らせしております。\nhttps://x.com/fukamidori6/status/1753434542621479298",
+      "bluesky": null,
+      "source": "Twitterにてアカウント報告あり\nhttps://x.com/fukamidori6/status/1705068945986957689\nTwitterは一応運用されていますが代理の方が担当し、ご本人はインスタやBluesky等に顔を出されるとお知らせしております。\nhttps://x.com/fukamidori6/status/1753434542621479298\nハンドル解決失敗: fukamidori6.bsky.social",
       "createdTime": "2024-03-26T08:56:00.000Z",
-      "updatedTime": "2024-06-06T05:33:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "171ec3b2-73dd-81c2-be62-d0982d984946",
@@ -22604,23 +22604,23 @@
       "id": "17bec3b2-73dd-819f-94b3-f45ad082d02f",
       "name": "真下みこと",
       "category": "小説家・作家",
-      "status": "account_created",
+      "status": "not_migrated",
       "twitter": "https://x.com/mikoto_mashita",
-      "bluesky": "https://bsky.app/profile/mikoto-mashita.bsky.social",
-      "source": "https://x.com/mikoto_mashita/status/1847135562639331339",
+      "bluesky": null,
+      "source": "https://x.com/mikoto_mashita/status/1847135562639331339\nハンドル解決失敗: mikoto-mashita.bsky.social",
       "createdTime": "2025-01-14T08:54:00.000Z",
-      "updatedTime": "2025-01-16T12:12:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "124ec3b2-73dd-8152-aff1-f57cffde0f52",
       "name": "真島文吉",
       "category": "小説家・作家",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/ASCIIART_NOVEL",
-      "bluesky": "https://bsky.app/profile/uzonoshinico.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: uzonoshinico.bsky.social",
       "createdTime": "2024-10-19T11:18:00.000Z",
-      "updatedTime": "2024-10-19T12:45:00.000Z"
+      "updatedTime": "2026-04-16T00:31:00.000Z"
     },
     {
       "id": "13aec3b2-73dd-8167-8e5c-db42ff4ebc5a",
@@ -24672,12 +24672,12 @@
       "id": "43ae1577-0f85-46e1-a661-e4c65384df8c",
       "name": "歴史人",
       "category": "出版・書店",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/rekishijin_mag",
-      "bluesky": "https://bsky.app/profile/rekishijin.bsky.social",
-      "source": "Twitterにてアカウント報告あり\nhttps://x.com/rekishijin_mag/status/1755878346049949912",
+      "bluesky": null,
+      "source": "Twitterにてアカウント報告あり\nhttps://x.com/rekishijin_mag/status/1755878346049949912\nハンドル解決失敗: rekishijin.bsky.social",
       "createdTime": "2024-03-18T09:36:00.000Z",
-      "updatedTime": "2025-01-07T04:18:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "1172175e-009f-4c2d-ab38-74d29ac161ec",
@@ -25970,12 +25970,12 @@
       "id": "23e5efaf-8905-4845-834d-7878fdf4990c",
       "name": "HALER / ヘイラー",
       "category": "ゲーム（個人・団体）",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/yufital_haler",
-      "bluesky": "https://bsky.app/profile/haler.jp",
-      "source": "カスタムドメイン取得済です（公式サイト https://haler.jp/）\n公式サイト上部やTwitterプロフィールにもアカウントがリンクされております",
+      "bluesky": null,
+      "source": "カスタムドメイン取得済です（公式サイト https://haler.jp/）\n公式サイト上部やTwitterプロフィールにもアカウントがリンクされております\nハンドル解決失敗: haler.jp",
       "createdTime": "2024-03-16T10:56:00.000Z",
-      "updatedTime": "2024-06-06T05:34:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "1c8ec3b2-73dd-810e-8366-c2847602b159",
@@ -26652,12 +26652,12 @@
       "id": "90c9fd87-3419-4f5e-b748-3ff64805c747",
       "name": "インサイド",
       "category": "ゲーム（個人・団体）",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/insidejp",
-      "bluesky": "https://bsky.app/profile/insidejp.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: insidejp.bsky.social",
       "createdTime": "2024-03-14T09:58:00.000Z",
-      "updatedTime": "2024-06-06T05:34:00.000Z"
+      "updatedTime": "2026-04-16T00:36:00.000Z"
     },
     {
       "id": "4bdafe75-0ee9-4aa3-a472-56a21ae63332",
@@ -27796,12 +27796,12 @@
       "id": "13fec3b2-73dd-8180-a1a3-ea3d7dbe7cbf",
       "name": "ikaruga_nex",
       "category": "音楽（個人・団体）",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/ikaruga_nex",
-      "bluesky": "https://bsky.app/profile/ikaruganex.com",
-      "source": "https://x.com/ikaruga_nex/status/1801092961545142458",
+      "bluesky": null,
+      "source": "https://x.com/ikaruga_nex/status/1801092961545142458\nハンドル解決失敗: ikaruganex.com",
       "createdTime": "2024-11-15T02:16:00.000Z",
-      "updatedTime": "2024-11-15T12:24:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "153ec3b2-73dd-81e6-a17f-e354b6ad3de3",
@@ -27950,12 +27950,12 @@
       "id": "142ec3b2-73dd-81db-a543-f977ea22320c",
       "name": "Pet Shop Boys",
       "category": "音楽（個人・団体）",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/petshopboys",
-      "bluesky": "https://bsky.app/profile/petshopboys.co.uk",
-      "source": "カスタムドメイン設定済",
+      "bluesky": null,
+      "source": "カスタムドメイン設定済\nハンドル解決失敗: petshopboys.co.uk",
       "createdTime": "2024-11-18T22:06:00.000Z",
-      "updatedTime": "2024-11-19T11:59:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "143ec3b2-73dd-8151-b3ce-fff05c9fe3b3",
@@ -28456,12 +28456,12 @@
       "id": "ed103d02-fed1-4fbf-9a25-810381895af1",
       "name": "ライブP(Mr.LIVE)",
       "category": "音楽（個人・団体）",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/mrlive2",
-      "bluesky": "https://bsky.app/profile/mrlive2.com",
-      "source": "カスタムドメイン取得済です（公式サイト https://mrlive2.com/）\nTwitterにてアカウント報告あり\nhttps://x.com/mrlive2/status/1755203116801331666",
+      "bluesky": null,
+      "source": "カスタムドメイン取得済です（公式サイト https://mrlive2.com/）\nTwitterにてアカウント報告あり\nhttps://x.com/mrlive2/status/1755203116801331666\nハンドル解決失敗: mrlive2.com",
       "createdTime": "2024-03-17T23:18:00.000Z",
-      "updatedTime": "2024-06-06T05:35:00.000Z"
+      "updatedTime": "2026-04-16T00:36:00.000Z"
     },
     {
       "id": "13fec3b2-73dd-81a8-89f1-dfa9da91e567",
@@ -28698,12 +28698,12 @@
       "id": "7d6d12d9-1382-4d5f-b123-9935ec99ea36",
       "name": "津久井箇人 a.k.a. そそそ",
       "category": "音楽（個人・団体）",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/sososo291",
-      "bluesky": "https://bsky.app/profile/sososo291.nex-tribe.com",
-      "source": "カスタムドメイン取得済（https://nex-tribe.com/sososo291/）\nTwitterにてアカウント報告あり\nhttps://x.com/sososo291/status/1683801573032620033",
+      "bluesky": null,
+      "source": "カスタムドメイン取得済（https://nex-tribe.com/sososo291/）\nTwitterにてアカウント報告あり\nhttps://x.com/sososo291/status/1683801573032620033\nハンドル解決失敗: sososo291.nex-tribe.com",
       "createdTime": "2024-03-04T23:37:00.000Z",
-      "updatedTime": "2024-06-06T05:35:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "9a270486-08bd-4ec0-a45a-51aba219b1a0",
@@ -29050,12 +29050,12 @@
       "id": "4f96663b-7855-446e-a246-8e79e452b1d9",
       "name": "和多田美咲",
       "category": "声優",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/machauq",
-      "bluesky": "https://bsky.app/profile/machauq.bsky.social",
-      "source": "Twitterにてアカウント報告あり\nhttps://twitter.com/machauq/status/1756111372986077511",
+      "bluesky": null,
+      "source": "Twitterにてアカウント報告あり\nhttps://twitter.com/machauq/status/1756111372986077511\nハンドル解決失敗: machauq.bsky.social",
       "createdTime": "2024-03-06T03:27:00.000Z",
-      "updatedTime": "2024-06-06T05:36:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "14cec3b2-73dd-81f7-8dee-d325a4ab8439",
@@ -29072,12 +29072,12 @@
       "id": "123ec3b2-73dd-8139-a8f3-d0725234e4c0",
       "name": "声優/女優Akari@ゲーム配信",
       "category": "声優",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/Akari_Vofficial",
-      "bluesky": "https://bsky.app/profile/akarivoice.bsky.social",
-      "source": "御本人からアカウントの作り方を教えてほしいとの連絡がきたのでレクチャーし、アカウントを作るところまで確認しております。",
+      "bluesky": null,
+      "source": "御本人からアカウントの作り方を教えてほしいとの連絡がきたのでレクチャーし、アカウントを作るところまで確認しております。\nハンドル解決失敗: akarivoice.bsky.social",
       "createdTime": "2024-10-18T01:31:00.000Z",
-      "updatedTime": "2024-10-18T08:33:00.000Z"
+      "updatedTime": "2026-04-16T00:31:00.000Z"
     },
     {
       "id": "6c383ee3-44b5-44b4-ad62-0749d5465556",
@@ -29556,12 +29556,12 @@
       "id": "b290ae06-9d62-44b6-a225-62636d609440",
       "name": "インディアンムービーウィーク/ SPACEBOX",
       "category": "テレビ番組・実写映画",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/ImwJapan",
-      "bluesky": "https://bsky.app/profile/imwjapan.bsky.social",
-      "source": "Twitterプロフィールに記載されているリンク集にアカウント記載あり\nhttps://lit.link/IMWJapan",
+      "bluesky": null,
+      "source": "Twitterプロフィールに記載されているリンク集にアカウント記載あり\nhttps://lit.link/IMWJapan\nハンドル解決失敗: imwjapan.bsky.social",
       "createdTime": "2024-03-21T06:30:00.000Z",
-      "updatedTime": "2024-06-06T05:36:00.000Z"
+      "updatedTime": "2026-04-16T00:36:00.000Z"
     },
     {
       "id": "14dec3b2-73dd-8115-914d-ede2b248f393",
@@ -29589,12 +29589,12 @@
       "id": "00793f4b-9ee4-4bed-a4fe-df058b5ea58a",
       "name": "映画.com",
       "category": "テレビ番組・実写映画",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/eigacom",
-      "bluesky": "https://bsky.app/profile/eiga.com",
-      "source": "送信時点ではカスタムドメインを設定していませんでしたので未確認としました→内容的に実写映画寄りと判断して、他の実写映画系の方に再分類しつつ公開→Twitterのプロフィールから辿ってBlueskyに間接的にリンクがあったので確認済みに変更\n→カスタムドメイン反映",
+      "bluesky": null,
+      "source": "送信時点ではカスタムドメインを設定していませんでしたので未確認としました→内容的に実写映画寄りと判断して、他の実写映画系の方に再分類しつつ公開→Twitterのプロフィールから辿ってBlueskyに間接的にリンクがあったので確認済みに変更\n→カスタムドメイン反映\nハンドル解決失敗: eiga.com",
       "createdTime": "2024-05-21T10:04:00.000Z",
-      "updatedTime": "2024-11-02T05:36:00.000Z"
+      "updatedTime": "2026-04-16T00:19:00.000Z"
     },
     {
       "id": "141ec3b2-73dd-81b4-8cfc-f11b9c205be0",
@@ -29875,12 +29875,12 @@
       "id": "123ec3b2-73dd-81f0-9087-cf02a8252606",
       "name": "あまつまりな▽",
       "category": "タレント・モデル",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/R_Ap8_",
-      "bluesky": "https://bsky.app/profile/amatsusama.com",
-      "source": "https://x.com/R_Ap8_/status/1847093985065816148\n\nhttps://x.com/R_Ap8_/status/1853430001053683920\n本人確認は上記ツイートによります。\nBlueskyアカウントの運用を開始して、Invalid handleも解消されたようなので、ステータスとBlueskyアカウントの更新をお願いします。\n→ステータス変更",
+      "bluesky": null,
+      "source": "https://x.com/R_Ap8_/status/1847093985065816148\n\nhttps://x.com/R_Ap8_/status/1853430001053683920\n本人確認は上記ツイートによります。\nBlueskyアカウントの運用を開始して、Invalid handleも解消されたようなので、ステータスとBlueskyアカウントの更新をお願いします。\n→ステータス変更\nハンドル解決失敗: amatsusama.com",
       "createdTime": "2024-10-18T11:27:00.000Z",
-      "updatedTime": "2024-11-12T00:48:00.000Z"
+      "updatedTime": "2026-04-16T00:31:00.000Z"
     },
     {
       "id": "141ec3b2-73dd-81e1-99b8-ee2156841941",
@@ -30018,12 +30018,12 @@
       "id": "43f8c572-e205-40c0-a14e-3f947e1f3b20",
       "name": "ふじいあきら",
       "category": "タレント・モデル",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/fujii_akira",
-      "bluesky": "https://bsky.app/profile/fujiiakira.bsky.social",
-      "source": "Twitterにてアカウント報告あり\nhttps://x.com/fujii_akira/status/1755628159419195901",
+      "bluesky": null,
+      "source": "Twitterにてアカウント報告あり\nhttps://x.com/fujii_akira/status/1755628159419195901\nハンドル解決失敗: fujiiakira.bsky.social",
       "createdTime": "2024-03-09T06:31:00.000Z",
-      "updatedTime": "2024-06-06T05:36:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "151ec3b2-73dd-8111-9591-ff32436fba66",
@@ -30084,12 +30084,12 @@
       "id": "31eec3b2-73dd-81bf-b61f-d74ff5f17020",
       "name": "仮面女子（公式）",
       "category": "タレント・モデル",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/AliceProject_mb",
-      "bluesky": "https://bsky.app/profile/kamenjoshi0225.bsky.social",
-      "source": "『アイドル』の分類が分からず、一旦タレント・モデルの分類で申請しております。適切でなければ分類の修正をお願いします。",
+      "bluesky": null,
+      "source": "『アイドル』の分類が分からず、一旦タレント・モデルの分類で申請しております。適切でなければ分類の修正をお願いします。\nハンドル解決失敗: kamenjoshi0225.bsky.social",
       "createdTime": "2026-03-09T03:13:00.000Z",
-      "updatedTime": "2026-03-10T00:06:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "151ec3b2-73dd-81f4-958a-cbbf38184b41",
@@ -30216,12 +30216,12 @@
       "id": "46dca1c3-290f-4484-b2fd-a147dba2adf8",
       "name": "春名風花",
       "category": "タレント・モデル",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/harukazechan",
-      "bluesky": "https://bsky.app/profile/harukazechan.bsky.social",
-      "source": "Twitterにてアカウント報告あり\nhttps://twitter.com/harukazechan/status/1756552454731403588",
+      "bluesky": null,
+      "source": "Twitterにてアカウント報告あり\nhttps://twitter.com/harukazechan/status/1756552454731403588\nハンドル解決失敗: harukazechan.bsky.social",
       "createdTime": "2024-03-16T08:51:00.000Z",
-      "updatedTime": "2024-06-06T05:36:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "321ec3b2-73dd-8167-9704-d7d9157b2f44",
@@ -30876,12 +30876,12 @@
       "id": "151ec3b2-73dd-81b7-941f-dcf2b3f3bd92",
       "name": "Vivaldi",
       "category": "テクノロジー（個人・団体・技術領域）",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/vivaldibrowser",
-      "bluesky": "https://bsky.app/profile/vivaldibrowser.bsky.social",
-      "source": "https://linktr.ee/vivaldibrowser\n→ブラウザなのでエンジニアリングに分類して公開",
+      "bluesky": null,
+      "source": "https://linktr.ee/vivaldibrowser\n→ブラウザなのでエンジニアリングに分類して公開\nハンドル解決失敗: vivaldibrowser.bsky.social",
       "createdTime": "2024-12-03T09:16:00.000Z",
-      "updatedTime": "2024-12-04T00:38:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "13bec3b2-73dd-8146-ab6a-d0c49d799273",
@@ -31239,12 +31239,12 @@
       "id": "15aec3b2-73dd-8111-a591-f6ff46b0d4ad",
       "name": "ノベトーク",
       "category": "ネットサービス",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/novetalk",
-      "bluesky": "https://bsky.app/profile/novetalk.net",
-      "source": "公式サイトヘッダーアイコンからのリンク及びカスタムドメインによる",
+      "bluesky": null,
+      "source": "公式サイトヘッダーアイコンからのリンク及びカスタムドメインによる\nハンドル解決失敗: novetalk.net",
       "createdTime": "2024-12-12T12:32:00.000Z",
-      "updatedTime": "2024-12-12T14:22:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "f86a57a2-50f1-411c-8610-fba02ba367dd",
@@ -31525,12 +31525,12 @@
       "id": "d301a826-eaed-4338-8e09-484e6d3b5152",
       "name": "えっちゃんねる/悦子",
       "category": "配信系",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/ecchan_bom2",
-      "bluesky": "https://bsky.app/profile/ecchan1bom2.bsky.social",
-      "source": "Twitterにてアカウント報告あり\nhttps://x.com/ecchan_bom2/status/1755264339135852693",
+      "bluesky": null,
+      "source": "Twitterにてアカウント報告あり\nhttps://x.com/ecchan_bom2/status/1755264339135852693\nハンドル解決失敗: ecchan1bom2.bsky.social",
       "createdTime": "2024-02-21T00:49:00.000Z",
-      "updatedTime": "2024-06-06T05:38:00.000Z"
+      "updatedTime": "2026-04-16T00:36:00.000Z"
     },
     {
       "id": "623113bc-aab3-4dad-bee7-c499640d0704",
@@ -32625,12 +32625,12 @@
       "id": "1b2ec3b2-73dd-8168-9d06-c94efcf4f730",
       "name": "緋八マナ🐝🤣【にじさんじ】",
       "category": "配信系",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/hibachi_mana/",
-      "bluesky": "https://bsky.app/profile/hibachi-mana.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: hibachi-mana.bsky.social",
       "createdTime": "2025-03-10T19:50:00.000Z",
-      "updatedTime": "2025-03-17T08:58:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "b7e0d3a8-e1fd-416d-8431-d3de682d7f5d",
@@ -32680,12 +32680,12 @@
       "id": "13eec3b2-73dd-811f-8d3d-c19e4daa0218",
       "name": "羽生うまれ",
       "category": "配信系",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/BABU_umare",
-      "bluesky": "https://bsky.app/profile/babuisbabu.bsky.social",
-      "source": "https://x.com/BABU_umare/status/1852957711987581183",
+      "bluesky": null,
+      "source": "https://x.com/BABU_umare/status/1852957711987581183\nハンドル解決失敗: babuisbabu.bsky.social",
       "createdTime": "2024-11-14T12:38:00.000Z",
-      "updatedTime": "2024-11-15T11:42:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "13cec3b2-73dd-81c4-8459-ef2e47ddecef",
@@ -33329,12 +33329,12 @@
       "id": "5a84e535-39a1-4edd-8ed4-6fcd1c86030a",
       "name": "ビッグカツといか姿フライのすぐる",
       "category": "飲食",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/SUGURU_BIGKATSU",
-      "bluesky": "https://bsky.app/profile/suguruxbigkatsu.bsky.social",
-      "source": "https://x.com/SUGURU_BIGKATSU/status/1755911517726445929?s=20",
+      "bluesky": null,
+      "source": "https://x.com/SUGURU_BIGKATSU/status/1755911517726445929?s=20\nハンドル解決失敗: suguruxbigkatsu.bsky.social",
       "createdTime": "2024-02-10T11:20:00.000Z",
-      "updatedTime": "2024-06-06T05:38:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "14eec3b2-73dd-8193-86bb-eb9da40e1462",
@@ -33703,12 +33703,12 @@
       "id": "145ec3b2-73dd-81c7-8ec6-c8ae790193f1",
       "name": "本と喫茶　サッフォー",
       "category": "飲食",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/bookcafe_sappho",
-      "bluesky": "https://bsky.app/profile/bookcafe-sappho.bsky.social",
-      "source": "https://linktr.ee/bookcafe_sappho\n\n※李琴峰さんに一方的に批判的なアカウントはトランス差別反対と書いてあっても信用しなくて構いません。\n→リンク先が根拠としては正しいのでステータスはこのままで公開、ただしコメントは根拠とは一切関係がなく意味不明で、投稿者の主張を通すスペースではないので、今後も続くようなら投稿まるごと削除も検討します",
+      "bluesky": null,
+      "source": "https://linktr.ee/bookcafe_sappho\n\n※李琴峰さんに一方的に批判的なアカウントはトランス差別反対と書いてあっても信用しなくて構いません。\n→リンク先が根拠としては正しいのでステータスはこのままで公開、ただしコメントは根拠とは一切関係がなく意味不明で、投稿者の主張を通すスペースではないので、今後も続くようなら投稿まるごと削除も検討します\nハンドル解決失敗: bookcafe-sappho.bsky.social",
       "createdTime": "2024-11-21T03:29:00.000Z",
-      "updatedTime": "2024-11-21T09:00:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "146ec3b2-73dd-8199-a6fb-cddba906bbe9",
@@ -34264,12 +34264,12 @@
       "id": "154ec3b2-73dd-81d1-84ef-e0cbc63195d6",
       "name": "ちぃたん☆／Chiitan",
       "category": "キャラクター・マスコット",
-      "status": "account_created",
+      "status": "not_migrated",
       "twitter": "https://x.com/chiitan7407",
-      "bluesky": "https://bsky.app/profile/chiitan7407.bsky.social",
-      "source": "本人ツイート \nhttps://x.com/chiitan7407/status/1865018223567196313\n\nポスト数がまだ１ケタのため、ステータスは「作成済」にしてあります。\nところで、こういうキャラ垢はどこに分類すれば…？\n→現時点で適切な分類が存在しないため、一旦その他に振り分けておき、適切な分類を検討すべき\n→新設したキャラクター・マスコットに移動",
+      "bluesky": null,
+      "source": "本人ツイート \nhttps://x.com/chiitan7407/status/1865018223567196313\n\nポスト数がまだ１ケタのため、ステータスは「作成済」にしてあります。\nところで、こういうキャラ垢はどこに分類すれば…？\n→現時点で適切な分類が存在しないため、一旦その他に振り分けておき、適切な分類を検討すべき\n→新設したキャラクター・マスコットに移動\nハンドル解決失敗: chiitan7407.bsky.social",
       "createdTime": "2024-12-06T16:08:00.000Z",
-      "updatedTime": "2025-01-05T02:46:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "173ec3b2-73dd-81bb-a0d9-f22f2db5b390",
@@ -34858,12 +34858,12 @@
       "id": "17fec3b2-73dd-8173-a99f-fed67803d0f3",
       "name": "醍醐山圓受寺",
       "category": "神社仏閣・宗教",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/daigosanenjuji",
-      "bluesky": "https://bsky.app/profile/shakuken-e.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: shakuken-e.bsky.social",
       "createdTime": "2025-01-18T01:44:00.000Z",
-      "updatedTime": "2025-01-19T14:41:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "187ec3b2-73dd-81fc-99f1-d3b3f1abe5eb",
@@ -34891,12 +34891,12 @@
       "id": "15dec3b2-73dd-810f-9a09-e49d3833d49f",
       "name": "京都府眼科医会公式",
       "category": "医療・ヘルスケア（個人・団体）",
-      "status": "account_created",
+      "status": "not_migrated",
       "twitter": "https://x.com/kyogan_official",
-      "bluesky": "https://bsky.app/profile/kyogan-official.bsky.social",
-      "source": "https://kyogan.jp/public/\n公式サイト内にリンクあり\n\n『医療・ヘルスケア（個人・団体）』の分類の新規追加に伴う再分類です。",
+      "bluesky": null,
+      "source": "https://kyogan.jp/public/\n公式サイト内にリンクあり\n\n『医療・ヘルスケア（個人・団体）』の分類の新規追加に伴う再分類です。\nハンドル解決失敗: kyogan-official.bsky.social",
       "createdTime": "2024-12-15T07:01:00.000Z",
-      "updatedTime": "2025-02-05T03:26:00.000Z"
+      "updatedTime": "2026-04-16T00:34:00.000Z"
     },
     {
       "id": "187ec3b2-73dd-8158-90cf-f4226f38877d",
@@ -36321,12 +36321,12 @@
       "id": "148ec3b2-73dd-8128-9322-e233557763c1",
       "name": "Fablab燕三条",
       "category": "その他企業・団体",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/fablabts",
-      "bluesky": "https://bsky.app/profile/fablab-ts.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: fablab-ts.bsky.social",
       "createdTime": "2024-11-24T10:13:00.000Z",
-      "updatedTime": "2024-11-24T11:35:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "177ec3b2-73dd-8127-9bc8-dda3b8cd206c",
@@ -36431,12 +36431,12 @@
       "id": "12b81c3c-792e-4bcc-bc7c-df3f8d0a1b22",
       "name": "Komiflo",
       "category": "その他企業・団体",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/Komiflo_support",
-      "bluesky": "https://bsky.app/profile/komiflo.bsky.social",
-      "source": "Twitterのリプライにて公式確認\nhttps://x.com/Komiflo_support/status/1752939428732194834",
+      "bluesky": null,
+      "source": "Twitterのリプライにて公式確認\nhttps://x.com/Komiflo_support/status/1752939428732194834\nハンドル解決失敗: komiflo.bsky.social",
       "createdTime": "2024-02-21T08:43:00.000Z",
-      "updatedTime": "2024-06-06T05:40:00.000Z"
+      "updatedTime": "2026-04-16T00:31:00.000Z"
     },
     {
       "id": "136ec3b2-73dd-81ca-9914-f365012fc742",
@@ -36618,12 +36618,12 @@
       "id": "149ec3b2-73dd-819e-a3a9-cdfc07fad323",
       "name": "UNEP",
       "category": "その他企業・団体",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/notifications",
-      "bluesky": "https://bsky.app/profile/unep.bsky.social",
-      "source": "リンクにBlueskyが追加されています\nhttps://www.unep.org/social-media\n\nXでのポストで言及があります\nhttps://x.com/unep/status/1860141302479835386?s=46&t=x2XOzp8vlC07UnIDSi2kng\n\n\n",
+      "bluesky": null,
+      "source": "リンクにBlueskyが追加されています\nhttps://www.unep.org/social-media\n\nXでのポストで言及があります\nhttps://x.com/unep/status/1860141302479835386?s=46&t=x2XOzp8vlC07UnIDSi2kng\n\n\n\nハンドル解決失敗: unep.bsky.social",
       "createdTime": "2024-11-25T05:36:00.000Z",
-      "updatedTime": "2024-11-25T06:45:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "145ec3b2-73dd-812e-87ce-d26cac5d55b8",
@@ -36970,12 +36970,12 @@
       "id": "6a0cf7a7-64b0-439c-8d54-2a1cbf582a49",
       "name": "サンコーレアモノショップ総本店",
       "category": "その他企業・団体",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/reamono1F",
-      "bluesky": "https://bsky.app/profile/reamono1f.bsky.social",
-      "source": "公式HP・twitterでまだ言及されていないようなので未確認としました",
+      "bluesky": null,
+      "source": "公式HP・twitterでまだ言及されていないようなので未確認としました\nハンドル解決失敗: reamono1f.bsky.social",
       "createdTime": "2024-04-15T23:16:00.000Z",
-      "updatedTime": "2024-06-06T05:40:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "13fec3b2-73dd-813d-8028-c66339579929",
@@ -37168,12 +37168,12 @@
       "id": "135ec3b2-73dd-81b3-a91a-dc8b1eb02885",
       "name": "なかじま野毛店＠横浜",
       "category": "その他企業・団体",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/nakanoge",
-      "bluesky": "https://bsky.app/profile/nakajimanogeten.bsky.social",
-      "source": "https://x.com/nakanoge/status/1774565561047138693\nX側からBlueskyアカウントに言及しているURLです。",
+      "bluesky": null,
+      "source": "https://x.com/nakanoge/status/1774565561047138693\nX側からBlueskyアカウントに言及しているURLです。\nハンドル解決失敗: nakajimanogeten.bsky.social",
       "createdTime": "2024-11-05T13:01:00.000Z",
-      "updatedTime": "2024-11-12T00:33:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "13fec3b2-73dd-81dd-bb5a-ff8933cc09d6",
@@ -37278,12 +37278,12 @@
       "id": "123ec3b2-73dd-81da-9c61-f02d037f1836",
       "name": "ビオシェルジュ 業務用有機野菜の注文サイト by マクミノル",
       "category": "その他企業・団体",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/biocierge/",
-      "bluesky": "https://bsky.app/profile/mcminol.co.jp",
-      "source": "カスタムドメイン設定済み",
+      "bluesky": null,
+      "source": "カスタムドメイン設定済み\nハンドル解決失敗: mcminol.co.jp",
       "createdTime": "2024-10-18T00:24:00.000Z",
-      "updatedTime": "2024-10-18T08:33:00.000Z"
+      "updatedTime": "2026-04-16T00:31:00.000Z"
     },
     {
       "id": "7bef611e-e47d-42ec-b1c0-9959942232f8",
@@ -37575,12 +37575,12 @@
       "id": "7e8a89a6-62b0-4ce7-99cf-d733a4bd07f3",
       "name": "合同会社デジタル鑑識研究所",
       "category": "その他企業・団体",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/DFLab_PR",
-      "bluesky": "https://bsky.app/profile/info.dflabo.ninja",
-      "source": "カスタムドメイン化されているものの https://dflabo.co.jp/ とはドメインが異なるため未確認です",
+      "bluesky": null,
+      "source": "カスタムドメイン化されているものの https://dflabo.co.jp/ とはドメインが異なるため未確認です\nハンドル解決失敗: info.dflabo.ninja",
       "createdTime": "2024-03-25T01:50:00.000Z",
-      "updatedTime": "2024-06-06T05:40:00.000Z"
+      "updatedTime": "2026-04-16T00:35:00.000Z"
     },
     {
       "id": "13eec3b2-73dd-8162-9c2d-eef4a7f2c82b",
@@ -37740,12 +37740,12 @@
       "id": "14fec3b2-73dd-8173-ae50-ff110e9a76a4",
       "name": "晴海株式会社【黒子に徹する ものづくり企業】",
       "category": "その他企業・団体",
-      "status": "dual_active",
+      "status": "not_migrated",
       "twitter": "https://x.com/HARUMI_RDD",
-      "bluesky": "https://bsky.app/profile/harumi-rdd.bsky.social",
-      "source": "https://x.com/HARUMI_RDD/status/1846831451251397000\nX側からBlueskyアカウントに言及しているURLです。",
+      "bluesky": null,
+      "source": "https://x.com/HARUMI_RDD/status/1846831451251397000\nX側からBlueskyアカウントに言及しているURLです。\nハンドル解決失敗: harumi-rdd.bsky.social",
       "createdTime": "2024-12-01T12:47:00.000Z",
-      "updatedTime": "2024-12-03T06:24:00.000Z"
+      "updatedTime": "2026-04-16T00:33:00.000Z"
     },
     {
       "id": "135ec3b2-73dd-810c-bdd9-c90b5f48fbb2",
@@ -37949,12 +37949,12 @@
       "id": "135ec3b2-73dd-814c-b417-fa182cd3ccf4",
       "name": "株式会社リバァイアンス【公式】",
       "category": "その他企業・団体",
-      "status": "unverified",
+      "status": "not_migrated",
       "twitter": "https://x.com/reviance__",
-      "bluesky": "https://bsky.app/profile/reviance.bsky.social",
-      "source": "",
+      "bluesky": null,
+      "source": "ハンドル解決失敗: reviance.bsky.social",
       "createdTime": "2024-11-05T13:13:00.000Z",
-      "updatedTime": "2024-11-05T14:37:00.000Z"
+      "updatedTime": "2026-04-16T00:32:00.000Z"
     },
     {
       "id": "134ec3b2-73dd-8195-b04b-d829fc9966d3",
