@@ -1,6 +1,6 @@
 {
-  "updatedTime": "2026-04-18T15:42:13.303Z",
-  "total": 3518,
+  "updatedTime": "2026-04-18T16:50:40.184Z",
+  "total": 3514,
   "checkedTotal": 2573,
   "customDomainAccounts": 427,
   "weeklyPostedAccounts": 0,
@@ -1160,17 +1160,6 @@
       "source": "https://www.gregg.ac.jp/\n一番下にBlueskyのリンクあり。",
       "createdTime": "2024-11-28T12:03:00.000Z",
       "updatedTime": "2026-03-28T06:40:00.000Z"
-    },
-    {
-      "id": "152ec3b2-73dd-817b-9e46-e6a1369d9346",
-      "name": "ライズ高等学院【通信制高校サポートキャンパス／函館】",
-      "category": "教育機関",
-      "status": "unverified",
-      "twitter": null,
-      "bluesky": "https://bsky.app/profile/rise-kg.bsky.social",
-      "source": "もともとTwitterアカウントはなく、インスタグラムのみでした。",
-      "createdTime": "2024-12-04T15:11:00.000Z",
-      "updatedTime": "2026-03-28T06:49:00.000Z"
     },
     {
       "id": "124ec3b2-73dd-81dd-9253-f171996b6338",
@@ -8915,17 +8904,6 @@
       "source": "https://x.com/cfall000/status/1851659645737402575\n→普通に運用してそうだったので両方運用中に変更して公開",
       "createdTime": "2025-01-01T07:40:00.000Z",
       "updatedTime": "2026-03-28T07:10:00.000Z"
-    },
-    {
-      "id": "37f553cc-11db-4574-ae37-2c708a46fc35",
-      "name": "カサハラテツロー",
-      "category": "漫画家・イラストレーター",
-      "status": "unverified",
-      "twitter": null,
-      "bluesky": "https://bsky.app/profile/tetsurokasahara.bsky.social",
-      "source": "ツイッターはアカウントを削除されたようです。\nスレッズにもアカウントがあるようですが、投稿者はスレッズアカウントがないため確認できません。どなたか確認いただけたら助かります。",
-      "createdTime": "2024-03-05T00:16:00.000Z",
-      "updatedTime": "2026-03-28T09:05:00.000Z"
     },
     {
       "id": "134ec3b2-73dd-8117-8420-ec04350f3d68",
@@ -18881,17 +18859,6 @@
       "source": "https://x.com/sasimin/status/1755153559291826388\n→普通に投稿してるので両方運用中に変更",
       "createdTime": "2025-01-13T10:59:00.000Z",
       "updatedTime": "2026-03-28T07:17:00.000Z"
-    },
-    {
-      "id": "14dec3b2-73dd-8199-b382-d3e5e1175aab",
-      "name": "秋野コゴミ",
-      "category": "漫画家・イラストレーター",
-      "status": "unverified",
-      "twitter": null,
-      "bluesky": "https://bsky.app/profile/akinokogomi.bsky.social",
-      "source": "https://bsky.app/profile/akinokogomi.bsky.social/post/3klt36hqe4y2b\nTwitterは辞めています。",
-      "createdTime": "2024-11-29T13:04:00.000Z",
-      "updatedTime": "2026-03-28T06:43:00.000Z"
     },
     {
       "id": "26bec3b2-73dd-81e5-8dd3-cc3983dbfafc",
@@ -37088,17 +37055,6 @@
       "updatedTime": "2026-03-28T09:06:00.000Z"
     },
     {
-      "id": "135ec3b2-73dd-81c8-93d1-d12b4761b2b0",
-      "name": "タナカホームズ【公式】",
-      "category": "その他企業・団体",
-      "status": "unverified",
-      "twitter": null,
-      "bluesky": "https://bsky.app/profile/loco-thomes.bsky.social",
-      "source": "Xアカウントは見つかりませんでした。",
-      "createdTime": "2024-11-05T13:05:00.000Z",
-      "updatedTime": "2026-03-28T01:16:00.000Z"
-    },
-    {
       "id": "136ec3b2-73dd-81b9-a8a3-ef9faf379a12",
       "name": "ツバメインダストリ(株)/Tsubame Industries Co.,Ltd.",
       "category": "その他企業・団体",
@@ -37114,11 +37070,11 @@
       "name": "つまみ細工の東京クラフト＠髪飾り",
       "category": "その他企業・団体",
       "status": "unverified",
-      "twitter": null,
+      "twitter": "https://x.com/t_craft2018",
       "bluesky": "https://bsky.app/profile/tcraft2018.bsky.social",
       "source": "https://x.com/kami_kazari\n↑中の人のアカウントのプロフィールに公式アカウントのURLが貼られていますが削除済みで見れません。\n→ツイッター部分消して公開いれときます",
       "createdTime": "2024-11-05T16:56:00.000Z",
-      "updatedTime": "2026-03-28T01:15:00.000Z"
+      "updatedTime": "2026-04-18T15:58:00.000Z"
     },
     {
       "id": "150ec3b2-73dd-8145-a32f-d58475c644b7",
