@@ -5,9 +5,10 @@ import {
   buildAtprotoLoopbackClientMetadata,
 } from "@atproto/oauth-client-node";
 import { createClient } from "@supabase/supabase-js";
+import type { Database } from "src/types/database";
 
 function getSupabase() {
-  return createClient(
+  return createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SECRET_KEY!
   );
@@ -56,7 +57,7 @@ export async function getOAuthClient(): Promise<NodeOAuthClient> {
         .eq("key", key)
         .single();
       if (error && error.code !== "PGRST116") throw error;
-      return data?.value ?? undefined;
+      return data?.value as unknown as NodeSavedState | undefined;
     },
     async set(key: string, value: NodeSavedState): Promise<void> {
       const { error } = await supabase
@@ -77,7 +78,7 @@ export async function getOAuthClient(): Promise<NodeOAuthClient> {
         .eq("did", sub)
         .single();
       if (error && error.code !== "PGRST116") throw error;
-      return data?.value ?? undefined;
+      return data?.value as unknown as NodeSavedSession | undefined;
     },
     async set(sub: string, value: NodeSavedSession): Promise<void> {
       const { error } = await supabase
@@ -91,9 +92,9 @@ export async function getOAuthClient(): Promise<NodeOAuthClient> {
   };
 
   const keyset =
-    process.env.PRIVATE_KEY
+    process.env.OAUTH_PRIVATE_KEY
       ? await import("@atproto/jwk-jose").then(({ JoseKey }) =>
-          JoseKey.fromImportable(JSON.parse(process.env.PRIVATE_KEY!))
+          JoseKey.fromImportable(JSON.parse(process.env.OAUTH_PRIVATE_KEY!))
         ).then((key) => import("@atproto/jwk").then(({ Keyset }) => new Keyset([key])))
       : undefined;
 

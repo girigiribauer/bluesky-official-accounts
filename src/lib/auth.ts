@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import type { Database } from "src/types/database";
 
 export type Moderator = {
   id: string;
@@ -14,7 +15,7 @@ export type Moderator = {
 export const SESSION_COOKIE = "moderator_did";
 
 async function getModeratorByDid(did: string): Promise<Moderator | null> {
-  const supabase = createClient(
+  const supabase = createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SECRET_KEY!
   );
@@ -48,13 +49,13 @@ async function getModeratorByDid(did: string): Promise<Moderator | null> {
  * DID が moderators に登録されていなければ null を返す。
  */
 export async function getCurrentModerator(): Promise<Moderator | null> {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const did = cookieStore.get(SESSION_COOKIE)?.value;
   if (!did) return null;
   return getModeratorByDid(did);
 }
 
 export async function logout(): Promise<void> {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE);
 }

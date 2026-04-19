@@ -1,5 +1,5 @@
 export const FIELDS = [
-  "公共・報道・インフラ",
+  "公的機関・社会インフラ",
   "企業・ブランド・サービス",
   "IT・テック・Web",
   "漫画・イラスト・アート",
@@ -17,7 +17,7 @@ export const FIELDS = [
 
 // 分野IDと表示ラベルのマッピング（categories.md の field_id 一覧に対応）
 export const FIELD_ID_LABELS: Record<string, string> = {
-  public_infrastructure: "公共・報道・インフラ",
+  public_infrastructure: "公的機関・社会インフラ",
   business: "企業・ブランド・サービス",
   tech: "IT・テック・Web",
   visual_arts: "漫画・イラスト・アート",

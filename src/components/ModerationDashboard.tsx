@@ -39,7 +39,7 @@ export function Dashboard({ entries, moderator, activities, moderatorReviewField
 
   // フィールドでクライアント側フィルタリング
   const filteredEntries = currentField
-    ? entries.filter((e) => e.entry_fields.some((ef) => ef.field_id === currentField))
+    ? entries.filter((e) => e.accounts.account_fields.some((af) => af.field_id === currentField))
     : entries;
 
   const reviewCount = calcReviewCount(moderatorReviewFieldIds, currentField);
@@ -97,20 +97,26 @@ export function Dashboard({ entries, moderator, activities, moderatorReviewField
                         >
                           <span className={styles.taskCardHeader}>Review</span>
                           <span className={styles.taskCardBody}>
-                            <span className={styles.taskCardName} title={entry.display_name}>{entry.display_name}</span>
+                            <span className={styles.taskCardName} title={entry.accounts.display_name}>{entry.accounts.display_name}</span>
                             <span className={styles.taskCardHandle} title={`@${entry.bluesky_handle}`}>@{entry.bluesky_handle}</span>
                           </span>
                         </Link>
                       ))
                     ) : (
-                      Object.entries(
-                        filteredEntries.reduce<Record<string, typeof filteredEntries>>((acc, entry) => {
-                          const fieldId = entry.entry_fields[0]?.field_id ?? "uncategorized";
+                      (() => {
+                        const fieldOrder = Object.keys(FIELD_ID_LABELS);
+                        const grouped = filteredEntries.reduce<Record<string, typeof filteredEntries>>((acc, entry) => {
+                          const fieldId = entry.accounts.account_fields[0]?.field_id ?? "uncategorized";
                           if (!acc[fieldId]) acc[fieldId] = [];
                           acc[fieldId].push(entry);
                           return acc;
-                        }, {})
-                      ).map(([fieldId, fieldEntries]) => (
+                        }, {});
+                        return Object.entries(grouped).sort(([a], [b]) => {
+                          const ai = fieldOrder.indexOf(a);
+                          const bi = fieldOrder.indexOf(b);
+                          return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+                        });
+                      })().map(([fieldId, fieldEntries]) => (
                         <div key={fieldId} className={styles.taskCardGroup}>
                           <p className={styles.taskCardGroupLabel}>{FIELD_ID_LABELS[fieldId] ?? fieldId}</p>
                           <div className={styles.taskCardRow}>
@@ -122,7 +128,7 @@ export function Dashboard({ entries, moderator, activities, moderatorReviewField
                               >
                                 <span className={styles.taskCardHeader}>Review</span>
                                 <span className={styles.taskCardBody}>
-                                  <span className={styles.taskCardName} title={entry.display_name}>{entry.display_name}</span>
+                                  <span className={styles.taskCardName} title={entry.accounts.display_name}>{entry.accounts.display_name}</span>
                                   <span className={styles.taskCardHandle} title={`@${entry.bluesky_handle}`}>@{entry.bluesky_handle}</span>
                                 </span>
                               </Link>
@@ -207,7 +213,7 @@ export function Dashboard({ entries, moderator, activities, moderatorReviewField
                         <i className="fa-solid fa-circle-user" />
                       </span>
                       [{new Date(act.created_at).toLocaleString("ja-JP")}] {act.moderators?.display_name} さんが{" "}
-                      {act.entries?.display_name}を{act.action === "approve" ? "公開" : "却下"}しました
+                      {act.accounts?.display_name}を{act.action === "approve" ? "公開" : "却下"}しました
                     </li>
                   ))}
                 </ul>

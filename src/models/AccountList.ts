@@ -1,4 +1,4 @@
-import { NotionItem } from "./Notion";
+import { Account } from "./Account";
 
 export type AccountList = {
   updatedTime: string;
@@ -7,5 +7,5 @@ export type AccountList = {
   customDomainAccounts: number;
   weeklyPostedAccounts: number;
   monthlyPostedAccounts: number;
-  accounts: NotionItem[];
+  accounts: Account[];
 };

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { NotionItem } from "src/models/Notion";
+import { Account } from "src/models/Account";
 import { TRANSITION_STATUS_LABELS } from "src/models/TransitionStatus";
 import { extractBluesky, extractTwitter } from "src/lib/extractFromURL";
 
@@ -10,14 +10,14 @@ import styles from "./AccountItem.module.scss";
 import { AnnotationButton } from "./AnnotationButton";
 
 export type AccountItemProps = {
-  item: NotionItem;
+  item: Account;
 };
 
 export const AccountItem = ({ item }: AccountItemProps) => {
   const { id, name, status, twitter, bluesky, source } = item;
 
   return (
-    <div key={id} className={styles.container}>
+    <div key={id} data-id={id} className={styles.container}>
       <div className={styles.columnsGroup}>
         <div className={styles.accountColumn}>
           <h3 className={styles.name}>{name}</h3>

@@ -2,9 +2,7 @@
 const nextConfig = {
   staticPageGenerationTimeout: 600,
   allowedDevOrigins: ["127.0.0.1"],
-  experimental: {
-    serverComponentsExternalPackages: ["@atproto/oauth-client-node"],
-  },
+  serverExternalPackages: ["@atproto/oauth-client-node"],
 
   images: {
     remotePatterns: [
@@ -30,7 +28,6 @@ const nextConfig = {
       fullUrl: true,
     },
   },
-  swcMinify: false,
 };
 
 export default nextConfig;

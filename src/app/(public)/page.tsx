@@ -1,4 +1,4 @@
-import { fetchAccounts, fetchCategories, fetchNews } from "src/lib/fetchNotion";
+import { fetchAccounts, fetchCategories, fetchNews } from "src/lib/fetchData";
 import { Metadata } from "next";
 import Image from "next/image";
 import { HeroImage } from "src/components/HeroImage";

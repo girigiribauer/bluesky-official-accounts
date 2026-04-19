@@ -1,84 +1,56 @@
 import fs from "fs";
-import { Client } from "@notionhq/client";
+import { createClient } from "@supabase/supabase-js";
 import { News } from "../src/models/News";
 import { Category } from "../src/models/Category";
+import type { Database } from "../src/types/database";
 import dotenv from "dotenv";
 
-const fetchNews = async (client: Client, databaseID: string): Promise<News[]> => {
-  const notionResponse = await client.databases.query({
-    database_id: databaseID,
-    page_size: 100,
-    sorts: [
-      {
-        property: "Date",
-        direction: "descending",
-      },
-    ],
-  });
+dotenv.config({ path: "./.env.local" });
 
-  return notionResponse.results.map<News>((result: any) => {
-    const id = result?.id ?? "";
-    const name =
-      result?.properties["Name"]?.title
-        .map((a: any) => a.plain_text)
-        .join("") ?? "";
-    const date = result?.properties["Date"]?.date?.start ?? "";
-    return { id, name, date };
-  });
-};
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
 
-const fetchCategories = async (client: Client, databaseID: string): Promise<Category[]> => {
-  const notionResponse = await client.databases.query({
-    database_id: databaseID,
-    page_size: 100,
-    sorts: [
-      {
-        property: "order",
-        direction: "ascending",
-      },
-    ],
-  });
+if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) {
+  throw new Error("SUPABASE_URL or SUPABASE_SECRET_KEY is not set");
+}
 
-  return notionResponse.results.map<Category>((result: any) => {
-    const id = result?.id ?? "";
-    const title =
-      result?.properties["分類名"]?.title
-        .map((a: any) => a.plain_text)
-        .join("") ?? "";
-    const order = result?.properties["order"]?.number;
-    const criteria =
-      result?.properties["掲載基準（公開されます）"]?.rich_text[0]
-        ?.plain_text ?? "";
-    return { id, title, order, criteria };
-  });
-};
+const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_SECRET_KEY);
 
 (async () => {
-  dotenv.config({ path: "./.env.local" });
-
-  const client = new Client({
-    auth: process.env.NOTION_API_KEY,
-  });
-
   if (!fs.existsSync("data")) {
     fs.mkdirSync("data");
   }
 
-  const newsDatabaseID = process.env.NEWS_DATABASE;
-  if (!newsDatabaseID) {
-    throw "not found NEWS_DATABASE";
-  }
   console.log("fetching news...");
-  const news = await fetchNews(client, newsDatabaseID);
+  const { data: newsData, error: newsError } = await supabase
+    .from("news")
+    .select("id, title, published_at")
+    .order("published_at", { ascending: false });
+
+  if (newsError) throw new Error(`Supabase news query failed: ${newsError.message}`);
+
+  const news: News[] = (newsData ?? []).map((row) => ({
+    id: row.id,
+    name: row.title,
+    date: row.published_at,
+  }));
   fs.writeFileSync("data/news.json", JSON.stringify(news, null, 2));
   console.log(`saved data/news.json (${news.length} items)`);
 
-  const categoryDatabaseID = process.env.CATEGORY_DATABASE;
-  if (!categoryDatabaseID) {
-    throw "not found CATEGORY_DATABASE";
-  }
   console.log("fetching categories...");
-  const categories = await fetchCategories(client, categoryDatabaseID);
+  const { data: catData, error: catError } = await supabase
+    .from("old_categories")
+    .select("id, title, sort_order, criteria")
+    .order("sort_order", { ascending: true });
+
+  if (catError) throw new Error(`Supabase categories query failed: ${catError.message}`);
+
+  const categories: Category[] = (catData ?? []).map((row) => ({
+    id: row.id,
+    title: row.title,
+    order: row.sort_order,
+    criteria: row.criteria,
+  }));
   fs.writeFileSync("data/categories.json", JSON.stringify(categories, null, 2));
   console.log(`saved data/categories.json (${categories.length} items)`);
 })();

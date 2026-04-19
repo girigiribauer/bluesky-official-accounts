@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { groupAccountsByCategory } from "./groupAccountsByCategory";
-import type { NotionItem } from "src/models/Notion";
+import type { Account } from "src/models/Account";
 import type { Category } from "src/models/Category";
 
-const makeItem = (category: string): NotionItem =>
-  ({ category } as NotionItem);
+const makeItem = (category: string): Account =>
+  ({ category } as Account);
 
 const categories: Category[] = [
   { id: "cat1", title: "政府・行政", order: 1, criteria: "" },

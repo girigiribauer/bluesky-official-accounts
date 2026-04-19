@@ -1,11 +1,11 @@
-import { NotionItem } from "src/models/Notion";
+import { Account } from "src/models/Account";
 import { FilterRuleSet } from "src/models/FilterRuleSet";
 
 export const timeFilter = (
-  items: NotionItem[],
+  items: Account[],
   rules: FilterRuleSet,
   oneWeekAgo: number
-): NotionItem[] => {
+): Account[] => {
   switch (rules.time) {
     case "New":
       return items.filter((a) => {
@@ -23,9 +23,9 @@ export const timeFilter = (
 };
 
 export const textFilter = (
-  items: NotionItem[],
+  items: Account[],
   rules: FilterRuleSet
-): NotionItem[] => {
+): Account[] => {
   if (rules.text === "") return items;
   const words = rules.text.toLowerCase().split(" ");
   return items.filter((v) => {
@@ -35,9 +35,9 @@ export const textFilter = (
 };
 
 export const customDomainFilter = (
-  items: NotionItem[],
+  items: Account[],
   rules: FilterRuleSet
-): NotionItem[] => {
+): Account[] => {
   if (!rules.customDomain) return items;
   return items.filter(
     (a) =>
@@ -47,21 +47,21 @@ export const customDomainFilter = (
 };
 
 export const verifiedFilter = (
-  items: NotionItem[],
+  items: Account[],
   rules: FilterRuleSet
-): NotionItem[] => {
+): Account[] => {
   if (!rules.verified) return items;
   return items.filter((a) => a.status !== "not_migrated");
 };
 
 export const applyFilters = (
-  items: NotionItem[],
+  items: Account[],
   rules: FilterRuleSet,
   oneWeekAgo: number
-): NotionItem[] =>
+): Account[] =>
   [
-    (i: NotionItem[]) => textFilter(i, rules),
-    (i: NotionItem[]) => timeFilter(i, rules, oneWeekAgo),
-    (i: NotionItem[]) => customDomainFilter(i, rules),
-    (i: NotionItem[]) => verifiedFilter(i, rules),
+    (i: Account[]) => textFilter(i, rules),
+    (i: Account[]) => timeFilter(i, rules, oneWeekAgo),
+    (i: Account[]) => customDomainFilter(i, rules),
+    (i: Account[]) => verifiedFilter(i, rules),
   ].reduce((acc, f) => f(acc), items);
