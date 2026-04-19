@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import type { Database } from "src/types/database";
 
 export type Moderator = {
   id: string;
@@ -14,7 +15,7 @@ export type Moderator = {
 export const SESSION_COOKIE = "moderator_did";
 
 async function getModeratorByDid(did: string): Promise<Moderator | null> {
-  const supabase = createClient(
+  const supabase = createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SECRET_KEY!
   );

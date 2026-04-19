@@ -9,7 +9,7 @@ export type Evidence = {
   moderators: { handle: string; display_name: string } | null;
 };
 
-export type EntryField = {
+export type AccountField = {
   id: string;
   field_id: string;
   classification_id: string | null;
@@ -18,12 +18,15 @@ export type EntryField = {
 
 export type ReviewEntry = {
   id: string;
-  display_name: string;
+  account_id: string;
+  accounts: {
+    display_name: string;
+    evidences: Evidence[];
+    account_fields: AccountField[];
+  };
   bluesky_handle: string;
   twitter_handle: string | null;
   transition_status: string;
-  evidences: Evidence[];
-  entry_fields: EntryField[];
 };
 
 export type Classification = {
@@ -37,7 +40,7 @@ export type Activity = {
   action: string;
   created_at: string;
   moderators: { handle: string; display_name: string } | null;
-  entries: { display_name: string } | null;
+  accounts: { display_name: string } | null;
 };
 
 export type FieldMembership = {

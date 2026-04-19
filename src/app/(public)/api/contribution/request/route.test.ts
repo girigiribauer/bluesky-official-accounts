@@ -1,20 +1,32 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
-const mockQuery = vi.fn();
-const mockCreate = vi.fn();
+const mockCheckDuplicate = vi.fn();
+const mockInsert = vi.fn();
+const mockAccountSingle = vi.fn();
 
-vi.mock("@notionhq/client", () => ({
-  Client: vi.fn(function () {
-    return {
-      databases: { query: mockQuery },
-      pages: { create: mockCreate },
-    };
-  }),
+vi.mock("./_checkDuplicate", () => ({
+  checkDuplicate: mockCheckDuplicate,
 }));
 
-vi.stubEnv("ACCOUNTLIST_DATABASE", "mock-db-id");
-vi.stubEnv("NOTION_API_KEY", "mock-api-key");
+vi.mock("src/lib/supabaseClient", () => ({
+  getSupabaseClient: vi.fn(() => ({
+    from: vi.fn((table: string) => {
+      if (table === "accounts") {
+        return {
+          insert: vi.fn(() => ({
+            select: vi.fn(() => ({ single: mockAccountSingle })),
+          })),
+        };
+      }
+      // requests
+      return { insert: mockInsert };
+    }),
+  })),
+}));
+
+vi.stubEnv("SUPABASE_URL", "https://dummy.supabase.co");
+vi.stubEnv("SUPABASE_SECRET_KEY", "dummy");
 
 const { POST } = await import("./route");
 
@@ -34,8 +46,9 @@ const makeRequest = (body: unknown, ip?: string, origin?: string) =>
 describe("POST /api/contribution/request", () => {
   beforeEach(() => {
     vi.spyOn(console, "error").mockImplementation(() => {});
-    mockQuery.mockResolvedValue({ results: [] });
-    mockCreate.mockResolvedValue({ id: "mock-page-id" });
+    mockCheckDuplicate.mockResolvedValue(false);
+    mockAccountSingle.mockResolvedValue({ data: { id: "mock-account-id" }, error: null });
+    mockInsert.mockResolvedValue({ error: null });
   });
 
   it("正常な入力で200を返す", async () => {
@@ -77,7 +90,7 @@ describe("POST /api/contribution/request", () => {
   });
 
   it("重複アカウントは409を返す", async () => {
-    mockQuery.mockResolvedValueOnce({ results: [{ id: "existing" }] });
+    mockCheckDuplicate.mockResolvedValueOnce(true);
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
@@ -86,8 +99,8 @@ describe("POST /api/contribution/request", () => {
     expect(res.status).toBe(409);
   });
 
-  it("Notion create が失敗したら500を返す", async () => {
-    mockCreate.mockRejectedValueOnce(new Error("Notion error"));
+  it("Supabase insert が失敗したら500を返す", async () => {
+    mockAccountSingle.mockResolvedValueOnce({ data: null, error: new Error("DB error") });
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",

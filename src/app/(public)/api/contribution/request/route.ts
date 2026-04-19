@@ -1,9 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkDuplicate } from "./_checkDuplicate";
 import { checkOrigin } from "src/lib/csrf";
-import { getNotionClient } from "src/lib/notionClient";
+import { getSupabaseClient } from "src/lib/supabaseClient";
 import { checkRateLimit } from "src/lib/rateLimit";
 import { requestContributionSchema } from "src/lib/schemas/requestContribution";
+
+const TWITTER_URL_PREFIX = "https://x.com/";
+const TWITTER_COM_PREFIX = "https://twitter.com/";
+
+function extractTwitterHandle(url: string): string | null {
+  if (url.startsWith(TWITTER_URL_PREFIX)) {
+    return url.slice(TWITTER_URL_PREFIX.length).replace(/\/$/, "") || null;
+  }
+  if (url.startsWith(TWITTER_COM_PREFIX)) {
+    return url.slice(TWITTER_COM_PREFIX.length).replace(/\/$/, "") || null;
+  }
+  return null;
+}
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
@@ -36,12 +49,6 @@ export async function POST(req: NextRequest) {
   const safeUrl = parsed.data.twitterUrl;
   const safeName = parsed.data.twitterName;
 
-  const databaseId = process.env.ACCOUNTLIST_DATABASE;
-  if (!databaseId) {
-    console.error("ACCOUNTLIST_DATABASE is not set");
-    return NextResponse.json({ ok: false, message: "サーバー設定エラーです" }, { status: 500 });
-  }
-
   try {
     const duplicate = await checkDuplicate(safeUrl);
     if (duplicate) {
@@ -51,33 +58,40 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (err) {
-    console.error("Notion query error:", err);
+    console.error("Supabase query error:", err);
     return NextResponse.json(
       { ok: false, message: "送信に失敗しました。時間をおいて再度お試しください。" },
       { status: 500 }
     );
   }
 
+  const twitterHandle = extractTwitterHandle(safeUrl);
+  if (!twitterHandle) {
+    return NextResponse.json({ ok: false, message: "入力値が不正です" }, { status: 400 });
+  }
+
   try {
-    await getNotionClient().pages.create({
-      parent: { database_id: databaseId },
-      properties: {
-        名前: {
-          title: [{ text: { content: safeName } }],
-        },
-        "Twitter/X アカウント": {
-          url: safeUrl,
-        },
-        ステータス: {
-          select: { name: "未移行（未確認）" },
-        },
-        公開: {
-          checkbox: false,
-        },
-      },
+    const supabase = getSupabaseClient();
+
+    const { data: account, error: accountError } = await supabase
+      .from("accounts")
+      .insert({
+        display_name: safeName,
+        submitted_by: null,
+      })
+      .select("id")
+      .single();
+
+    if (accountError) throw accountError;
+
+    const { error: requestError } = await supabase.from("requests").insert({
+      account_id: account.id,
+      twitter_handle: twitterHandle,
     });
+
+    if (requestError) throw requestError;
   } catch (err) {
-    console.error("Notion API error:", err);
+    console.error("Supabase insert error:", err);
     return NextResponse.json(
       { ok: false, message: "送信に失敗しました。時間をおいて再度お試しください。" },
       { status: 500 }

@@ -1,16 +1,16 @@
-import { NotionItem } from "src/models/Notion";
+import { Account } from "src/models/Account";
 import { Category } from "src/models/Category";
 
 export type CategoryGroup = {
   id: string;
   title: string;
   criteria: string;
-  items: NotionItem[];
+  items: Account[];
   total: number;
 };
 
 export const groupAccountsByCategory = (
-  items: NotionItem[],
+  items: Account[],
   categoryList: Category[]
 ): CategoryGroup[] =>
   categoryList

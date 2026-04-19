@@ -1,166 +1,113 @@
 import fs from "fs";
-import { Client } from "@notionhq/client";
-import { NotionItem, NotionResponse } from "../src/models/Notion";
+import { createClient } from "@supabase/supabase-js";
+import { Account } from "../src/models/Account";
 import { AccountList } from "../src/models/AccountList";
-import { TransitionStatus } from "../src/models/TransitionStatus";
+import type { Database } from "../src/types/database";
+import type { TransitionStatus } from "../src/models/TransitionStatus";
 import dotenv from "dotenv";
 
-const NOTION_STATUS_MAP: Record<string, TransitionStatus> = {
-  "未移行（未確認）": "not_migrated", // bluesky の有無で後から分離する
-  "アカウント作成済": "account_created",
-  "両方運用中": "dual_active",
-  "Bluesky 完全移行": "migrated",
-  "確認不能": "unverifiable",
-};
+dotenv.config({ path: "./.env.local" });
 
-function toTransitionStatus(notionStatus: string, bluesky: string | null): TransitionStatus {
-  const mapped = NOTION_STATUS_MAP[notionStatus];
-  if (!mapped) return "not_migrated";
-  // 旧「未移行（未確認）」を bluesky の有無で分離
-  if (mapped === "not_migrated" && bluesky) return "unverified";
-  return mapped;
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) {
+  throw new Error("SUPABASE_URL or SUPABASE_SECRET_KEY is not set");
 }
 
-const fetchAccountsOnce = async (
-  client: Client,
-  databaseID: string,
-  cursor?: string | null
-): Promise<NotionResponse> => {
-  const notionResponse = await client.databases.query({
-    database_id: databaseID,
-    page_size: 100, // 上限100
-    start_cursor: cursor ?? undefined,
-    sorts: [
-      {
-        property: "分類",
-        direction: "ascending",
-      },
-      {
-        property: "名前",
-        direction: "ascending",
-      },
-    ],
-    in_trash: false,
-    filter: {
-      property: "公開",
-      checkbox: {
-        equals: true,
-      },
-    },
-  });
+const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_SECRET_KEY);
 
-  const Response: NotionItem[] = await Promise.all(
-    notionResponse.results.map(async (result: any) => {
-      const id = result.id;
-      const name = result.properties["名前"]?.title[0]?.plain_text ?? "";
-      const category = result.properties["分類"]?.select?.name ?? "";
-      const notionStatus = result.properties["ステータス"]?.select?.name ?? "";
-      const twitter = result.properties["Twitter/X アカウント"]?.url;
-      const bluesky = result.properties["Bluesky アカウント"]?.url;
-      const status = toTransitionStatus(notionStatus, bluesky ?? null);
-      const source = result.properties["根拠"]?.rich_text[0]?.plain_text ?? "";
-      const createdTime = result.created_time;
-      const updatedTime = result.last_edited_time;
-      return {
-        id,
-        name,
-        category,
-        status,
-        twitter,
-        bluesky,
-        source,
-        createdTime,
-        updatedTime,
-      };
-    })
-  );
+(async () => {
+  console.log("fetching entries from Supabase...");
 
-  return {
-    items: Response,
-    cursor: notionResponse.has_more ? notionResponse.next_cursor : null,
-  };
-};
-
-const fetchAccountList = async (
-  client: Client,
-  databaseID: string
-): Promise<AccountList> => {
-  console.log("called fetchAccountList");
-  const limit = 1_000_000;
   const now = new Date();
   const updatedTime = now.toISOString();
 
-  let accounts: NotionItem[] = [];
-  let nextCursor: string | null = null;
-
-  try {
-    do {
-      if (nextCursor) {
-        // Notion API は1秒間に3リクエストまで
-        // https://developers.notion.com/reference/request-limits
-        await new Promise((r) => setTimeout(r, 700));
-      }
-      const { items, cursor } = await fetchAccountsOnce(
-        client,
-        databaseID,
-        nextCursor
-      );
-      accounts = accounts.concat(items);
-      console.log(`called fetchAccountsOnce (${accounts.length})`);
-
-      if (accounts.length >= limit) break;
-      nextCursor = cursor;
-    } while (nextCursor);
-
-    const total = accounts.length;
-    const checkedTotal = accounts.filter(
-      (a) => a.status !== "not_migrated" && a.status !== "unverified"
-    ).length;
-    const customDomainAccounts = accounts.filter(
-      (a) =>
-        a.bluesky !== null &&
-        !a.bluesky
-          .replace(".bsky.social/", ".bsky.social")
-          .endsWith(".bsky.social")
-    ).length;
-    const oneWeekAgo = now.valueOf() - 1000 * 60 * 60 * 24 * 7;
-    const oneMonthAgo = now.valueOf() - 1000 * 60 * 60 * 24 * 31;
-    const weeklyPostedAccounts = accounts.filter(
-      (a) => new Date(a.createdTime).valueOf() >= oneWeekAgo
-    ).length;
-    const monthlyPostedAccounts = accounts.filter(
-      (a) => new Date(a.createdTime).valueOf() >= oneMonthAgo
-    ).length;
-
-    return {
-      updatedTime,
-      total,
-      checkedTotal,
-      customDomainAccounts,
-      weeklyPostedAccounts,
-      monthlyPostedAccounts,
-      accounts,
+  type Row =
+    Pick<Database["public"]["Tables"]["entries"]["Row"], "id" | "bluesky_handle" | "twitter_handle" | "transition_status" | "created_at" | "updated_at"> & {
+      accounts:
+        | (Pick<Database["public"]["Tables"]["accounts"]["Row"], "display_name" | "old_category"> & {
+            evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content">[];
+          })
+        | null;
     };
-  } catch (error) {
-    console.error(error);
-    throw new Error(`Notion Request failed: ${error}`);
+
+  const PAGE_SIZE = 1000;
+  let from = 0;
+  const allRows: Row[] = [];
+
+  while (true) {
+    const { data, error } = await supabase
+      .from("entries")
+      .select("id, bluesky_handle, twitter_handle, transition_status, created_at, updated_at, accounts(display_name, old_category, evidences(content))")
+      .eq("status", "published")
+      .range(from, from + PAGE_SIZE - 1);
+
+    if (error) throw new Error(`Supabase query failed: ${error.message}`);
+    allRows.push(...(data ?? []));
+    if ((data ?? []).length < PAGE_SIZE) break;
+    from += PAGE_SIZE;
   }
-};
 
-(async () => {
-  dotenv.config({ path: "./.env.local" });
+  const accounts: Account[] = allRows
+    .map((row) => {
+      const account = Array.isArray(row.accounts) ? row.accounts[0] : row.accounts;
+      const twitter = row.twitter_handle ? `https://x.com/${row.twitter_handle}` : "";
+      const bluesky = row.bluesky_handle
+        ? `https://bsky.app/profile/${row.bluesky_handle}`
+        : "";
+      const source =
+        Array.isArray(account?.evidences) && account.evidences.length > 0
+          ? account.evidences[0].content
+          : "";
+      return {
+        id: row.id,
+        name: account?.display_name ?? "",
+        category: account?.old_category ?? "",
+        status: (row.transition_status ?? "not_migrated") as TransitionStatus,
+        twitter,
+        bluesky,
+        source,
+        createdTime: row.created_at,
+        updatedTime: row.updated_at,
+      };
+    })
+    .sort((a, b) =>
+      a.category.localeCompare(b.category, "ja") ||
+      a.name.localeCompare(b.name, "ja")
+    );
 
-  const client = new Client({
-    auth: process.env.NOTION_API_KEY,
-  });
-  const databaseID = process.env.ACCOUNTLIST_DATABASE;
-  if (!databaseID) {
-    throw "not found databaseID";
-  }
+  const total = accounts.length;
+  const checkedTotal = accounts.filter(
+    (a) => a.status !== "not_migrated" && a.status !== "unverified"
+  ).length;
+  const customDomainAccounts = accounts.filter(
+    (a) =>
+      a.bluesky !== "" &&
+      !a.bluesky.replace(".bsky.social/", ".bsky.social").endsWith(".bsky.social")
+  ).length;
+  const oneWeekAgo = now.valueOf() - 1000 * 60 * 60 * 24 * 7;
+  const oneMonthAgo = now.valueOf() - 1000 * 60 * 60 * 24 * 31;
+  const weeklyPostedAccounts = accounts.filter(
+    (a) => new Date(a.createdTime).valueOf() >= oneWeekAgo
+  ).length;
+  const monthlyPostedAccounts = accounts.filter(
+    (a) => new Date(a.createdTime).valueOf() >= oneMonthAgo
+  ).length;
 
-  const accounts = await fetchAccountList(client, databaseID);
+  const accountList: AccountList = {
+    updatedTime,
+    total,
+    checkedTotal,
+    customDomainAccounts,
+    weeklyPostedAccounts,
+    monthlyPostedAccounts,
+    accounts,
+  };
+
   if (!fs.existsSync("data")) {
     fs.mkdirSync("data");
   }
-  fs.writeFileSync("data/accounts.json", JSON.stringify(accounts, null, 2));
+  fs.writeFileSync("data/accounts.json", JSON.stringify(accountList, null, 2));
+  console.log(`saved data/accounts.json (${total} items)`);
 })();

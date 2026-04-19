@@ -1,18 +1,27 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
-const mockCreate = vi.fn();
+const mockSingle = vi.fn();
+const mockInsert = vi.fn();
 
-vi.mock("@notionhq/client", () => ({
-  Client: vi.fn(function () {
-    return {
-      pages: { create: mockCreate },
-    };
-  }),
+vi.mock("src/lib/supabaseClient", () => ({
+  getSupabaseClient: vi.fn(() => ({
+    from: vi.fn((table: string) => {
+      if (table === "accounts") {
+        return {
+          insert: vi.fn(() => ({
+            select: vi.fn(() => ({ single: mockSingle })),
+          })),
+        };
+      }
+      // entries / account_fields / evidences
+      return { insert: mockInsert };
+    }),
+  })),
 }));
 
-vi.stubEnv("ACCOUNTLIST_DATABASE", "mock-db-id");
-vi.stubEnv("NOTION_API_KEY", "mock-api-key");
+vi.stubEnv("SUPABASE_URL", "https://dummy.supabase.co");
+vi.stubEnv("SUPABASE_SECRET_KEY", "dummy");
 
 const { POST } = await import("./route");
 
@@ -44,7 +53,8 @@ const makeRequest = (body: unknown, ip?: string, origin?: string) =>
 describe("POST /api/contribution/register", () => {
   beforeEach(() => {
     vi.spyOn(console, "error").mockImplementation(() => {});
-    mockCreate.mockResolvedValue({ id: "mock-page-id" });
+    mockSingle.mockResolvedValue({ data: { id: "mock-account-id" }, error: null });
+    mockInsert.mockResolvedValue({ error: null });
   });
 
   it("正常な入力で200を返す", async () => {
@@ -96,8 +106,8 @@ describe("POST /api/contribution/register", () => {
     expect(res.status).toBe(400);
   });
 
-  it("Notion create が失敗したら500を返す", async () => {
-    mockCreate.mockRejectedValueOnce(new Error("Notion error"));
+  it("Supabase insert が失敗したら500を返す", async () => {
+    mockSingle.mockResolvedValueOnce({ data: null, error: new Error("DB error") });
     const res = await POST(makeRequest(validBody));
     expect(res.status).toBe(500);
   });

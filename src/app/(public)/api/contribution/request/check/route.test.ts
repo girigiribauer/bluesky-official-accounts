@@ -1,18 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
-const mockQuery = vi.fn();
+const mockCheckDuplicate = vi.fn();
 
-vi.mock("@notionhq/client", () => ({
-  Client: vi.fn(function () {
-    return {
-      databases: { query: mockQuery },
-    };
-  }),
+vi.mock("../_checkDuplicate", () => ({
+  checkDuplicate: mockCheckDuplicate,
 }));
-
-vi.stubEnv("ACCOUNTLIST_DATABASE", "mock-db-id");
-vi.stubEnv("NOTION_API_KEY", "mock-api-key");
 
 const { GET } = await import("./route");
 
@@ -26,7 +19,7 @@ const makeRequest = (url?: string) => {
 describe("GET /api/contribution/request/check", () => {
   beforeEach(() => {
     vi.spyOn(console, "error").mockImplementation(() => {});
-    mockQuery.mockResolvedValue({ results: [] });
+    mockCheckDuplicate.mockResolvedValue(false);
   });
 
   it("urlパラメーターがなければ400を返す", async () => {
@@ -47,15 +40,15 @@ describe("GET /api/contribution/request/check", () => {
   });
 
   it("重複ありの場合は duplicate: true を返す", async () => {
-    mockQuery.mockResolvedValueOnce({ results: [{ id: "existing-page" }] });
+    mockCheckDuplicate.mockResolvedValueOnce(true);
     const res = await GET(makeRequest("https://x.com/bluesky"));
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json.duplicate).toBe(true);
   });
 
-  it("Notionがエラーのとき500を返す", async () => {
-    mockQuery.mockRejectedValueOnce(new Error("Notion error"));
+  it("checkDuplicate がエラーのとき500を返す", async () => {
+    mockCheckDuplicate.mockRejectedValueOnce(new Error("DB error"));
     const res = await GET(makeRequest("https://x.com/bluesky"));
     expect(res.status).toBe(500);
   });

@@ -8,8 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "fetch": "tsx scripts/fetchAccountList.ts && tsx scripts/fetchNewsList.ts",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "db:generate-types": "supabase gen types typescript --local 2>/dev/null > src/types/database.ts",
+    "test": "npm run db:generate-types && vitest run",
+    "test:watch": "vitest",
+    "test:integration": "npm run db:generate-types && vitest run --config vitest.integration.config.ts"
   },
   "dependencies": {
     "@atproto/oauth-client-node": "^0.3.17",
