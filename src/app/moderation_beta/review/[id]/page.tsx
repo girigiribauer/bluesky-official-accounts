@@ -30,11 +30,12 @@ async function getClassificationsForEntry(entry: ReviewEntry): Promise<Classific
   return (data ?? []) as Classification[];
 }
 
-export default async function ReviewPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function ReviewPage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
   const [entry, moderator] = await Promise.all([getEntry(params.id), getCurrentModerator()]);
   if (!entry || !moderator) redirect("/moderation_beta");
 
