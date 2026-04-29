@@ -49,13 +49,13 @@ async function getModeratorByDid(did: string): Promise<Moderator | null> {
  * DID が moderators に登録されていなければ null を返す。
  */
 export async function getCurrentModerator(): Promise<Moderator | null> {
-  const cookieStore = await cookies();
+  const cookieStore = cookies();
   const did = cookieStore.get(SESSION_COOKIE)?.value;
   if (!did) return null;
   return getModeratorByDid(did);
 }
 
 export async function logout(): Promise<void> {
-  const cookieStore = await cookies();
+  const cookieStore = cookies();
   cookieStore.delete(SESSION_COOKIE);
 }

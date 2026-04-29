@@ -1,7 +1,7 @@
 "use client";
 
 import { Account } from "src/models/Account";
-import { useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { Category } from "src/models/Category";
 import { groupAccountsByCategory } from "src/lib/groupAccountsByCategory";
 import type { FilterRuleSet } from "src/models/FilterRuleSet";
@@ -36,16 +36,9 @@ export const AccountListView = ({
     [items, categoryList]
   );
 
-  const [prevItems, setPrevItems] = useState(items);
   const [categoryToggleList, setCategoryToggleList] = useState<boolean[]>(
     Array.from({ length: originalCategorizedItems.length }, () => false)
   );
-
-  // items が変わったら全閉じにリセット（render 中の setState で余分な再描画を避ける）
-  if (prevItems !== items) {
-    setPrevItems(items);
-    setCategoryToggleList(Array.from({ length: originalCategorizedItems.length }, () => false));
-  }
 
   const total = useMemo(() => items.length, [items]);
   const blueskyAccountsTotal = useMemo(
@@ -91,6 +84,11 @@ export const AccountListView = ({
 
     setCategoryToggleList(newCategoryToggleList);
   };
+
+  //アカウントリストに変更があったら一旦全部閉じる
+  useEffect(() => {
+    handleUnselectAllCategory();
+  }, [items, handleUnselectAllCategory]);
 
   return (
     <div className={styles.container}>

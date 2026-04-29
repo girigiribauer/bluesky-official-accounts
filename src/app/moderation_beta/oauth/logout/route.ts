@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 const SESSION_COOKIE = "moderator_did";
 
 export async function POST(req: NextRequest) {
-  const cookieStore = await cookies();
+  const cookieStore = cookies();
   const did = cookieStore.get(SESSION_COOKIE)?.value;
 
   if (did) {
