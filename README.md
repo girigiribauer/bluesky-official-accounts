@@ -12,44 +12,41 @@
 ### 初期化
 
 ```bash
-npm install
-cp .env.local.example .env.local
-# .env.local を編集して各キーを設定
+make init
 ```
 
 ### 開発環境の起動
 
-DB と Next.js は別々に起動します。
-
 ```bash
-npm run db:start
-npm run dev
+make dev
 ```
 
 ### テスト
 
 ```bash
-npm test
+make test
 ```
 
 ### ビルド
 
 ```bash
-npm run build
+make build
 ```
 
 ## ローカルのDB操作
 
+起動は `make dev` が兼ねています。
+
 ### 停止
 
 ```bash
-npm run db:stop
+make stop
 ```
 
 ### 空にしつつスキーマ適用
 
 ```bash
-npm run db:reset
+make reset
 ```
 
 ## 本番DBへのマイグレーション適用
@@ -63,5 +60,5 @@ npx supabase link --project-ref <project-ref>
 マイグレーションを本番に適用する（デプロイより先に実行すること）。
 
 ```bash
-npm run db:push
+npx supabase db push
 ```

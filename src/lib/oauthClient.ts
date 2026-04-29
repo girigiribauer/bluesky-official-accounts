@@ -92,9 +92,9 @@ export async function getOAuthClient(): Promise<NodeOAuthClient> {
   };
 
   const keyset =
-    process.env.OAUTH_PRIVATE_KEY
+    process.env.PRIVATE_KEY
       ? await import("@atproto/jwk-jose").then(({ JoseKey }) =>
-          JoseKey.fromImportable(JSON.parse(process.env.OAUTH_PRIVATE_KEY!))
+          JoseKey.fromImportable(JSON.parse(process.env.PRIVATE_KEY!))
         ).then((key) => import("@atproto/jwk").then(({ Keyset }) => new Keyset([key])))
       : undefined;
 
