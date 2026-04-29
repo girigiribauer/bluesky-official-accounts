@@ -67,32 +67,20 @@ Blueskyアカウントでログインした協力者。
 
 ### `entries`
 
-登録済みアカウント。Bluesky 情報は必須、X(Twitter) 情報はあれば持つ。
+登録済みアカウント。Bluesky・X(Twitter) 両方の情報を持つ。
 
 | カラム | 型 | 備考 |
 |---|---|---|
 | id | uuid | プライマリーキー |
 | bluesky_did | text | ユニーク |
 | bluesky_handle | text | 表示用。変更されうる |
-| twitter_handle | text | null = X アカウントを持たない |
+| twitter_handle | text | |
 | display_name | text | 表示用。自動取得後に手動修正される場合があるため明示的に保持 |
-| transition_status | text | 下記 enum 参照 |
+| transition_status | text | enum |
 | status | text | `pending` / `published` / `rejected` |
 | submitted_by | uuid | 外部キー → moderators（null = 匿名） |
 | created_at | timestamptz | |
 | updated_at | timestamptz | |
-
-#### transition_status の値
-
-| 値 | 説明 |
-|---|---|
-| `not_migrated` | X あり・Bluesky 未作成 |
-| `account_created` | X あり・Bluesky 作成済みだが X も継続運用中 |
-| `dual_active` | X・Bluesky 両方を積極的に運用中 |
-| `migrated` | X を辞めて Bluesky に完全移行。または最初から Bluesky のみで運用（後述）|
-| `unverifiable` | 確認不能 |
-
-`migrated` は現状「X から移行」と「最初から Bluesky のみ」を同じ値で管理しているが、後者が増えてきた場合は `bluesky_only` などの新規値追加を検討する。
 
 ### `entry_fields`
 
