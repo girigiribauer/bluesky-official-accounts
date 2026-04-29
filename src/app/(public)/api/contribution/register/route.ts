@@ -64,6 +64,7 @@ export async function POST(req: NextRequest) {
           根拠: { rich_text: [{ text: { content: evidence.trim() } }] },
         }),
         公開: { checkbox: false },
+        ...(did.trim() && { did: { rich_text: [{ text: { content: did.trim() } }] } }),
       },
     });
   } catch (err) {
@@ -73,9 +74,6 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-
-  // didは現時点では未使用（将来の活用のためフロントから受け取っておく）
-  void did;
 
   return NextResponse.json({ ok: true });
 }
