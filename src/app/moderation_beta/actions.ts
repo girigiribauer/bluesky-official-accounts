@@ -69,7 +69,7 @@ async function updateEntryField(
   try {
     const { error: updateError } = await supabase
       .from("entries")
-      .update({ [field]: value, updated_at: new Date().toISOString() })
+      .update({ [field]: value, updated_at: new Date().toISOString() } as any)
       .eq("id", entryId);
     if (updateError) throw updateError;
 
