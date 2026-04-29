@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { timeFilter, textFilter, customDomainFilter, verifiedFilter } from "./accountFilters";
-import { Account } from "src/models/Account";
+import { NotionItem } from "src/models/Notion";
 import { FilterRuleSet } from "src/models/FilterRuleSet";
 
 const baseRules: FilterRuleSet = {
@@ -10,7 +10,7 @@ const baseRules: FilterRuleSet = {
   verified: false,
 };
 
-const item = (overrides: Partial<Account> = {}): Account => ({
+const item = (overrides: Partial<NotionItem> = {}): NotionItem => ({
   id: "1",
   name: "テストアカウント",
   category: "IT・テック・Web",

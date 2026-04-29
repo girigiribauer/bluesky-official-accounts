@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import { GlobalHeader } from "src/components/GlobalHeader";
-import { ModalProvider } from "src/components/ModalProvider";
-import { ModalContents } from "src/components/ModalContents";
 
 export default function Error({
   reset,
@@ -12,7 +10,7 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <ModalProvider>
+    <>
       <header className="header">
         <GlobalHeader />
       </header>
@@ -34,7 +32,6 @@ export default function Error({
           </section>
         </div>
       </div>
-      <ModalContents />
-    </ModalProvider>
+    </>
   );
 }

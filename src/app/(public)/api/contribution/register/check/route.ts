@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSupabaseClient } from "src/lib/supabaseClient";
+import { getNotionClient } from "src/lib/notionClient";
 
 const parseActor = (input: string): string => {
   const trimmed = input.trim();
@@ -37,44 +37,43 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // Supabase で重複確認
+  // Notion DB で重複確認
+  const databaseId = process.env.ACCOUNTLIST_DATABASE;
+  if (!databaseId) {
+    console.error("ACCOUNTLIST_DATABASE is not set");
+    return NextResponse.json({ ok: false, message: "サーバー設定エラーです" }, { status: 500 });
+  }
+
+  const blueskyUrl = `https://bsky.app/profile/${profile.handle}`;
+
   try {
-    const supabase = getSupabaseClient();
-    const { data, error } = await supabase
-      .from("entries")
-      .select("twitter_handle, transition_status, accounts(display_name, old_category, evidences(content))")
-      .eq("bluesky_did", profile.did)
-      .limit(1)
-      .maybeSingle();
+    const existing = await getNotionClient().databases.query({
+      database_id: databaseId,
+      filter: {
+        property: "Bluesky アカウント",
+        url: { equals: blueskyUrl },
+      },
+    });
 
-    if (error) throw error;
-
-    if (data) {
-      const account = Array.isArray(data.accounts) ? data.accounts[0] : data.accounts;
-      const twitterUrl = data.twitter_handle
-        ? `https://x.com/${data.twitter_handle}`
-        : "";
-      const evidences = account?.evidences ?? [];
-      const source = Array.isArray(evidences) && evidences.length > 0
-        ? (evidences[0] as { content: string }).content
-        : "";
-
+    if (existing.results.length > 0) {
+      const page = existing.results[0] as any;
+      const props = page.properties;
       return NextResponse.json({
         status: "registered",
         did: profile.did,
         handle: profile.handle,
         displayName: profile.displayName ?? profile.handle,
         existing: {
-          name: account?.display_name ?? "",
-          category: account?.old_category ?? "",
-          source,
-          twitter: twitterUrl,
-          status: data.transition_status ?? "",
+          name: props["名前"]?.title[0]?.plain_text ?? "",
+          category: props["分類"]?.select?.name ?? "",
+          source: props["根拠"]?.rich_text[0]?.plain_text ?? "",
+          twitter: props["Twitter/X アカウント"]?.url ?? "",
+          status: props["ステータス"]?.select?.name ?? "",
         },
       });
     }
   } catch (err) {
-    console.error("Supabase query error:", err);
+    console.error("Notion query error:", err);
     return NextResponse.json(
       { ok: false, message: "確認に失敗しました。時間をおいて再度お試しください。" },
       { status: 500 }

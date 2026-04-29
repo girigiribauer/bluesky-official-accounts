@@ -2,7 +2,6 @@ import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 import { SESSION_COOKIE } from "src/lib/auth";
 import { getOAuthClient } from "src/lib/oauthClient";
-import type { Database } from "src/types/database";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +13,7 @@ export async function GET(req: NextRequest) {
   const host = req.headers.get("host") ?? "localhost:15010";
   const baseUrl = `http://${host}`;
 
-  const supabase = createClient<Database>(
+  const supabase = createClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SECRET_KEY!
   );

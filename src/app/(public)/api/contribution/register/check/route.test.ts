@@ -1,20 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
-const mockMaybeSingle = vi.fn();
-const mockFrom = vi.fn(() => ({
-  select: vi.fn().mockReturnThis(),
-  eq: vi.fn().mockReturnThis(),
-  limit: vi.fn().mockReturnThis(),
-  maybeSingle: mockMaybeSingle,
+const mockQuery = vi.fn();
+
+vi.mock("@notionhq/client", () => ({
+  Client: vi.fn(function () {
+    return {
+      databases: { query: mockQuery },
+    };
+  }),
 }));
 
-vi.mock("src/lib/supabaseClient", () => ({
-  getSupabaseClient: vi.fn(() => ({ from: mockFrom })),
-}));
-
-vi.stubEnv("SUPABASE_URL", "https://dummy.supabase.co");
-vi.stubEnv("SUPABASE_SECRET_KEY", "dummy");
+vi.stubEnv("ACCOUNTLIST_DATABASE", "mock-db-id");
+vi.stubEnv("NOTION_API_KEY", "mock-api-key");
 
 const mockFetch = vi.fn();
 vi.stubGlobal("fetch", mockFetch);
@@ -42,7 +40,7 @@ describe("GET /api/contribution/register/check", () => {
       status: 200,
       json: async () => mockProfile,
     });
-    mockMaybeSingle.mockResolvedValue({ data: null, error: null });
+    mockQuery.mockResolvedValue({ results: [] });
   });
 
   it("actorパラメーターがなければ400を返す", async () => {
@@ -87,31 +85,31 @@ describe("GET /api/contribution/register/check", () => {
     expect(res.status).toBe(500);
   });
 
-  it("Supabaseに既存レコードがある場合は status: registered を返す", async () => {
-    mockMaybeSingle.mockResolvedValueOnce({
-      data: {
-        twitter_handle: "bluesky",
-        transition_status: "dual_active",
-        accounts: {
-          display_name: "Bluesky",
-          old_category: "テクノロジー",
-          evidences: [{ content: "https://example.com" }],
+  it("Notionに既存レコードがある場合は status: registered を返す", async () => {
+    mockQuery.mockResolvedValueOnce({
+      results: [
+        {
+          id: "page-id",
+          properties: {
+            名前: { title: [{ plain_text: "Bluesky" }] },
+            分類: { select: { name: "テクノロジー" } },
+            根拠: { rich_text: [{ plain_text: "https://example.com" }] },
+            "Twitter/X アカウント": { url: "https://x.com/bluesky" },
+            ステータス: { select: { name: "両方運用中" } },
+          },
         },
-      },
-      error: null,
+      ],
     });
     const res = await GET(makeRequest("bsky.app"));
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json.status).toBe("registered");
     expect(json.existing.name).toBe("Bluesky");
-    expect(json.existing.status).toBe("dual_active");
-    expect(json.existing.twitter).toBe("https://x.com/bluesky");
-    expect(json.existing.source).toBe("https://example.com");
+    expect(json.existing.status).toBe("両方運用中");
   });
 
-  it("Supabaseがエラーのとき500を返す", async () => {
-    mockMaybeSingle.mockResolvedValueOnce({ data: null, error: new Error("DB error") });
+  it("Notionがエラーのとき500を返す", async () => {
+    mockQuery.mockRejectedValueOnce(new Error("Notion error"));
     const res = await GET(makeRequest("bsky.app"));
     expect(res.status).toBe(500);
   });

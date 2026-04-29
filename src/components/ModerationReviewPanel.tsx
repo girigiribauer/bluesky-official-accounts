@@ -17,6 +17,7 @@ import { STATUS_OPTIONS } from "src/constants/contributionForm";
 import { formatEvidenceMeta } from "src/lib/formatEvidenceMeta";
 import { sortEvidences } from "src/lib/sortEvidences";
 import type { ReviewEntry, Classification } from "src/types/moderation";
+import type { Result } from "src/types/result";
 import styles from "./ModerationReviewPanel.module.scss";
 
 export type { ReviewEntry, Classification };
@@ -39,6 +40,13 @@ const editFieldLabels: Record<EditField, string> = {
   evidence: "根拠の追記",
 };
 
+const editFieldActions: Record<Exclude<EditField, "evidence">, (id: string, value: string) => Promise<Result>> = {
+  display_name: updateEntryName,
+  twitter_handle: updateEntryTwitterHandle,
+  bluesky_handle: updateEntryBlueskyHandle,
+  transition_status: updateEntryStatus,
+  classification: setEntryClassification,
+};
 
 
 export function ModerationReviewPanel({ entry, classifications, moderatorHandle, onClose }: Props) {
@@ -49,15 +57,6 @@ export function ModerationReviewPanel({ entry, classifications, moderatorHandle,
   const [editValue, setEditValue] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-
-  // account_id / entry id を束縛したクロージャ
-  const editFieldActions: Record<Exclude<EditField, "evidence">, (value: string) => Promise<{ ok: boolean; error?: string }>> = {
-    display_name:      (value) => updateEntryName(localEntry.account_id, value),
-    twitter_handle:    (value) => updateEntryTwitterHandle(localEntry.id, localEntry.account_id, value),
-    bluesky_handle:    (value) => updateEntryBlueskyHandle(localEntry.id, localEntry.account_id, value),
-    transition_status: (value) => updateEntryStatus(localEntry.id, localEntry.account_id, value),
-    classification:    (value) => setEntryClassification(localEntry.account_id, value),
-  };
 
   const handleEditToggle = (field: EditField, currentValue: string) => {
     if (activeEditField === field) {
@@ -73,22 +72,19 @@ export function ModerationReviewPanel({ entry, classifications, moderatorHandle,
     if (!activeEditField) return;
 
     if (activeEditField === "evidence") {
-      const result = await addEvidence(localEntry.account_id, editValue);
+      const result = await addEvidence(localEntry.id, editValue);
       if (!result.ok) { setError(result.error); return; }
       setLocalEntry((prev) => ({
         ...prev,
-        accounts: {
-          ...prev.accounts,
-          evidences: [
-            {
-              id: result.id,
-              content: editValue.trim(),
-              created_at: new Date().toISOString(),
-              moderators: { handle: moderatorHandle, display_name: moderatorHandle },
-            },
-            ...prev.accounts.evidences,
-          ],
-        },
+        evidences: [
+          {
+            id: result.id,
+            content: editValue.trim(),
+            created_at: new Date().toISOString(),
+            moderators: { handle: moderatorHandle, display_name: moderatorHandle },
+          },
+          ...prev.evidences,
+        ],
       }));
       setActiveEditField(null);
       setEditValue("");
@@ -97,19 +93,14 @@ export function ModerationReviewPanel({ entry, classifications, moderatorHandle,
       return;
     }
 
-    const result = await editFieldActions[activeEditField](editValue);
-    if (!result.ok) { setError(result.error ?? null); return; }
+    const result = await editFieldActions[activeEditField](localEntry.id, editValue);
+    if (!result.ok) { setError(result.error); return; }
     if (activeEditField === "classification") {
       const cls = classifications.find((c) => c.id === editValue) ?? null;
       setLocalEntry((prev) => ({
         ...prev,
-        accounts: {
-          ...prev.accounts,
-          account_fields: [{ ...prev.accounts.account_fields[0], classification_id: editValue || null, classifications: cls ? { id: cls.id, name: cls.name } : null }],
-        },
+        entry_fields: [{ ...prev.entry_fields[0], classification_id: editValue || null, classifications: cls ? { id: cls.id, name: cls.name } : null }],
       }));
-    } else if (activeEditField === "display_name") {
-      setLocalEntry((prev) => ({ ...prev, accounts: { ...prev.accounts, display_name: editValue } }));
     } else {
       setLocalEntry((prev) => ({ ...prev, [activeEditField]: editValue }));
     }
@@ -119,20 +110,20 @@ export function ModerationReviewPanel({ entry, classifications, moderatorHandle,
   };
 
   const handleApprove = async () => {
-    const result = await approveEntry(localEntry.id, localEntry.account_id);
+    const result = await approveEntry(localEntry.id);
     if (!result.ok) { setError(result.error); return; }
     startTransition(() => { router.refresh(); onClose(); });
   };
 
   const handleRejectClick = () => {
-    updateModal(<RejectModal entryId={localEntry.id} accountId={localEntry.account_id} onSuccess={() => { clearModal(); onClose(); }} />);
+    updateModal(<RejectModal entryId={localEntry.id} onSuccess={() => { clearModal(); onClose(); }} />);
   };
 
-  const evidenceText = sortEvidences(localEntry.accounts.evidences)
+  const evidenceText = sortEvidences(localEntry.evidences)
     .map((e) => `${formatEvidenceMeta(e)}\n${e.content}`)
     .join("\n\n");
-  const currentClassification = localEntry.accounts.account_fields[0]?.classifications ?? null;
-  const currentClassificationId = localEntry.accounts.account_fields[0]?.classification_id ?? "";
+  const currentClassification = localEntry.entry_fields[0]?.classifications ?? null;
+  const currentClassificationId = localEntry.entry_fields[0]?.classification_id ?? "";
 
   return (
     <section className={styles.panel}>
@@ -146,12 +137,12 @@ export function ModerationReviewPanel({ entry, classifications, moderatorHandle,
           <div className={[styles.infoItem, activeEditField === "display_name" ? styles.infoItemActive : ""].join(" ")}>
             <button
               className={styles.editIconButton}
-              onClick={() => handleEditToggle("display_name", localEntry.accounts.display_name)}
+              onClick={() => handleEditToggle("display_name", localEntry.display_name)}
               aria-label="アカウント名を修正"
             >
               <i className="fa-solid fa-pencil" />
             </button>
-            <span className={styles.infoText}>{localEntry.accounts.display_name}</span>
+            <span className={styles.infoText}>{localEntry.display_name}</span>
           </div>
 
           {/* X(Twitter) */}
@@ -309,12 +300,12 @@ export function ModerationReviewPanel({ entry, classifications, moderatorHandle,
   );
 }
 
-function RejectModal({ entryId, accountId, onSuccess }: { entryId: string; accountId: string; onSuccess: () => void }) {
+function RejectModal({ entryId, onSuccess }: { entryId: string; onSuccess: () => void }) {
   const [reason, setReason] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
-    const result = await rejectEntry(entryId, accountId, reason);
+    const result = await rejectEntry(entryId, reason);
     if (!result.ok) { setError(result.error); return; }
     onSuccess();
   };

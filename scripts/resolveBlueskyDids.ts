@@ -61,7 +61,6 @@ async function fetchAllPages(
   let skippedAlready = 0;
   let skippedNoBluesky = 0;
   let warnings = 0;
-  const unresolvedHandles: string[] = [];
 
   for (const [index, page] of pages.entries()) {
     const pageId = page.id;
@@ -94,7 +93,6 @@ async function fetchAllPages(
       console.warn(
         `[WARN] failed to resolve handle: "${handle}" (page: ${pageId})`
       );
-      unresolvedHandles.push(handle);
       warnings++;
       continue;
     }
@@ -118,11 +116,4 @@ async function fetchAllPages(
   console.log(`already had DID: ${skippedAlready}`);
   console.log(`no Bluesky URL:  ${skippedNoBluesky}`);
   console.log(`warnings:        ${warnings}`);
-
-  if (unresolvedHandles.length > 0) {
-    console.log("\n--- unresolved handles (copy & paste) ---");
-    for (const h of unresolvedHandles) {
-      console.log(`npx tsx scripts/clearUnresolvableBluesky.ts ${h}`);
-    }
-  }
 })();

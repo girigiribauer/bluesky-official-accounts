@@ -1,6 +1,6 @@
 "use client";
 
-import { Account } from "src/models/Account";
+import { NotionItem } from "src/models/Notion";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { Category } from "src/models/Category";
 import { groupAccountsByCategory } from "src/lib/groupAccountsByCategory";
@@ -16,7 +16,7 @@ import styles from "./AccountListView.module.scss";
 export type AccountListViewProps = {
   filterRuleSet?: FilterRuleSet | null;
   handleReset?: (key: keyof FilterRuleSet) => void;
-  items: Account[];
+  items: NotionItem[];
   categoryList?: Category[];
   updatedTime: string;
 };
@@ -60,7 +60,7 @@ export const AccountListView = ({
       return [...acc, ...group.items];
     }
     return acc;
-  }, [] as Account[]);
+  }, [] as NotionItem[]);
 
   const handleSelectAllCategory = () => {
     setCategoryToggleList(

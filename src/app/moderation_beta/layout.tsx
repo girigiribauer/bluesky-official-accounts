@@ -6,51 +6,46 @@ import { Dashboard } from "src/components/ModerationDashboard";
 import { ModalProvider } from "src/components/ModalProvider";
 import { ModalContents } from "src/components/ModalContents";
 import { getCurrentModerator } from "src/lib/auth";
-import type { Database } from "src/types/database";
-import type { ReviewEntry, Activity, FieldMembership } from "src/types/moderation";
+import type { ReviewEntry } from "src/types/moderation";
 
 function getSupabase() {
-  return createClient<Database>(process.env.SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!);
+  return createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SECRET_KEY!);
 }
+
 
 async function getPendingEntries(): Promise<ReviewEntry[]> {
   const { data } = await getSupabase()
     .from("entries")
-    .select("id, account_id, bluesky_handle, twitter_handle, transition_status, accounts(display_name, evidences(id, content, created_at, moderators(handle, display_name)), account_fields(id, field_id, classification_id, classifications(id, name)))")
+    .select("id, display_name, bluesky_handle, twitter_handle, transition_status, evidences(id, content, created_at, moderators(handle, display_name)), entry_fields(id, field_id, classification_id, classifications(id, name))")
     .eq("status", "pending")
     .order("created_at", { ascending: false });
-  // Supabase の join 型は accounts を nullable に推論するが、
-  // entries が存在する限り accounts は必ず存在する。ReviewEntry に合わせてキャスト。
   return (data ?? []) as unknown as ReviewEntry[];
 }
 
-async function getRecentActivities(): Promise<Activity[]> {
+async function getRecentActivities() {
   const { data } = await getSupabase()
     .from("activities")
-    .select("id, action, created_at, moderators(handle, display_name), accounts(display_name)")
+    .select("id, action, created_at, moderators(handle, display_name), entries!left(display_name)")
     .in("action", ["approve", "reject"])
     .order("created_at", { ascending: false })
     .limit(10);
-  return (data ?? []) as Activity[];
+  return data ?? [];
 }
 
 async function getModeratorReviewFieldIds(moderatorId: string): Promise<(string | null)[]> {
   const { data } = await getSupabase()
     .from("activities")
-    .select("accounts!left(account_fields!left(field_id))")
+    .select("entries!left(entry_fields!left(field_id))")
     .eq("moderator_id", moderatorId)
     .in("action", ["approve", "reject"]);
-  return (data ?? []).map((a) => {
-    const accounts = a.accounts as { account_fields: { field_id: string }[] } | null;
-    return accounts?.account_fields?.[0]?.field_id ?? null;
-  });
+  return (data ?? []).map((a: any) => a.entries?.entry_fields?.[0]?.field_id ?? null);
 }
 
-async function getFieldMemberships(): Promise<FieldMembership[]> {
+async function getFieldMemberships(): Promise<{ moderator_id: string; field_id: string; moderators: { is_admin: boolean } | null }[]> {
   const { data } = await getSupabase()
     .from("field_memberships")
     .select("moderator_id, field_id, moderators!inner(is_admin)");
-  return (data ?? []) as FieldMembership[];
+  return (data ?? []) as any;
 }
 
 async function getAdminCount(): Promise<number> {
@@ -99,7 +94,7 @@ export default async function ModerationLayout({
         <Dashboard
           entries={entries}
           moderator={moderator}
-          activities={activities}
+          activities={activities as any}
           moderatorReviewFieldIds={moderatorReviewFieldIds}
           fieldMemberships={fieldMemberships}
           adminCount={adminCount}
