@@ -26,30 +26,36 @@ const makeChain = (count: number) => {
 };
 
 describe("checkDuplicate", () => {
-  it("requestsにもentriesにも存在しなければ false を返す", async () => {
+  it("requestsにもentriesにも存在しなければ 'none' を返す", async () => {
     mockFrom.mockImplementation(() => makeChain(0));
-    expect(await checkDuplicate("https://x.com/new")).toBe(false);
+    expect(await checkDuplicate("https://x.com/new")).toBe("none");
   });
 
-  it("requestsに存在すれば true を返す", async () => {
+  it("requestsに存在すれば 'request' を返す", async () => {
     let call = 0;
     mockFrom.mockImplementation(() => makeChain(call++ === 0 ? 1 : 0));
-    expect(await checkDuplicate("https://x.com/existing")).toBe(true);
+    expect(await checkDuplicate("https://x.com/existing")).toBe("request");
   });
 
-  it("entriesに存在すれば true を返す", async () => {
+  it("entriesに存在すれば 'entry' を返す", async () => {
     let call = 0;
     mockFrom.mockImplementation(() => makeChain(call++ === 0 ? 0 : 1));
-    expect(await checkDuplicate("https://x.com/existing")).toBe(true);
+    expect(await checkDuplicate("https://x.com/existing")).toBe("entry");
+  });
+
+  it("requestsとentriesの両方に存在すれば 'entry' を返す", async () => {
+    mockFrom.mockImplementation(() => makeChain(1));
+    expect(await checkDuplicate("https://x.com/existing")).toBe("entry");
   });
 
   it("twitter.com 形式のURLも処理できる", async () => {
-    mockFrom.mockImplementation(() => makeChain(1));
-    expect(await checkDuplicate("https://twitter.com/existing")).toBe(true);
+    let call = 0;
+    mockFrom.mockImplementation(() => makeChain(call++ === 0 ? 1 : 0));
+    expect(await checkDuplicate("https://twitter.com/existing")).toBe("request");
   });
 
-  it("解析できないURLフォーマットは false を返す", async () => {
+  it("解析できないURLフォーマットは 'none' を返す", async () => {
     mockFrom.mockImplementation(() => makeChain(0));
-    expect(await checkDuplicate("https://bsky.app/profile/bluesky")).toBe(false);
+    expect(await checkDuplicate("https://bsky.app/profile/bluesky")).toBe("none");
   });
 });

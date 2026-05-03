@@ -1,6 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
-import type { Database } from "src/types/database";
+import { getSupabaseClient } from "src/lib/supabaseClient";
 
 export type Moderator = {
   id: string;
@@ -15,32 +14,20 @@ export type Moderator = {
 export const SESSION_COOKIE = "moderator_did";
 
 async function getModeratorByDid(did: string): Promise<Moderator | null> {
-  const supabase = createClient<Database>(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!
-  );
+  const supabase = getSupabaseClient();
   const { data } = await supabase
     .from("moderators")
-    .select("id, did, handle, display_name, is_admin, created_at")
+    .select("id, did, handle, display_name, is_admin, avatar, created_at")
     .eq("did", did)
     .single();
   if (!data) return null;
 
-  let avatar: string | null = null;
-  try {
-    const res = await fetch(
-      `https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=${did}`,
-      { next: { revalidate: 3600 } }
-    );
-    if (res.ok) {
-      const profile = await res.json();
-      avatar = profile.avatar ?? null;
-    }
-  } catch {
-    // アバター取得失敗はフォールバック（アイコン表示）
-  }
+  await supabase
+    .from("moderators")
+    .update({ last_active_at: new Date().toISOString() })
+    .eq("did", did);
 
-  return { ...data, avatar };
+  return data;
 }
 
 /**

@@ -7,3 +7,8 @@ export const normalizeTwitterUrl = (url: string): string =>
   url
     .replace(/^http:\/\//, "https://")
     .replace(/^https:\/\/twitter\.com\//, "https://x.com/");
+
+export const extractTwitterHandle = (url: string): string | null => {
+  const match = url.trim().match(/^https?:\/\/(x|twitter)\.com\/([A-Za-z0-9_]+)(\/.*)?$/);
+  return match?.[2] ?? null;
+};

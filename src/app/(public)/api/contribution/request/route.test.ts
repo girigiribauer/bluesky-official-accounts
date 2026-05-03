@@ -3,7 +3,6 @@ import { NextRequest } from "next/server";
 
 const mockCheckDuplicate = vi.fn();
 const mockInsert = vi.fn();
-const mockAccountSingle = vi.fn();
 
 vi.mock("./_checkDuplicate", () => ({
   checkDuplicate: mockCheckDuplicate,
@@ -11,17 +10,9 @@ vi.mock("./_checkDuplicate", () => ({
 
 vi.mock("src/lib/supabaseClient", () => ({
   getSupabaseClient: vi.fn(() => ({
-    from: vi.fn((table: string) => {
-      if (table === "accounts") {
-        return {
-          insert: vi.fn(() => ({
-            select: vi.fn(() => ({ single: mockAccountSingle })),
-          })),
-        };
-      }
-      // requests
-      return { insert: mockInsert };
-    }),
+    from: vi.fn(() => ({
+      insert: mockInsert,
+    })),
   })),
 }));
 
@@ -47,7 +38,6 @@ describe("POST /api/contribution/request", () => {
   beforeEach(() => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     mockCheckDuplicate.mockResolvedValue(false);
-    mockAccountSingle.mockResolvedValue({ data: { id: "mock-account-id" }, error: null });
     mockInsert.mockResolvedValue({ error: null });
   });
 
@@ -89,18 +79,32 @@ describe("POST /api/contribution/request", () => {
     expect(res.status).toBe(400);
   });
 
-  it("重複アカウントは409を返す", async () => {
-    mockCheckDuplicate.mockResolvedValueOnce(true);
+  it("requestsに重複のとき（A02）409を返す", async () => {
+    mockCheckDuplicate.mockResolvedValueOnce("request");
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
       website: "",
     }));
     expect(res.status).toBe(409);
+    const json = await res.json();
+    expect(json.message).toBe("このアカウントはすでにリクエスト済みです");
+  });
+
+  it("entriesに重複のとき（A03）409を返し Bluesky 到着済みメッセージを返す", async () => {
+    mockCheckDuplicate.mockResolvedValueOnce("entry");
+    const res = await POST(makeRequest({
+      twitterUrl: "https://x.com/bluesky",
+      twitterName: "Bluesky",
+      website: "",
+    }));
+    expect(res.status).toBe(409);
+    const json = await res.json();
+    expect(json.message).toBe("このアカウントはすでに Bluesky に来ています");
   });
 
   it("Supabase insert が失敗したら500を返す", async () => {
-    mockAccountSingle.mockResolvedValueOnce({ data: null, error: new Error("DB error") });
+    mockInsert.mockResolvedValueOnce({ error: new Error("DB error") });
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",

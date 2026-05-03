@@ -38,7 +38,7 @@ vi.mock("src/lib/csrf", () => ({ checkOrigin: vi.fn().mockReturnValue(true) }));
 vi.mock("src/lib/rateLimit", () => ({ checkRateLimit: vi.fn().mockReturnValue(true) }));
 
 const { POST: registerPOST } = await import("src/app/(public)/api/contribution/register/route");
-const { approveEntry, rejectEntry, addEvidence, updateEntryName } =
+const { approveEntrySubmission, rejectEntrySubmission, updateSubmissionName } =
   await import("src/app/moderation_beta/actions");
 
 // ---------------------------------------------------------------------------
@@ -65,6 +65,10 @@ async function cleanupAccount(accountId: string) {
   await supabase.from("accounts").delete().eq("id", accountId);
 }
 
+async function cleanupSubmissionByDid(blueskyDid: string) {
+  await db().from("entry_submissions").delete().eq("bluesky_did", blueskyDid);
+}
+
 async function cleanupByDid(blueskyDid: string) {
   const { data: entry } = await db()
     .from("entries")
@@ -72,6 +76,7 @@ async function cleanupByDid(blueskyDid: string) {
     .eq("bluesky_did", blueskyDid)
     .maybeSingle();
   if (entry) await cleanupAccount(entry.account_id);
+  await cleanupSubmissionByDid(blueskyDid);
 }
 
 beforeAll(async () => {
@@ -100,31 +105,25 @@ function makeRegisterRequest(body: object) {
   });
 }
 
-async function createPendingEntry(suffix: string) {
-  const supabase = db();
-
-  const { data: account } = await supabase
-    .from("accounts")
-    .insert({ display_name: `テスト公式アカウント ${suffix}`, old_category: "テスト" })
-    .select("id")
-    .single();
-
-  const accountId = account!.id;
-
-  const { data: entry } = await supabase
-    .from("entries")
+async function createPendingSubmission(suffix: string) {
+  const { data: submission } = await db()
+    .from("entry_submissions")
     .insert({
-      account_id: accountId,
+      account_name: `テスト公式アカウント ${suffix}`,
       bluesky_did: `did:plc:test-${suffix}`,
       bluesky_handle: `test-${suffix}.bsky.social`,
-      twitter_handle: `test_${suffix}`,
+      twitter_url: `https://x.com/test_${suffix}`,
+      field_id: "business",
       transition_status: "dual_active",
-      status: "pending",
+      evidence: "テスト用根拠",
     })
     .select("id")
     .single();
 
-  return { accountId, entryId: entry!.id };
+  return {
+    submissionId: submission!.id,
+    blueskyDid: `did:plc:test-${suffix}`,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -134,7 +133,7 @@ async function createPendingEntry(suffix: string) {
 describe("登録フロー", () => {
   const TEST_DID = "did:plc:integ-reg-001";
 
-  it("フォームから登録すると accounts・entries・account_fields・evidences が作成される", async () => {
+  it("フォームから登録すると entry_submissions にレコードが作成される", async () => {
     const req = makeRegisterRequest({
       did: TEST_DID,
       handle: "test-register.bsky.social",
@@ -151,44 +150,20 @@ describe("登録フロー", () => {
       expect(res.status).toBe(200);
       expect(await res.json()).toEqual({ ok: true });
 
-      const { data: entry } = await db()
-        .from("entries")
-        .select("account_id, bluesky_handle, twitter_handle, transition_status, status")
+      const { data: submission } = await db()
+        .from("entry_submissions")
+        .select("account_name, bluesky_handle, twitter_url, transition_status, field_id, evidence")
         .eq("bluesky_did", TEST_DID)
         .single();
 
-      expect(entry?.status).toBe("pending");
-      expect(entry?.bluesky_handle).toBe("test-register.bsky.social");
-      expect(entry?.twitter_handle).toBe("testreg001");
-      expect(entry?.transition_status).toBe("dual_active");
-
-      const accountId = entry!.account_id;
-
-      const { data: account } = await db()
-        .from("accounts")
-        .select("display_name, old_category")
-        .eq("id", accountId)
-        .single();
-
-      expect(account?.display_name).toBe("統合テスト 登録アカウント");
-
-      const { data: fields } = await db()
-        .from("account_fields")
-        .select("field_id")
-        .eq("account_id", accountId);
-
-      expect(fields).toHaveLength(1);
-      expect(fields![0].field_id).toBe("business");
-
-      const { data: evidences } = await db()
-        .from("evidences")
-        .select("content")
-        .eq("account_id", accountId);
-
-      expect(evidences).toHaveLength(1);
-      expect(evidences![0].content).toBe("公式サイトで確認済み");
+      expect(submission?.account_name).toBe("統合テスト 登録アカウント");
+      expect(submission?.bluesky_handle).toBe("test-register.bsky.social");
+      expect(submission?.twitter_url).toBe("https://x.com/testreg001");
+      expect(submission?.transition_status).toBe("dual_active");
+      expect(submission?.field_id).toBe("business");
+      expect(submission?.evidence).toBe("公式サイトで確認済み");
     } finally {
-      await cleanupByDid(TEST_DID);
+      await cleanupSubmissionByDid(TEST_DID);
     }
   });
 
@@ -210,108 +185,146 @@ describe("登録フロー", () => {
 });
 
 describe("承認フロー", () => {
-  it("pending のエントリを承認すると published になり activity が記録される", async () => {
-    const { accountId, entryId } = await createPendingEntry("approve-1");
+  it("申請を承認すると accounts・entries・account_fields・evidences が作成され申請が削除される", async () => {
+    const { submissionId, blueskyDid } = await createPendingSubmission("approve-1");
 
     try {
-      const result = await approveEntry(entryId, accountId);
+      const result = await approveEntrySubmission(submissionId);
       expect(result).toEqual({ ok: true });
 
+      // entry_submissions は削除されているはず
+      const { data: deleted } = await db()
+        .from("entry_submissions")
+        .select("id")
+        .eq("id", submissionId)
+        .maybeSingle();
+      expect(deleted).toBeNull();
+
+      // entries が作成されているはず
       const { data: entry } = await db()
         .from("entries")
-        .select("status, approved_at")
-        .eq("id", entryId)
+        .select("account_id, bluesky_handle, transition_status, approved_at")
+        .eq("bluesky_did", blueskyDid)
         .single();
 
-      expect(entry?.status).toBe("published");
+      expect(entry?.bluesky_handle).toBe("test-approve-1.bsky.social");
+      expect(entry?.transition_status).toBe("dual_active");
       expect(entry?.approved_at).not.toBeNull();
 
+      const accountId = entry!.account_id;
+
+      // accounts が作成されているはず
+      const { data: account } = await db()
+        .from("accounts")
+        .select("display_name")
+        .eq("id", accountId)
+        .single();
+      expect(account?.display_name).toBe("テスト公式アカウント approve-1");
+
+      // account_fields が作成されているはず
+      const { data: fields } = await db()
+        .from("account_fields")
+        .select("field_id")
+        .eq("account_id", accountId);
+      expect(fields).toHaveLength(1);
+      expect(fields![0].field_id).toBe("business");
+
+      // evidences が作成されているはず
+      const { data: evidences } = await db()
+        .from("evidences")
+        .select("content")
+        .eq("account_id", accountId);
+      expect(evidences).toHaveLength(1);
+      expect(evidences![0].content).toBe("テスト用根拠");
+
+      // activities が記録されているはず
       const { data: activities } = await db()
         .from("activities")
         .select("action, moderator_id")
         .eq("account_id", accountId);
-
       expect(activities).toHaveLength(1);
       expect(activities![0].action).toBe("approve");
       expect(activities![0].moderator_id).toBe(TEST_MODERATOR_ID);
     } finally {
-      await cleanupAccount(accountId);
+      await cleanupByDid(blueskyDid);
     }
   });
 });
 
 describe("却下フロー", () => {
-  it("理由ありで却下すると rejected になり evidence と activity が記録される", async () => {
-    const { accountId, entryId } = await createPendingEntry("reject-1");
+  it("申請を却下すると entry_submissions のレコードが削除される", async () => {
+    const { submissionId } = await createPendingSubmission("reject-1");
 
-    try {
-      const result = await rejectEntry(entryId, accountId, "根拠が不十分です");
-      expect(result).toEqual({ ok: true });
+    const result = await rejectEntrySubmission(submissionId);
+    expect(result).toEqual({ ok: true });
 
-      const { data: entry } = await db()
-        .from("entries")
-        .select("status")
-        .eq("id", entryId)
-        .single();
-
-      expect(entry?.status).toBe("rejected");
-
-      const { data: evidences } = await db()
-        .from("evidences")
-        .select("content")
-        .eq("account_id", accountId);
-
-      expect(evidences).toHaveLength(1);
-      expect(evidences![0].content).toBe("根拠が不十分です");
-
-      const { data: activities } = await db()
-        .from("activities")
-        .select("action")
-        .eq("account_id", accountId);
-
-      expect(activities).toHaveLength(1);
-      expect(activities![0].action).toBe("reject");
-    } finally {
-      await cleanupAccount(accountId);
-    }
-  });
-
-  it("理由なしで却下しても rejected になり evidence は記録されない", async () => {
-    const { accountId, entryId } = await createPendingEntry("reject-2");
-
-    try {
-      const result = await rejectEntry(entryId, accountId, "");
-      expect(result).toEqual({ ok: true });
-
-      const { data: evidences } = await db()
-        .from("evidences")
-        .select("id")
-        .eq("account_id", accountId);
-
-      expect(evidences).toHaveLength(0);
-    } finally {
-      await cleanupAccount(accountId);
-    }
+    const { data: submission } = await db()
+      .from("entry_submissions")
+      .select("id")
+      .eq("id", submissionId)
+      .maybeSingle();
+    expect(submission).toBeNull();
   });
 });
 
-describe("根拠追記フロー", () => {
-  it("根拠を追記すると evidences に保存され activity が記録される", async () => {
-    const { accountId, entryId: _entryId } = await createPendingEntry("evidence-1");
+describe("分野追加フロー (A06承認・D05)", () => {
+  it("既存アカウントで別分野の申請を承認すると、新しい account_fields が追加され既存分野は維持される", async () => {
+    const blueskyDid = "did:plc:test-d05-1";
+
+    // 1. business 分野に既存アカウントを作成
+    const { data: account } = await db()
+      .from("accounts")
+      .insert({ display_name: "D05 テストアカウント" })
+      .select("id")
+      .single();
+    const accountId = account!.id;
+
+    await db().from("entries").insert({
+      account_id: accountId,
+      bluesky_did: blueskyDid,
+      bluesky_handle: "d05-test.bsky.social",
+      transition_status: "dual_active",
+      approved_at: new Date().toISOString(),
+    });
+    await db().from("account_fields").insert({ account_id: accountId, field_id: "business" });
+
+    // 2. 同じ DID で tech 分野への申請を作成（A06相当）
+    const { data: submission } = await db()
+      .from("entry_submissions")
+      .insert({
+        account_name: "D05 テストアカウント（更新）",
+        bluesky_did: blueskyDid,
+        bluesky_handle: "d05-test.bsky.social",
+        field_id: "tech",
+        transition_status: "migrated",
+        evidence: "D05 テスト用根拠",
+      })
+      .select("id")
+      .single();
+    const submissionId = submission!.id;
 
     try {
-      const result = await addEvidence(accountId, "公式サイトで確認済み");
-      expect(result.ok).toBe(true);
-      if (!result.ok) return;
+      const result = await approveEntrySubmission(submissionId);
+      expect(result).toEqual({ ok: true });
 
-      const { data: evidences } = await db()
-        .from("evidences")
-        .select("content, moderator_id")
-        .eq("account_id", accountId);
+      // entry_submissions は削除されているはず
+      const { data: deletedSub } = await db()
+        .from("entry_submissions").select("id").eq("id", submissionId).maybeSingle();
+      expect(deletedSub).toBeNull();
 
-      expect(evidences).toHaveLength(1);
-      expect(evidences![0].content).toBe("公式サイトで確認済み");
-      expect(evidences![0].moderator_id).toBe(TEST_MODERATOR_ID);
+      // entries は新規作成されず、更新されているはず
+      const { data: allEntries } = await db()
+        .from("entries").select("transition_status").eq("bluesky_did", blueskyDid);
+      expect(allEntries).toHaveLength(1);
+      expect(allEntries![0].transition_status).toBe("migrated");
+
+      // business と tech の両方の account_fields が存在するはず
+      const { data: fields } = await db()
+        .from("account_fields").select("field_id").eq("account_id", accountId);
+      const fieldIds = fields!.map((f) => f.field_id).sort();
+      expect(fieldIds).toContain("business");
+      expect(fieldIds).toContain("tech");
+      expect(fields).toHaveLength(2);
     } finally {
       await cleanupAccount(accountId);
     }
@@ -319,22 +332,22 @@ describe("根拠追記フロー", () => {
 });
 
 describe("アカウント名修正フロー", () => {
-  it("display_name を更新すると accounts テーブルに反映される", async () => {
-    const { accountId, entryId: _entryId } = await createPendingEntry("name-1");
+  it("account_name を更新すると entry_submissions に反映される", async () => {
+    const { submissionId } = await createPendingSubmission("name-1");
 
     try {
-      const result = await updateEntryName(accountId, "修正後のアカウント名");
+      const result = await updateSubmissionName(submissionId, "修正後のアカウント名");
       expect(result).toEqual({ ok: true });
 
-      const { data: account } = await db()
-        .from("accounts")
-        .select("display_name")
-        .eq("id", accountId)
+      const { data: submission } = await db()
+        .from("entry_submissions")
+        .select("account_name")
+        .eq("id", submissionId)
         .single();
 
-      expect(account?.display_name).toBe("修正後のアカウント名");
+      expect(submission?.account_name).toBe("修正後のアカウント名");
     } finally {
-      await cleanupAccount(accountId);
+      await db().from("entry_submissions").delete().eq("id", submissionId);
     }
   });
 });

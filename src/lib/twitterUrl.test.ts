@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { isValidTwitterUrl, normalizeTwitterUrl } from "./twitterUrl";
+import { isValidTwitterUrl, normalizeTwitterUrl, extractTwitterHandle } from "./twitterUrl";
 
 describe("isValidTwitterUrl", () => {
   it("x.com URL を有効と判定する", () => {
@@ -54,5 +54,35 @@ describe("normalizeTwitterUrl", () => {
 
   it("既に正規化済みの URL はそのまま返す", () => {
     expect(normalizeTwitterUrl("https://x.com/bluesky")).toBe("https://x.com/bluesky");
+  });
+});
+
+describe("extractTwitterHandle", () => {
+  it("x.com URL からハンドルを返す", () => {
+    expect(extractTwitterHandle("https://x.com/bluesky")).toBe("bluesky");
+  });
+
+  it("twitter.com URL からハンドルを返す", () => {
+    expect(extractTwitterHandle("https://twitter.com/bluesky")).toBe("bluesky");
+  });
+
+  it("http:// URL からもハンドルを返す", () => {
+    expect(extractTwitterHandle("http://x.com/bluesky")).toBe("bluesky");
+  });
+
+  it("末尾スラッシュ付きでもハンドルを返す", () => {
+    expect(extractTwitterHandle("https://x.com/bluesky/")).toBe("bluesky");
+  });
+
+  it("前後スペースを除去して処理する", () => {
+    expect(extractTwitterHandle("  https://x.com/bluesky  ")).toBe("bluesky");
+  });
+
+  it("Bluesky URL は null を返す", () => {
+    expect(extractTwitterHandle("https://bsky.app/profile/bluesky")).toBeNull();
+  });
+
+  it("空文字は null を返す", () => {
+    expect(extractTwitterHandle("")).toBeNull();
   });
 });

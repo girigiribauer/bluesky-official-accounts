@@ -1,21 +1,11 @@
 import { getSupabaseClient } from "src/lib/supabaseClient";
+import { extractTwitterHandle } from "src/lib/twitterUrl";
 
-const TWITTER_URL_PREFIX = "https://x.com/";
-const TWITTER_COM_PREFIX = "https://twitter.com/";
+export type DuplicateCheckResult = "none" | "entry" | "request";
 
-function extractTwitterHandle(url: string): string | null {
-  if (url.startsWith(TWITTER_URL_PREFIX)) {
-    return url.slice(TWITTER_URL_PREFIX.length).replace(/\/$/, "") || null;
-  }
-  if (url.startsWith(TWITTER_COM_PREFIX)) {
-    return url.slice(TWITTER_COM_PREFIX.length).replace(/\/$/, "") || null;
-  }
-  return null;
-}
-
-export const checkDuplicate = async (twitterUrl: string): Promise<boolean> => {
+export const checkDuplicate = async (twitterUrl: string): Promise<DuplicateCheckResult> => {
   const handle = extractTwitterHandle(twitterUrl.trim());
-  if (!handle) return false;
+  if (!handle) return "none";
 
   const supabase = getSupabaseClient();
 
@@ -30,5 +20,7 @@ export const checkDuplicate = async (twitterUrl: string): Promise<boolean> => {
       .eq("twitter_handle", handle),
   ]);
 
-  return (requestCount ?? 0) > 0 || (entryCount ?? 0) > 0;
+  if ((entryCount ?? 0) > 0) return "entry";
+  if ((requestCount ?? 0) > 0) return "request";
+  return "none";
 };

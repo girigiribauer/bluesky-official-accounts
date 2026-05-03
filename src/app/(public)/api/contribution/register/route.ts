@@ -1,37 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkOrigin } from "src/lib/csrf";
 import { getSupabaseClient } from "src/lib/supabaseClient";
-import { checkRateLimit } from "src/lib/rateLimit";
 import { registerContributionSchema } from "src/lib/schemas/registerContribution";
-import { FIELD_ID_LABELS } from "src/constants/contributionForm";
-
-const TWITTER_URL_PREFIX = "https://x.com/";
-const TWITTER_COM_PREFIX = "https://twitter.com/";
-
-// 表示ラベル → field_id の逆引きマップ
-const LABEL_TO_FIELD_ID: Record<string, string> = Object.fromEntries(
-  Object.entries(FIELD_ID_LABELS).map(([id, label]) => [label, id])
-);
-
-function extractTwitterHandle(url: string): string | null {
-  if (url.startsWith(TWITTER_URL_PREFIX)) {
-    return url.slice(TWITTER_URL_PREFIX.length).replace(/\/$/, "") || null;
-  }
-  if (url.startsWith(TWITTER_COM_PREFIX)) {
-    return url.slice(TWITTER_COM_PREFIX.length).replace(/\/$/, "") || null;
-  }
-  return null;
-}
+import { extractTwitterHandle } from "src/lib/twitterUrl";
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
-  if (!checkRateLimit(ip)) {
-    return NextResponse.json(
-      { ok: false, message: "しばらくしてから再度お試しください" },
-      { status: 429 }
-    );
-  }
-
   if (!checkOrigin(req)) {
     return NextResponse.json({ ok: false, message: "不正なリクエストです" }, { status: 403 });
   }
@@ -51,55 +24,36 @@ export async function POST(req: NextRequest) {
   const { did, handle, accountName, oldCategory, fields, migrationStatus, twitterUrl, evidence } =
     parsed.data;
 
+  const fieldId = fields[0];
   const twitterHandle = extractTwitterHandle(twitterUrl.trim()) ?? null;
-  const fieldLabel = fields[0];
-  const fieldId = LABEL_TO_FIELD_ID[fieldLabel] ?? "business";
 
   try {
     const supabase = getSupabaseClient();
 
-    const { data: account, error: accountError } = await supabase
-      .from("accounts")
-      .insert({
-        display_name: accountName.trim(),
-        old_category: oldCategory.trim(),
-        submitted_by: null,
-      })
-      .select("id")
-      .single();
-
-    if (accountError) throw accountError;
-
-    const accountId = account.id;
-
-    const { error: entryError } = await supabase
-      .from("entries")
-      .insert({
-        account_id: accountId,
-        bluesky_did: did,
-        bluesky_handle: handle.trim(),
-        twitter_handle: twitterHandle,
-        transition_status: migrationStatus,
-        status: "pending",
-      });
-
-    if (entryError) throw entryError;
-
-    const { error: fieldError } = await supabase.from("account_fields").insert({
-      account_id: accountId,
-      field_id: fieldId,
-      classification_id: null,
-    });
-    if (fieldError) throw fieldError;
-
-    if (evidence.trim()) {
-      const { error: evidenceError } = await supabase.from("evidences").insert({
-        account_id: accountId,
-        moderator_id: null,
-        content: evidence.trim(),
-      });
-      if (evidenceError) throw evidenceError;
+    // twitter_handle が requests に存在する場合は request_id を設定する（D03 用）
+    let requestId: string | null = null;
+    if (twitterHandle) {
+      const { data: request } = await supabase
+        .from("requests")
+        .select("id")
+        .eq("twitter_handle", twitterHandle)
+        .maybeSingle();
+      requestId = request?.id ?? null;
     }
+
+    const { error } = await supabase.from("entry_submissions").insert({
+      account_name: accountName.trim(),
+      bluesky_did: did,
+      bluesky_handle: handle.trim(),
+      twitter_url: twitterUrl.trim() || null,
+      old_category: oldCategory.trim() || null,
+      field_id: fieldId,
+      transition_status: migrationStatus,
+      evidence: evidence.trim() || null,
+      request_id: requestId,
+    });
+
+    if (error) throw error;
   } catch (err) {
     console.error("Supabase error:", err);
     return NextResponse.json(

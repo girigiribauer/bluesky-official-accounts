@@ -1,32 +1,34 @@
+import type { TRANSITION_STATUSES } from "src/lib/schemas/moderation";
+
 // ---------------------------------------------------------------------------
-// DB モデルに対応する型定義
+// モデレーション画面で使う型定義（JOIN を含むクエリ結果型を含む）
 // ---------------------------------------------------------------------------
 
-export type Evidence = {
-  id: string;
-  content: string;
-  created_at: string | null;
-  moderators: { handle: string; display_name: string } | null;
-};
+export type TransitionStatus = (typeof TRANSITION_STATUSES)[number];
 
-export type AccountField = {
+export type ActivityAction = "migrate" | "approve" | "reject" | "edit" | "promote";
+
+export type ReviewSubmission = {
   id: string;
+  account_name: string;
+  bluesky_did: string;
+  bluesky_handle: string;
+  twitter_url: string | null;
+  old_category: string | null;
   field_id: string;
+  transition_status: TransitionStatus;
+  evidence: string | null;
   classification_id: string | null;
+  request_id: string | null;
+  created_at: string;
   classifications: { id: string; name: string } | null;
 };
 
-export type ReviewEntry = {
+export type RequestSubmission = {
   id: string;
-  account_id: string;
-  accounts: {
-    display_name: string;
-    evidences: Evidence[];
-    account_fields: AccountField[];
-  };
-  bluesky_handle: string;
-  twitter_handle: string | null;
-  transition_status: string;
+  display_name: string;
+  twitter_handle: string;
+  created_at: string;
 };
 
 export type Classification = {
@@ -37,7 +39,7 @@ export type Classification = {
 
 export type Activity = {
   id: string;
-  action: string;
+  action: ActivityAction;
   created_at: string;
   moderators: { handle: string; display_name: string } | null;
   accounts: { display_name: string } | null;

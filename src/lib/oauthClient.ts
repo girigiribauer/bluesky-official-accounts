@@ -4,15 +4,7 @@ import {
   NodeSavedState,
   buildAtprotoLoopbackClientMetadata,
 } from "@atproto/oauth-client-node";
-import { createClient } from "@supabase/supabase-js";
-import type { Database } from "src/types/database";
-
-function getSupabase() {
-  return createClient<Database>(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!
-  );
-}
+import { getSupabaseClient } from "src/lib/supabaseClient";
 
 function buildClientMetadata() {
   const baseUrl = process.env.NEXT_PUBLIC_EXTERNAL_URL;
@@ -47,7 +39,7 @@ let _client: NodeOAuthClient | null = null;
 export async function getOAuthClient(): Promise<NodeOAuthClient> {
   if (_client) return _client;
 
-  const supabase = getSupabase();
+  const supabase = getSupabaseClient();
 
   const stateStore = {
     async get(key: string): Promise<NodeSavedState | undefined> {

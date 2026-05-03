@@ -24,7 +24,7 @@ const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_SECRET_KEY);
   const updatedTime = now.toISOString();
 
   type Row =
-    Pick<Database["public"]["Tables"]["entries"]["Row"], "id" | "bluesky_handle" | "twitter_handle" | "transition_status" | "created_at" | "updated_at"> & {
+    Pick<Database["public"]["Tables"]["entries"]["Row"], "id" | "bluesky_handle" | "twitter_handle" | "transition_status" | "created_at" | "updated_at" | "approved_at"> & {
       accounts:
         | (Pick<Database["public"]["Tables"]["accounts"]["Row"], "display_name" | "old_category"> & {
             evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content">[];
@@ -39,8 +39,7 @@ const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_SECRET_KEY);
   while (true) {
     const { data, error } = await supabase
       .from("entries")
-      .select("id, bluesky_handle, twitter_handle, transition_status, created_at, updated_at, accounts(display_name, old_category, evidences(content))")
-      .eq("status", "published")
+      .select("id, bluesky_handle, twitter_handle, transition_status, created_at, updated_at, approved_at, accounts(display_name, old_category, evidences(content))")
       .range(from, from + PAGE_SIZE - 1);
 
     if (error) throw new Error(`Supabase query failed: ${error.message}`);

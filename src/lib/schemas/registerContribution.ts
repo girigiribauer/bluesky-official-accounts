@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { FIELD_ID_LABELS } from "src/constants/contributionForm";
 
 // transition_status の選択肢。値は DB に保存される英語値
 export const MIGRATION_STATUSES = [
@@ -9,13 +10,15 @@ export const MIGRATION_STATUSES = [
 
 const twitterUrlPattern = /^https:\/\/(x|twitter)\.com\/[A-Za-z0-9_]{1,15}(\/.*)?$/;
 
+const VALID_FIELD_IDS = Object.keys(FIELD_ID_LABELS) as [string, ...string[]];
+
 export const registerContributionSchema = z
   .object({
     did: z.string().min(1),
     handle: z.string().trim().min(1),
     accountName: z.string().trim().min(1).max(100),
     oldCategory: z.string().trim().min(1).max(100),
-    fields: z.array(z.string().trim().min(1)).min(1).max(1),
+    fields: z.array(z.enum(VALID_FIELD_IDS)).min(1).max(1),
     migrationStatus: z.enum(MIGRATION_STATUSES),
     twitterUrl: z.string().trim().max(150).default(""),
     evidence: z.string().trim().max(1000).default(""),

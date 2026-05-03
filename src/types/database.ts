@@ -68,6 +68,13 @@ export type Database = {
             referencedRelation: "classifications"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "account_fields_field_id_fkey"
+            columns: ["field_id"]
+            isOneToOne: false
+            referencedRelation: "fields"
+            referencedColumns: ["id"]
+          },
         ]
       }
       accounts: {
@@ -166,7 +173,15 @@ export type Database = {
           id?: string
           name?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "classifications_field_id_fkey"
+            columns: ["field_id"]
+            isOneToOne: false
+            referencedRelation: "fields"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       entries: {
         Row: {
@@ -176,7 +191,6 @@ export type Database = {
           bluesky_handle: string
           created_at: string
           id: string
-          status: string
           transition_status: string
           twitter_handle: string | null
           updated_at: string
@@ -188,7 +202,6 @@ export type Database = {
           bluesky_handle: string
           created_at?: string
           id?: string
-          status: string
           transition_status: string
           twitter_handle?: string | null
           updated_at?: string
@@ -200,7 +213,6 @@ export type Database = {
           bluesky_handle?: string
           created_at?: string
           id?: string
-          status?: string
           transition_status?: string
           twitter_handle?: string | null
           updated_at?: string
@@ -211,6 +223,73 @@ export type Database = {
             columns: ["account_id"]
             isOneToOne: false
             referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      entry_submissions: {
+        Row: {
+          account_name: string
+          bluesky_did: string
+          bluesky_handle: string
+          classification_id: string | null
+          created_at: string
+          evidence: string | null
+          field_id: string
+          id: string
+          old_category: string | null
+          request_id: string | null
+          transition_status: string
+          twitter_url: string | null
+        }
+        Insert: {
+          account_name: string
+          bluesky_did: string
+          bluesky_handle: string
+          classification_id?: string | null
+          created_at?: string
+          evidence?: string | null
+          field_id: string
+          id?: string
+          old_category?: string | null
+          request_id?: string | null
+          transition_status: string
+          twitter_url?: string | null
+        }
+        Update: {
+          account_name?: string
+          bluesky_did?: string
+          bluesky_handle?: string
+          classification_id?: string | null
+          created_at?: string
+          evidence?: string | null
+          field_id?: string
+          id?: string
+          old_category?: string | null
+          request_id?: string | null
+          transition_status?: string
+          twitter_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "entry_submissions_classification_id_fkey"
+            columns: ["classification_id"]
+            isOneToOne: false
+            referencedRelation: "classifications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "entry_submissions_field_id_fkey"
+            columns: ["field_id"]
+            isOneToOne: false
+            referencedRelation: "fields"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "entry_submissions_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
             referencedColumns: ["id"]
           },
         ]
@@ -275,6 +354,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "field_memberships_field_id_fkey"
+            columns: ["field_id"]
+            isOneToOne: false
+            referencedRelation: "fields"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "field_memberships_moderator_id_fkey"
             columns: ["moderator_id"]
             isOneToOne: false
@@ -282,6 +368,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      fields: {
+        Row: {
+          id: string
+          label: string
+          sort_order: number
+        }
+        Insert: {
+          id: string
+          label: string
+          sort_order: number
+        }
+        Update: {
+          id?: string
+          label?: string
+          sort_order?: number
+        }
+        Relationships: []
       }
       moderators: {
         Row: {
@@ -397,19 +501,46 @@ export type Database = {
         }
         Relationships: []
       }
+      request_submissions: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+          twitter_handle: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          id?: string
+          twitter_handle: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+          twitter_handle?: string
+        }
+        Relationships: []
+      }
       requests: {
         Row: {
           account_id: string
+          created_at: string
+          entry_id: string | null
           id: string
           twitter_handle: string
         }
         Insert: {
           account_id: string
+          created_at?: string
+          entry_id?: string | null
           id?: string
           twitter_handle: string
         }
         Update: {
           account_id?: string
+          created_at?: string
+          entry_id?: string | null
           id?: string
           twitter_handle?: string
         }
@@ -419,6 +550,13 @@ export type Database = {
             columns: ["account_id"]
             isOneToOne: false
             referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "requests_entry_id_fkey"
+            columns: ["entry_id"]
+            isOneToOne: false
+            referencedRelation: "entries"
             referencedColumns: ["id"]
           },
         ]

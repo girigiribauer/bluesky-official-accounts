@@ -6,7 +6,9 @@ import { AnnotationButton } from "src/components/AnnotationButton";
 import { registerContributionSchema } from "src/lib/schemas/registerContribution";
 import { fetchWithTimeout } from "src/lib/fetchWithTimeout";
 import { formatErrorMessage } from "src/lib/formatErrorMessage";
-import { FIELDS, OLD_CATEGORIES, STATUS_OPTIONS, EVIDENCE_SHORTCUTS } from "src/constants/contributionForm";
+import { FIELD_ID_LABELS, OLD_CATEGORIES, STATUS_OPTIONS, EVIDENCE_SHORTCUTS } from "src/constants/contributionForm";
+
+const FIELD_OPTIONS = Object.entries(FIELD_ID_LABELS).map(([id, label]) => ({ id, label }));
 import { useBlueskyCheck } from "src/hooks/useBlueskyCheck";
 import styles from "./RegisterForm.module.scss";
 
@@ -260,20 +262,20 @@ export const RegisterForm = () => {
               複数分野への登録は、今後対応予定です。
             </p>
             <div className={styles.chips}>
-              {FIELDS.map((cat) => {
-                const isSelected = selectedCategories.includes(cat);
+              {FIELD_OPTIONS.map(({ id, label }) => {
+                const isSelected = selectedCategories.includes(id);
                 return (
                   <button
-                    key={cat}
+                    key={id}
                     type="button"
                     className={[
                       styles.chip,
                       isSelected ? styles.chipSelected : "",
                     ].join(" ")}
-                    onClick={() => setSelectedCategories([cat])}
+                    onClick={() => setSelectedCategories([id])}
                   >
                     <span className={styles.chipIcon}>{isSelected && "✓"}</span>
-                    {cat}
+                    {label}
                   </button>
                 );
               })}
@@ -294,7 +296,7 @@ export const RegisterForm = () => {
               value={migrationStatus}
               onChange={(e) => setMigrationStatus(e.target.value)}
             >
-              {STATUS_OPTIONS.filter((opt) => opt.value !== "not_migrated").map((opt) => (
+              {STATUS_OPTIONS.filter((opt) => opt.value !== "not_migrated" && opt.value !== "unverifiable").map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>

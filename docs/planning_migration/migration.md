@@ -43,6 +43,19 @@ Notion を捨てて自前の DB で運用できる状態にする。
   - 表側・更新情報は変えない
 - 管理者による運用開始・動作検証
 
+#### DB設計の方針
+
+スキーマの定義は `supabase/migrations/20260401000000_initial_schema.sql` を参照。
+
+- `field_id` は `fields` テーブルで FK 管理。表示ラベルはコード定数 `FIELD_ID_LABELS` と一致させる
+- `old_category` は移行期間中のみ使用。Notion からの移行時に新分野へ変換し、変換不可は未分類扱い
+- 匿名投稿を許容する（公開フォームからの投稿は `submitted_by = null`）
+- フォーム投稿は `entry_submissions` / `request_submissions` に一時保存し、モデレーション後に `entries` / `requests` として公開する
+- `requests` と `entries` は別テーブルで管理。Bluesky アカウントが確認されたとき `requests.entry_id` を紐付けることで継続性を保つ
+- `entries.transition_status` の `not_migrated` は Notion の「未移行（未確認）」に対応する移行専用値。Bluesky アカウントはあるが X との同一性が未確認の状態。新規申請では使用しない
+
+**未決定事項:** `entry_submissions` のレビュー中に追記する根拠・操作ログをどこに保存するか。承認前は `account_id` が存在しないため `evidences` / `activities` に記録できない。
+
 ### フェーズ4: MVPの構築と協力者への公開準備
 
 管理者運用で問題がないことを確認したうえで、一般モデレーター向けに必要な機能を開発する。

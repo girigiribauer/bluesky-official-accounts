@@ -1,9 +1,8 @@
 import { z } from "zod";
 
 // DB の CHECK 制約と合わせる
-const TRANSITION_STATUSES = [
+export const TRANSITION_STATUSES = [
   "not_migrated",
-  "unverified",
   "account_created",
   "dual_active",
   "migrated",
@@ -29,6 +28,13 @@ export const updateEntryStatusSchema = z.object({
 export const setEntryClassificationSchema = z.object({
   // 空文字は「未分類に戻す」を意味する
   classificationId: z.union([z.uuid("入力値が不正です"), z.literal("")]),
+});
+
+export const updateSubmissionTwitterUrlSchema = z.object({
+  url: z.string().trim().refine(
+    (v) => v === "" || /^https?:\/\/(x|twitter)\.com\/[A-Za-z0-9_]{1,15}(\/.*)?$/.test(v),
+    "Twitter/X のURLを入力してください"
+  ),
 });
 
 export const addEvidenceSchema = z.object({

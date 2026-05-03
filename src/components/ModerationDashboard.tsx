@@ -2,18 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Moderator } from "src/lib/auth";
 import { FIELD_ID_LABELS } from "src/constants/contributionForm";
 import { calcReviewCount, calcMemberCount } from "src/lib/moderationStats";
-import type { ReviewEntry, Activity, FieldMembership } from "src/types/moderation";
+import type { ReviewSubmission, RequestSubmission, Activity, FieldMembership } from "src/types/moderation";
 import styles from "./ModerationDashboard.module.scss";
 
-export type { Activity };
-
 type Props = {
-  entries: ReviewEntry[];
+  entrySubmissions: ReviewSubmission[];
+  requestSubmissions: RequestSubmission[];
   moderator: Moderator;
   activities: Activity[];
   moderatorReviewFieldIds: (string | null)[];
@@ -21,6 +20,23 @@ type Props = {
   adminCount: number;
   postCount: number;
 };
+
+function groupEntriesByField(entries: ReviewSubmission[]): { fieldId: string; submissions: ReviewSubmission[] }[] {
+  const fieldOrder = Object.keys(FIELD_ID_LABELS);
+  const grouped = entries.reduce<Record<string, ReviewSubmission[]>>((acc, s) => {
+    const fieldId = s.field_id ?? "uncategorized";
+    if (!acc[fieldId]) acc[fieldId] = [];
+    acc[fieldId].push(s);
+    return acc;
+  }, {});
+  return Object.entries(grouped)
+    .sort(([a], [b]) => {
+      const ai = fieldOrder.indexOf(a);
+      const bi = fieldOrder.indexOf(b);
+      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+    })
+    .map(([fieldId, submissions]) => ({ fieldId, submissions }));
+}
 
 function formatJoinedDate(isoString: string): string {
   const d = new Date(isoString);
@@ -30,32 +46,36 @@ function formatJoinedDate(isoString: string): string {
   return `${y}/${m}/${day}`;
 }
 
-export function Dashboard({ entries, moderator, activities, moderatorReviewFieldIds, fieldMemberships, adminCount, postCount }: Props) {
+export function Dashboard({ entrySubmissions, requestSubmissions, moderator, activities, moderatorReviewFieldIds, fieldMemberships, adminCount, postCount }: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const currentField = searchParams.get("field") ?? undefined;
   const activeId = pathname.match(/\/review\/([^/?]+)/)?.[1] ?? null;
 
-  // フィールドでクライアント側フィルタリング
   const filteredEntries = currentField
-    ? entries.filter((e) => e.accounts.account_fields.some((af) => af.field_id === currentField))
-    : entries;
+    ? entrySubmissions.filter((s) => s.field_id === currentField)
+    : entrySubmissions;
+
+  const totalCount = filteredEntries.length + (currentField ? 0 : requestSubmissions.length);
 
   const reviewCount = calcReviewCount(moderatorReviewFieldIds, currentField);
   const memberCount = calcMemberCount(fieldMemberships, adminCount, currentField);
 
-  const isEmpty = filteredEntries.length === 0;
+  const isEmpty = filteredEntries.length === 0 && (currentField ? true : requestSubmissions.length === 0);
   const joinedDate = formatJoinedDate(moderator.created_at);
 
-  const getCardHref = (entryId: string) => {
-    if (activeId === entryId) {
+  const getEntryCardHref = (submissionId: string) => {
+    if (activeId === submissionId) {
       return currentField ? `/moderation_beta?field=${encodeURIComponent(currentField)}` : "/moderation_beta";
     }
     return currentField
-      ? `/moderation_beta/review/${entryId}?field=${encodeURIComponent(currentField)}`
-      : `/moderation_beta/review/${entryId}`;
+      ? `/moderation_beta/review/${submissionId}?field=${encodeURIComponent(currentField)}`
+      : `/moderation_beta/review/${submissionId}`;
   };
+
+  const getRequestCardHref = (submissionId: string) =>
+    `/moderation_beta/review/request/${submissionId}`;
 
   return (
     <div className={styles.container}>
@@ -89,60 +109,69 @@ export function Dashboard({ entries, moderator, activities, moderatorReviewField
                 ) : (
                   <div className={styles.taskCards}>
                     {currentField ? (
-                      filteredEntries.map((entry) => (
+                      filteredEntries.map((submission) => (
                         <Link
-                          key={entry.id}
-                          href={getCardHref(entry.id)}
-                          className={[styles.taskCard, activeId === entry.id ? styles.taskCardActive : ""].join(" ")}
+                          key={submission.id}
+                          href={getEntryCardHref(submission.id)}
+                          className={[styles.taskCard, activeId === submission.id ? styles.taskCardActive : ""].join(" ")}
                         >
                           <span className={styles.taskCardHeader}>Review</span>
                           <span className={styles.taskCardBody}>
-                            <span className={styles.taskCardName} title={entry.accounts.display_name}>{entry.accounts.display_name}</span>
-                            <span className={styles.taskCardHandle} title={`@${entry.bluesky_handle}`}>@{entry.bluesky_handle}</span>
+                            <span className={styles.taskCardName} title={submission.account_name}>{submission.account_name}</span>
+                            <span className={styles.taskCardHandle} title={`@${submission.bluesky_handle}`}>@{submission.bluesky_handle}</span>
                           </span>
                         </Link>
                       ))
                     ) : (
-                      (() => {
-                        const fieldOrder = Object.keys(FIELD_ID_LABELS);
-                        const grouped = filteredEntries.reduce<Record<string, typeof filteredEntries>>((acc, entry) => {
-                          const fieldId = entry.accounts.account_fields[0]?.field_id ?? "uncategorized";
-                          if (!acc[fieldId]) acc[fieldId] = [];
-                          acc[fieldId].push(entry);
-                          return acc;
-                        }, {});
-                        return Object.entries(grouped).sort(([a], [b]) => {
-                          const ai = fieldOrder.indexOf(a);
-                          const bi = fieldOrder.indexOf(b);
-                          return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
-                        });
-                      })().map(([fieldId, fieldEntries]) => (
-                        <div key={fieldId} className={styles.taskCardGroup}>
-                          <p className={styles.taskCardGroupLabel}>{FIELD_ID_LABELS[fieldId] ?? fieldId}</p>
-                          <div className={styles.taskCardRow}>
-                            {fieldEntries.map((entry) => (
-                              <Link
-                                key={entry.id}
-                                href={getCardHref(entry.id)}
-                                className={[styles.taskCard, activeId === entry.id ? styles.taskCardActive : ""].join(" ")}
-                              >
-                                <span className={styles.taskCardHeader}>Review</span>
-                                <span className={styles.taskCardBody}>
-                                  <span className={styles.taskCardName} title={entry.accounts.display_name}>{entry.accounts.display_name}</span>
-                                  <span className={styles.taskCardHandle} title={`@${entry.bluesky_handle}`}>@{entry.bluesky_handle}</span>
-                                </span>
-                              </Link>
-                            ))}
+                      <>
+                        {groupEntriesByField(filteredEntries).map(({ fieldId, submissions }) => (
+                            <div key={fieldId} className={styles.taskCardGroup}>
+                              <p className={styles.taskCardGroupLabel}>{FIELD_ID_LABELS[fieldId] ?? fieldId}</p>
+                              <div className={styles.taskCardRow}>
+                                {submissions.map((submission) => (
+                                  <Link
+                                    key={submission.id}
+                                    href={getEntryCardHref(submission.id)}
+                                    className={[styles.taskCard, activeId === submission.id ? styles.taskCardActive : ""].join(" ")}
+                                  >
+                                    <span className={styles.taskCardHeader}>Review</span>
+                                    <span className={styles.taskCardBody}>
+                                      <span className={styles.taskCardName} title={submission.account_name}>{submission.account_name}</span>
+                                      <span className={styles.taskCardHandle} title={`@${submission.bluesky_handle}`}>@{submission.bluesky_handle}</span>
+                                    </span>
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        {requestSubmissions.length > 0 && (
+                          <div className={styles.taskCardGroup}>
+                            <p className={styles.taskCardGroupLabel}>来て欲しい申請</p>
+                            <div className={styles.taskCardRow}>
+                              {requestSubmissions.map((submission) => (
+                                <Link
+                                  key={submission.id}
+                                  href={getRequestCardHref(submission.id)}
+                                  className={styles.taskCard}
+                                >
+                                  <span className={styles.taskCardHeader}>Review</span>
+                                  <span className={styles.taskCardBody}>
+                                    <span className={styles.taskCardName} title={submission.display_name}>{submission.display_name}</span>
+                                    <span className={styles.taskCardHandle} title={`@${submission.twitter_handle}`}>@{submission.twitter_handle}</span>
+                                  </span>
+                                </Link>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      ))
+                        )}
+                      </>
                     )}
                   </div>
                 )}
                 {/* FloatingText: 残りN件 */}
                 <div className={styles.floatingText}>
                   <span className={styles.floatingLabel}>残り</span>
-                  <strong className={styles.floatingCount}>{filteredEntries.length}</strong>
+                  <strong className={styles.floatingCount}>{totalCount}</strong>
                   <span className={styles.floatingLabel}>件</span>
                 </div>
               </div>
@@ -264,9 +293,6 @@ export function Dashboard({ entries, moderator, activities, moderatorReviewField
     </div>
   );
 }
-
-// フィールドセレクターを分離してuseStateを持たせる
-import { useState } from "react";
 
 function FieldSelector({ currentField }: { currentField?: string }) {
   const [open, setOpen] = useState(false);

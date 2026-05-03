@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const mockSelect = vi.fn();
+const mockUpdate = vi.fn();
 const mockEq = vi.fn();
 const mockSingle = vi.fn();
 const mockDelete = vi.fn();
@@ -9,6 +10,7 @@ vi.mock("@supabase/supabase-js", () => ({
   createClient: vi.fn(() => ({
     from: vi.fn(() => ({
       select: mockSelect,
+      update: mockUpdate,
       delete: mockDelete,
     })),
   })),
@@ -22,6 +24,9 @@ const MODERATOR = {
   did: "did:plc:test",
   handle: "admin",
   display_name: "管理者",
+  is_admin: false,
+  avatar: null,
+  created_at: "2026-01-01T00:00:00Z",
 };
 
 // next/headers の cookies() をモック
@@ -38,6 +43,7 @@ vi.mock("next/headers", () => ({
 beforeEach(() => {
   vi.clearAllMocks();
   mockSelect.mockReturnValue({ eq: mockEq });
+  mockUpdate.mockReturnValue({ eq: vi.fn().mockResolvedValue({}) });
   mockEq.mockReturnValue({ single: mockSingle });
   mockDelete.mockReturnValue({ eq: vi.fn() });
 });
@@ -55,7 +61,16 @@ describe("getCurrentModerator", () => {
     mockCookieGet.mockReturnValue({ value: "did:plc:test" });
     mockSingle.mockResolvedValue({ data: MODERATOR });
     const result = await getCurrentModerator();
-    expect(result).toEqual({ ...MODERATOR, avatar: null });
+    expect(result).toEqual(MODERATOR);
+  });
+
+  it("モデレーターが存在するとき last_active_at を更新する", async () => {
+    mockCookieGet.mockReturnValue({ value: "did:plc:test" });
+    mockSingle.mockResolvedValue({ data: MODERATOR });
+    await getCurrentModerator();
+    expect(mockUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({ last_active_at: expect.any(String) })
+    );
   });
 
   it("DID が Cookie にあるが moderators に存在しなければ null を返す", async () => {

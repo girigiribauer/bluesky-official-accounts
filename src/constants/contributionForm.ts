@@ -1,21 +1,4 @@
-export const FIELDS = [
-  "公的機関・社会インフラ",
-  "企業・ブランド・サービス",
-  "IT・テック・Web",
-  "漫画・イラスト・アート",
-  "映像作品（実写・アニメ）",
-  "ゲーム・玩具・キャラクター",
-  "音楽・声優・サウンド",
-  "芸能・タレント・配信",
-  "出版・文芸",
-  "スポーツ・公営競技",
-  "飲食・観光・地域文化",
-  "美容・ファッション・装い",
-  "探究・趣味・暮らし",
-  "bot・定期配信",
-] as const;
-
-// 分野IDと表示ラベルのマッピング（categories.md の field_id 一覧に対応）
+// 分野IDと表示ラベルのマッピング（fields テーブルのマスターデータと一致させる）
 export const FIELD_ID_LABELS: Record<string, string> = {
   public_infrastructure: "公的機関・社会インフラ",
   business: "企業・ブランド・サービス",
@@ -31,7 +14,6 @@ export const FIELD_ID_LABELS: Record<string, string> = {
   fashion: "美容・ファッション・装い",
   lifestyle: "探究・趣味・暮らし",
   bot: "bot・定期配信",
-  uncategorized: "未分類",
 };
 
 export const OLD_CATEGORIES = [
@@ -87,11 +69,11 @@ export const OLD_CATEGORIES = [
 // transition_status の選択肢。value は DB に保存される英語値
 export const STATUS_OPTIONS = [
   { value: "", label: "（選択してください）" },
-  { value: "not_migrated", label: "来てほしい" },
-  { value: "unverified", label: "未確認" },
+  { value: "not_migrated", label: "未移行（未確認）" },
   { value: "account_created", label: "アカウント作成済" },
   { value: "dual_active", label: "両方運用中" },
   { value: "migrated", label: "Bluesky 完全移行" },
+  { value: "unverifiable", label: "確認不能" },
 ] as const;
 
 export const EVIDENCE_SHORTCUTS: { label: string; template: string | null }[] = [

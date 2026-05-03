@@ -1,20 +1,22 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { NextRequest } from "next/server";
 
-const mockSingle = vi.fn();
+const mockMaybeSingle = vi.fn();
 const mockInsert = vi.fn();
 
 vi.mock("src/lib/supabaseClient", () => ({
   getSupabaseClient: vi.fn(() => ({
     from: vi.fn((table: string) => {
-      if (table === "accounts") {
+      if (table === "requests") {
         return {
-          insert: vi.fn(() => ({
-            select: vi.fn(() => ({ single: mockSingle })),
+          select: vi.fn(() => ({
+            eq: vi.fn(() => ({
+              maybeSingle: mockMaybeSingle,
+            })),
           })),
         };
       }
-      // entries / account_fields / evidences
+      // entry_submissions
       return { insert: mockInsert };
     }),
   })),
@@ -30,7 +32,7 @@ const validBody = {
   handle: "bsky.app",
   accountName: "Bluesky",
   oldCategory: "テクノロジー（個人・団体・技術領域）",
-  fields: ["IT・テック・Web"],
+  fields: ["tech"],
   migrationStatus: "dual_active",
   twitterUrl: "https://x.com/bluesky",
   evidence: "カスタムドメインのため",
@@ -53,7 +55,7 @@ const makeRequest = (body: unknown, ip?: string, origin?: string) =>
 describe("POST /api/contribution/register", () => {
   beforeEach(() => {
     vi.spyOn(console, "error").mockImplementation(() => {});
-    mockSingle.mockResolvedValue({ data: { id: "mock-account-id" }, error: null });
+    mockMaybeSingle.mockResolvedValue({ data: null });
     mockInsert.mockResolvedValue({ error: null });
   });
 
@@ -106,8 +108,29 @@ describe("POST /api/contribution/register", () => {
     expect(res.status).toBe(400);
   });
 
+  it("存在しない分野IDは400を返す", async () => {
+    const res = await POST(makeRequest({ ...validBody, fields: ["invalid_field"] }));
+    expect(res.status).toBe(400);
+  });
+
+  it("twitterUrlがrequestsに存在する場合、request_idを設定してinsertする", async () => {
+    mockMaybeSingle.mockResolvedValueOnce({ data: { id: "req-123" } });
+    await POST(makeRequest(validBody));
+    expect(mockInsert).toHaveBeenCalledWith(
+      expect.objectContaining({ request_id: "req-123" })
+    );
+  });
+
+  it("twitterUrlがrequestsに存在しない場合、request_idはnullでinsertする", async () => {
+    mockMaybeSingle.mockResolvedValueOnce({ data: null });
+    await POST(makeRequest(validBody));
+    expect(mockInsert).toHaveBeenCalledWith(
+      expect.objectContaining({ request_id: null })
+    );
+  });
+
   it("Supabase insert が失敗したら500を返す", async () => {
-    mockSingle.mockResolvedValueOnce({ data: null, error: new Error("DB error") });
+    mockInsert.mockResolvedValueOnce({ error: new Error("DB error") });
     const res = await POST(makeRequest(validBody));
     expect(res.status).toBe(500);
   });

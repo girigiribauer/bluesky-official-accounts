@@ -6,7 +6,7 @@ const validBase = {
   handle: "bsky.app",
   accountName: "Bluesky",
   oldCategory: "テクノロジー（個人・団体・技術領域）",
-  fields: ["IT・テック・Web"],
+  fields: ["tech"],
   migrationStatus: "dual_active" as const,
   twitterUrl: "https://x.com/bluesky",
   evidence: "カスタムドメインのため",
@@ -31,7 +31,7 @@ describe("registerContributionSchema", () => {
     it("fieldsを1つ受け付ける", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        fields: ["IT・テック・Web"],
+        fields: ["tech"],
       });
       expect(result.success).toBe(true);
     });
