@@ -1,6 +1,6 @@
 "use server";
 
-import { logout, SESSION_COOKIE } from "src/lib/auth";
+import { logout, SESSION_COOKIE, verifyToken } from "src/lib/auth";
 import { getOAuthClient } from "src/lib/oauthClient";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -9,7 +9,8 @@ const PROTECTED_PATHS = ["/moderation_beta"];
 
 export async function logoutAction(formData: FormData) {
   const cookieStore = await cookies();
-  const did = cookieStore.get(SESSION_COOKIE)?.value;
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+  const did = token ? verifyToken(token) : null;
 
   if (did) {
     const client = await getOAuthClient();

@@ -1,9 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const mockLogout = vi.fn();
+const mockVerifyToken = vi.fn((token: string) => token);
 vi.mock("src/lib/auth", () => ({
   logout: mockLogout,
   SESSION_COOKIE: "moderator_did",
+  verifyToken: mockVerifyToken,
 }));
 
 const mockRevoke = vi.fn().mockResolvedValue(undefined);
@@ -36,15 +38,17 @@ describe("logoutAction", () => {
     expect(mockLogout).toHaveBeenCalled();
   });
 
-  it("Cookie に DID がある場合、revoke してからログアウトする", async () => {
-    mockCookieGet.mockReturnValue({ value: "did:plc:test" });
+  it("Cookie にトークンがある場合、revoke してからログアウトする", async () => {
+    mockCookieGet.mockReturnValue({ value: "did:plc:test~sig" });
+    mockVerifyToken.mockReturnValue("did:plc:test");
     await logoutAction(new FormData());
     expect(mockRevoke).toHaveBeenCalledWith("did:plc:test");
     expect(mockLogout).toHaveBeenCalled();
   });
 
   it("revoke が失敗してもログアウトする", async () => {
-    mockCookieGet.mockReturnValue({ value: "did:plc:test" });
+    mockCookieGet.mockReturnValue({ value: "did:plc:test~sig" });
+    mockVerifyToken.mockReturnValue("did:plc:test");
     mockRevoke.mockRejectedValueOnce(new Error("revoke failed"));
     await logoutAction(new FormData());
     expect(mockLogout).toHaveBeenCalled();

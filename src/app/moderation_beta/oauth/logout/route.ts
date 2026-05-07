@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { SESSION_COOKIE, verifyToken } from "src/lib/auth";
 import { getOAuthClient } from "src/lib/oauthClient";
 import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
-const SESSION_COOKIE = "moderator_did";
-
 export async function POST(req: NextRequest) {
   const cookieStore = await cookies();
-  const did = cookieStore.get(SESSION_COOKIE)?.value;
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+  const did = token ? verifyToken(token) : null;
 
   if (did) {
     const client = await getOAuthClient();

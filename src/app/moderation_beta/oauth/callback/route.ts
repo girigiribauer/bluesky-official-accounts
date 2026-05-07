@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SESSION_COOKIE } from "src/lib/auth";
+import { SESSION_COOKIE, signToken } from "src/lib/auth";
 import { getOAuthClient } from "src/lib/oauthClient";
 import { getSupabaseClient } from "src/lib/supabaseClient";
 
@@ -48,11 +48,12 @@ export async function GET(req: NextRequest) {
   }
 
   const response = NextResponse.redirect(`${baseUrl}/moderation_beta`);
-  response.cookies.set(SESSION_COOKIE, session.did, {
+  response.cookies.set(SESSION_COOKIE, signToken(session.did), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
+    maxAge: 60 * 60 * 24 * 30, // 30日
   });
   return response;
 }

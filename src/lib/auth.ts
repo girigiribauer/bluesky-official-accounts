@@ -1,3 +1,4 @@
+import { createHmac, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 import { getSupabaseClient } from "src/lib/supabaseClient";
 
@@ -12,6 +13,35 @@ export type Moderator = {
 };
 
 export const SESSION_COOKIE = "moderator_did";
+
+const SEP = "~";
+
+function getSecret(): string {
+  const s = process.env.OAUTH_PRIVATE_KEY;
+  if (!s) throw new Error("OAUTH_PRIVATE_KEY is not set");
+  return s;
+}
+
+export function signToken(did: string): string {
+  const sig = createHmac("sha256", getSecret()).update(did).digest("base64url");
+  return `${did}${SEP}${sig}`;
+}
+
+export function verifyToken(token: string): string | null {
+  const idx = token.lastIndexOf(SEP);
+  if (idx === -1) return null;
+  const did = token.slice(0, idx);
+  const sig = token.slice(idx + 1);
+  const expected = createHmac("sha256", getSecret()).update(did).digest("base64url");
+  try {
+    const a = Buffer.from(sig);
+    const b = Buffer.from(expected);
+    if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
+  } catch {
+    return null;
+  }
+  return did;
+}
 
 async function getModeratorByDid(did: string): Promise<Moderator | null> {
   const supabase = getSupabaseClient();
@@ -30,14 +60,11 @@ async function getModeratorByDid(did: string): Promise<Moderator | null> {
   return data;
 }
 
-/**
- * 現在ログイン中のモデレーターを返す。
- * Cookie の moderator_did から DID を取得し、moderators テーブルを引く。
- * DID が moderators に登録されていなければ null を返す。
- */
 export async function getCurrentModerator(): Promise<Moderator | null> {
   const cookieStore = await cookies();
-  const did = cookieStore.get(SESSION_COOKIE)?.value;
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
+  if (!token) return null;
+  const did = verifyToken(token);
   if (!did) return null;
   return getModeratorByDid(did);
 }

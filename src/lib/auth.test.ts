@@ -18,6 +18,7 @@ vi.mock("@supabase/supabase-js", () => ({
 
 vi.stubEnv("SUPABASE_URL", "http://localhost:54321");
 vi.stubEnv("SUPABASE_SECRET_KEY", "test-key");
+vi.stubEnv("OAUTH_PRIVATE_KEY", "test-secret");
 
 const MODERATOR = {
   id: "uuid-1",
@@ -48,7 +49,23 @@ beforeEach(() => {
   mockDelete.mockReturnValue({ eq: vi.fn() });
 });
 
-const { getCurrentModerator, logout } = await import("./auth");
+const { getCurrentModerator, logout, signToken, verifyToken } = await import("./auth");
+
+describe("signToken / verifyToken", () => {
+  it("署名したトークンを検証できる", () => {
+    const token = signToken("did:plc:test");
+    expect(verifyToken(token)).toBe("did:plc:test");
+  });
+
+  it("改ざんされたトークンは null を返す", () => {
+    const token = signToken("did:plc:test");
+    expect(verifyToken(token + "x")).toBeNull();
+  });
+
+  it("署名なしの平文 DID は null を返す", () => {
+    expect(verifyToken("did:plc:test")).toBeNull();
+  });
+});
 
 describe("getCurrentModerator", () => {
   it("Cookie に DID がなければ null を返す", async () => {
@@ -57,15 +74,15 @@ describe("getCurrentModerator", () => {
     expect(result).toBeNull();
   });
 
-  it("DID が Cookie にあり moderators に存在すれば返す", async () => {
-    mockCookieGet.mockReturnValue({ value: "did:plc:test" });
+  it("正しい署名付きトークンがあり moderators に存在すれば返す", async () => {
+    mockCookieGet.mockReturnValue({ value: signToken("did:plc:test") });
     mockSingle.mockResolvedValue({ data: MODERATOR });
     const result = await getCurrentModerator();
     expect(result).toEqual(MODERATOR);
   });
 
   it("モデレーターが存在するとき last_active_at を更新する", async () => {
-    mockCookieGet.mockReturnValue({ value: "did:plc:test" });
+    mockCookieGet.mockReturnValue({ value: signToken("did:plc:test") });
     mockSingle.mockResolvedValue({ data: MODERATOR });
     await getCurrentModerator();
     expect(mockUpdate).toHaveBeenCalledWith(
@@ -73,8 +90,14 @@ describe("getCurrentModerator", () => {
     );
   });
 
-  it("DID が Cookie にあるが moderators に存在しなければ null を返す", async () => {
-    mockCookieGet.mockReturnValue({ value: "did:plc:unknown" });
+  it("署名なし平文 DID の Cookie は null を返す", async () => {
+    mockCookieGet.mockReturnValue({ value: "did:plc:test" });
+    const result = await getCurrentModerator();
+    expect(result).toBeNull();
+  });
+
+  it("正しいトークンだが moderators に存在しなければ null を返す", async () => {
+    mockCookieGet.mockReturnValue({ value: signToken("did:plc:unknown") });
     mockSingle.mockResolvedValue({ data: null });
     const result = await getCurrentModerator();
     expect(result).toBeNull();
