@@ -629,6 +629,7 @@ async function fetchAllPages(
 }
 
 (async () => {
+  dotenv.config({ path: "./.env.production.local" });
   dotenv.config({ path: "./.env.local" });
 
   const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -803,7 +804,6 @@ async function fetchAllPages(
         bluesky_handle: blueskyHandle,
         twitter_handle: twitterHandle,
         transition_status: transitionStatus,
-        status: "published",
         approved_at: createdAt,
         created_at: createdAt,
       })

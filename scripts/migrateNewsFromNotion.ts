@@ -27,6 +27,7 @@ async function fetchAllNews(client: Client, databaseID: string): Promise<{ title
 }
 
 (async () => {
+  dotenv.config({ path: "./.env.production.local" });
   dotenv.config({ path: "./.env.local" });
 
   const notion = new Client({ auth: process.env.NOTION_API_KEY });
