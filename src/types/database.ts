@@ -111,7 +111,6 @@ export type Database = {
       }
       activities: {
         Row: {
-          account_id: string
           action: string
           created_at: string
           id: string
@@ -119,7 +118,6 @@ export type Database = {
           payload: Json
         }
         Insert: {
-          account_id: string
           action: string
           created_at?: string
           id?: string
@@ -127,7 +125,6 @@ export type Database = {
           payload?: Json
         }
         Update: {
-          account_id?: string
           action?: string
           created_at?: string
           id?: string
@@ -135,13 +132,6 @@ export type Database = {
           payload?: Json
         }
         Relationships: [
-          {
-            foreignKeyName: "activities_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "activities_moderator_id_fkey"
             columns: ["moderator_id"]
@@ -505,28 +495,40 @@ export type Database = {
         Row: {
           created_at: string
           display_name: string
+          field_id: string
           id: string
           twitter_handle: string
         }
         Insert: {
           created_at?: string
           display_name: string
+          field_id: string
           id?: string
           twitter_handle: string
         }
         Update: {
           created_at?: string
           display_name?: string
+          field_id?: string
           id?: string
           twitter_handle?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "request_submissions_field_id_fkey"
+            columns: ["field_id"]
+            isOneToOne: false
+            referencedRelation: "fields"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       requests: {
         Row: {
           account_id: string
           created_at: string
           entry_id: string | null
+          field_id: string | null
           id: string
           twitter_handle: string
         }
@@ -534,6 +536,7 @@ export type Database = {
           account_id: string
           created_at?: string
           entry_id?: string | null
+          field_id?: string | null
           id?: string
           twitter_handle: string
         }
@@ -541,6 +544,7 @@ export type Database = {
           account_id?: string
           created_at?: string
           entry_id?: string | null
+          field_id?: string | null
           id?: string
           twitter_handle?: string
         }
@@ -557,6 +561,13 @@ export type Database = {
             columns: ["entry_id"]
             isOneToOne: false
             referencedRelation: "entries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "requests_field_id_fkey"
+            columns: ["field_id"]
+            isOneToOne: false
+            referencedRelation: "fields"
             referencedColumns: ["id"]
           },
         ]

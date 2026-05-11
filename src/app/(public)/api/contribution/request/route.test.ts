@@ -45,6 +45,7 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
+      fieldId: "business",
       website: "",
     }));
     expect(res.status).toBe(200);
@@ -56,6 +57,7 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
+      fieldId: "business",
       website: "filled",
     }));
     expect(res.status).toBe(400);
@@ -65,6 +67,7 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://bsky.app/profile/bluesky",
       twitterName: "Bluesky",
+      fieldId: "business",
       website: "",
     }));
     expect(res.status).toBe(400);
@@ -74,6 +77,7 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "",
+      fieldId: "business",
       website: "",
     }));
     expect(res.status).toBe(400);
@@ -84,6 +88,7 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
+      fieldId: "business",
       website: "",
     }));
     expect(res.status).toBe(409);
@@ -96,6 +101,7 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
+      fieldId: "business",
       website: "",
     }));
     expect(res.status).toBe(409);
@@ -108,6 +114,7 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
+      fieldId: "business",
       website: "",
     }));
     expect(res.status).toBe(500);
@@ -117,6 +124,7 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
+      fieldId: "business",
       website: "",
     }, undefined, "https://evil.example.com"));
     expect(res.status).toBe(403);
@@ -126,6 +134,7 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
+      fieldId: "business",
       website: "",
     }, undefined, "http://localhost"));
     expect(res.status).toBe(200);

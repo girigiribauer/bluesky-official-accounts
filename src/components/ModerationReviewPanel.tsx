@@ -99,10 +99,13 @@ export function ModerationReviewPanel({ submission, classifications, onClose }: 
     startTransition(() => router.refresh());
   };
 
-  const handleApprove = async () => {
-    const result = await approveEntrySubmission(local.id);
-    if (!result.ok) { setError(result.error); return; }
-    startTransition(() => { router.refresh(); onClose(); });
+  const handleApprove = () => {
+    startTransition(async () => {
+      const result = await approveEntrySubmission(local.id);
+      if (!result.ok) { setError(result.error); return; }
+      router.refresh();
+      onClose();
+    });
   };
 
   const handleRejectClick = () => {
@@ -285,11 +288,14 @@ export function ModerationReviewPanel({ submission, classifications, onClose }: 
 
 function RejectModal({ submissionId, onSuccess }: { submissionId: string; onSuccess: () => void }) {
   const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async () => {
-    const result = await rejectEntrySubmission(submissionId);
-    if (!result.ok) { setError(result.error); return; }
-    onSuccess();
+  const handleSubmit = () => {
+    startTransition(async () => {
+      const result = await rejectEntrySubmission(submissionId);
+      if (!result.ok) { setError(result.error); return; }
+      onSuccess();
+    });
   };
 
   return (
@@ -297,7 +303,9 @@ function RejectModal({ submissionId, onSuccess }: { submissionId: string; onSucc
       <h2 className={styles.rejectModalTitle}>申請を却下する</h2>
       <p>この申請を却下しますか？</p>
       {error && <p className={styles.errorMessage}>{error}</p>}
-      <button className={styles.rejectSubmitButton} onClick={handleSubmit}>却下する</button>
+      <button className={styles.rejectSubmitButton} onClick={handleSubmit} disabled={isPending}>
+        {isPending ? "処理中..." : "却下する"}
+      </button>
     </div>
   );
 }

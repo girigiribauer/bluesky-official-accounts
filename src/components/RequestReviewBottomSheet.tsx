@@ -7,6 +7,7 @@ import {
   rejectRequestSubmission,
 } from "src/app/moderation_beta/actions";
 import type { RequestSubmission } from "src/types/moderation";
+import { FIELD_ID_LABELS } from "src/constants/contributionForm";
 import styles from "./ModerationDashboard.module.scss";
 import panelStyles from "./ModerationReviewPanel.module.scss";
 
@@ -27,16 +28,22 @@ export function RequestReviewBottomSheet({ submission }: Props) {
     router.push("/moderation_beta");
   };
 
-  const handleApprove = async () => {
-    const result = await approveRequestSubmission(submission.id);
-    if (!result.ok) { setError(result.error); return; }
-    startTransition(() => { router.refresh(); handleClose(); });
+  const handleApprove = () => {
+    startTransition(async () => {
+      const result = await approveRequestSubmission(submission.id);
+      if (!result.ok) { setError(result.error); return; }
+      router.refresh();
+      handleClose();
+    });
   };
 
-  const handleReject = async () => {
-    const result = await rejectRequestSubmission(submission.id);
-    if (!result.ok) { setError(result.error); return; }
-    startTransition(() => { router.refresh(); handleClose(); });
+  const handleReject = () => {
+    startTransition(async () => {
+      const result = await rejectRequestSubmission(submission.id);
+      if (!result.ok) { setError(result.error); return; }
+      router.refresh();
+      handleClose();
+    });
   };
 
   return (
@@ -72,6 +79,11 @@ export function RequestReviewBottomSheet({ submission }: Props) {
                   {submission.twitter_handle}
                   <i className={["fa-solid fa-arrow-up-right-from-square", panelStyles.externalIcon].join(" ")} />
                 </a>
+              </div>
+              <div className={panelStyles.infoItem}>
+                <span className={panelStyles.infoText}>
+                  {FIELD_ID_LABELS[submission.field_id] ?? submission.field_id}
+                </span>
               </div>
             </div>
 

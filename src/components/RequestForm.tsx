@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 import { fetchWithTimeout } from "src/lib/fetchWithTimeout";
 import { isValidTwitterUrl, normalizeTwitterUrl as normalizeUrl } from "src/lib/twitterUrl";
 import { formatErrorMessage } from "src/lib/formatErrorMessage";
+import { FIELD_ID_LABELS } from "src/constants/contributionForm";
 import styles from "./RequestForm.module.scss";
+
+const FIELD_OPTIONS = Object.entries(FIELD_ID_LABELS).map(([id, label]) => ({ id, label }));
 
 type UrlCheckState = "idle" | "checking" | "valid" | "duplicate";
 type SubmitState = "idle" | "submitting" | "error";
@@ -14,6 +17,7 @@ export const RequestForm = () => {
   const router = useRouter();
   const [twitterUrl, setTwitterUrl] = useState("");
   const [twitterName, setTwitterName] = useState("");
+  const [fieldId, setFieldId] = useState("");
   const [honeypot, setHoneypot] = useState("");
   const [twitterUrlTouched, setTwitterUrlTouched] = useState(false);
   const [twitterUrlFocused, setTwitterUrlFocused] = useState(false);
@@ -27,6 +31,7 @@ export const RequestForm = () => {
   const canSubmit =
     urlCheckState === "valid" &&
     twitterName.trim().length > 0 &&
+    fieldId.length > 0 &&
     submitState !== "submitting";
 
   const runCheck = async (url: string) => {
@@ -77,7 +82,7 @@ export const RequestForm = () => {
       const res = await fetchWithTimeout("/api/contribution/request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ twitterUrl: twitterUrl.trim(), twitterName: twitterName.trim(), website: honeypot }),
+        body: JSON.stringify({ twitterUrl: twitterUrl.trim(), twitterName: twitterName.trim(), fieldId, website: honeypot }),
       });
 
       if (!res.ok) {
@@ -160,6 +165,30 @@ export const RequestForm = () => {
           <a href="/contribution/register">Bluesky 公式アカウント登録フォーム</a>
           』から入力してください。
         </p>
+      </div>
+
+      {/* 分野 */}
+      <div className={styles.item}>
+        <span className={styles.label}>分野</span>
+        <p className={styles.description}>
+          そのアカウントの興味分野が一番近いものを1つ選んでください。
+        </p>
+        <div className={styles.chips}>
+          {FIELD_OPTIONS.map(({ id, label }) => {
+            const isSelected = fieldId === id;
+            return (
+              <button
+                key={id}
+                type="button"
+                className={[styles.chip, isSelected ? styles.chipSelected : ""].join(" ")}
+                onClick={() => setFieldId(id)}
+              >
+                <span className={styles.chipIcon}>{isSelected && "✓"}</span>
+                {label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* X(Twitter) アカウント名称 */}

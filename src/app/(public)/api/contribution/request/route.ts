@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
   const parsed = requestContributionSchema.safeParse({
     twitterUrl: body.twitterUrl,
     twitterName: body.twitterName,
+    fieldId: body.fieldId,
   });
   if (!parsed.success) {
     return NextResponse.json({ ok: false, message: "入力値が不正です" }, { status: 400 });
@@ -27,6 +28,7 @@ export async function POST(req: NextRequest) {
 
   const safeUrl = parsed.data.twitterUrl;
   const safeName = parsed.data.twitterName;
+  const safeFieldId = parsed.data.fieldId;
 
   try {
     const duplicate = await checkDuplicate(safeUrl);
@@ -61,6 +63,7 @@ export async function POST(req: NextRequest) {
     const { error } = await supabase.from("request_submissions").insert({
       display_name: safeName,
       twitter_handle: twitterHandle,
+      field_id: safeFieldId,
     });
 
     if (error) throw error;

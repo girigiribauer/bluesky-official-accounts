@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from("entries")
-      .select("twitter_handle, transition_status, accounts(display_name, old_category, evidences(content))")
+      .select("twitter_handle, transition_status, accounts(display_name, old_category, evidences(content), account_fields(field_id))")
       .eq("bluesky_did", profile.did)
       .limit(1)
       .maybeSingle();
@@ -58,6 +58,10 @@ export async function GET(req: NextRequest) {
       const source = Array.isArray(evidences) && evidences.length > 0
         ? (evidences[0] as { content: string }).content
         : "";
+      const accountFields = account?.account_fields ?? [];
+      const fieldId = Array.isArray(accountFields) && accountFields.length > 0
+        ? (accountFields[0] as { field_id: string }).field_id
+        : "";
 
       return NextResponse.json({
         status: "registered",
@@ -70,6 +74,7 @@ export async function GET(req: NextRequest) {
           source,
           twitter: twitterUrl,
           status: data.transition_status ?? "",
+          fieldId,
         },
       });
     }

@@ -149,9 +149,13 @@ export async function approveEntrySubmission(submissionId: string): Promise<Resu
     }
 
     const { error: activityError } = await supabase.from("activities").insert({
-      account_id: accountId,
       moderator_id: moderator.id,
       action: "approve",
+      payload: {
+        account_id: accountId,
+        display_name: submission.account_name,
+        field_id: submission.field_id,
+      },
     });
     if (activityError) throw activityError;
 
@@ -169,7 +173,7 @@ export async function approveEntrySubmission(submissionId: string): Promise<Resu
   return { ok: true };
 }
 
-// 登録申請を却下して削除する。活動ログは残さない（MVP 割り切り）。
+// 登録申請を却下して削除する。
 export async function rejectEntrySubmission(submissionId: string): Promise<Result> {
   const moderator = await getCurrentModerator();
   if (!moderator) return { ok: false, error: "ログインが必要です" };
@@ -177,11 +181,29 @@ export async function rejectEntrySubmission(submissionId: string): Promise<Resul
   const supabase = getSupabaseClient();
 
   try {
+    const { data: submission } = await supabase
+      .from("entry_submissions")
+      .select("account_name, field_id")
+      .eq("id", submissionId)
+      .single();
+
     const { error } = await supabase
       .from("entry_submissions")
       .delete()
       .eq("id", submissionId);
     if (error) throw error;
+
+    const { error: logError } = await supabase.from("activities").insert({
+      moderator_id: moderator.id,
+      action: "reject",
+      payload: {
+        submission_id: submissionId,
+        submission_type: "entry",
+        display_name: submission?.account_name ?? "",
+        field_id: submission?.field_id ?? null,
+      },
+    });
+    if (logError) console.error("reject activity log failed:", logError);
   } catch {
     return { ok: false, error: "却下に失敗しました" };
   }
@@ -339,13 +361,18 @@ export async function approveRequestSubmission(submissionId: string): Promise<Re
     const { error: requestError } = await supabase.from("requests").insert({
       account_id: account.id,
       twitter_handle: submission.twitter_handle,
+      field_id: submission.field_id ?? null,
     });
     if (requestError) throw requestError;
 
     const { error: activityError } = await supabase.from("activities").insert({
-      account_id: account.id,
       moderator_id: moderator.id,
       action: "approve",
+      payload: {
+        account_id: account.id,
+        display_name: submission.display_name,
+        field_id: submission.field_id ?? null,
+      },
     });
     if (activityError) throw activityError;
 
@@ -363,7 +390,7 @@ export async function approveRequestSubmission(submissionId: string): Promise<Re
   return { ok: true };
 }
 
-// 来て欲しいアカウント申請を却下して削除する。活動ログは残さない（MVP 割り切り）。
+// 来て欲しいアカウント申請を却下して削除する。
 export async function rejectRequestSubmission(submissionId: string): Promise<Result> {
   const moderator = await getCurrentModerator();
   if (!moderator) return { ok: false, error: "ログインが必要です" };
@@ -371,11 +398,29 @@ export async function rejectRequestSubmission(submissionId: string): Promise<Res
   const supabase = getSupabaseClient();
 
   try {
+    const { data: submission } = await supabase
+      .from("request_submissions")
+      .select("display_name, field_id")
+      .eq("id", submissionId)
+      .single();
+
     const { error } = await supabase
       .from("request_submissions")
       .delete()
       .eq("id", submissionId);
     if (error) throw error;
+
+    const { error: logError } = await supabase.from("activities").insert({
+      moderator_id: moderator.id,
+      action: "reject",
+      payload: {
+        submission_id: submissionId,
+        submission_type: "request",
+        display_name: submission?.display_name ?? "",
+        field_id: submission?.field_id ?? null,
+      },
+    });
+    if (logError) console.error("reject activity log failed:", logError);
   } catch {
     return { ok: false, error: "却下に失敗しました" };
   }

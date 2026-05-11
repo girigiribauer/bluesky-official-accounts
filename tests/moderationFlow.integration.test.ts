@@ -38,7 +38,8 @@ vi.mock("src/lib/csrf", () => ({ checkOrigin: vi.fn().mockReturnValue(true) }));
 vi.mock("src/lib/rateLimit", () => ({ checkRateLimit: vi.fn().mockReturnValue(true) }));
 
 const { POST: registerPOST } = await import("src/app/(public)/api/contribution/register/route");
-const { approveEntrySubmission, rejectEntrySubmission, updateSubmissionName } =
+const { POST: requestPOST } = await import("src/app/(public)/api/contribution/request/route");
+const { approveEntrySubmission, rejectEntrySubmission, updateSubmissionName, approveRequestSubmission, rejectRequestSubmission } =
   await import("src/app/moderation_beta/actions");
 
 // ---------------------------------------------------------------------------
@@ -58,7 +59,7 @@ function db() {
 
 async function cleanupAccount(accountId: string) {
   const supabase = db();
-  await supabase.from("activities").delete().eq("account_id", accountId);
+  await supabase.from("activities").delete().eq("moderator_id", TEST_MODERATOR_ID);
   await supabase.from("evidences").delete().eq("account_id", accountId);
   await supabase.from("account_fields").delete().eq("account_id", accountId);
   await supabase.from("entries").delete().eq("account_id", accountId);
@@ -109,7 +110,7 @@ async function createPendingSubmission(suffix: string) {
   const { data: submission } = await db()
     .from("entry_submissions")
     .insert({
-      account_name: `テスト公式アカウント ${suffix}`,
+      account_name: `[テスト] 公式アカウント ${suffix}`,
       bluesky_did: `did:plc:test-${suffix}`,
       bluesky_handle: `test-${suffix}.bsky.social`,
       twitter_url: `https://x.com/test_${suffix}`,
@@ -139,7 +140,7 @@ describe("登録フロー", () => {
       handle: "test-register.bsky.social",
       accountName: "統合テスト 登録アカウント",
       oldCategory: "テスト",
-      fields: ["企業・ブランド・サービス"],
+      fields: ["business"],
       migrationStatus: "dual_active",
       twitterUrl: "https://x.com/testreg001",
       evidence: "公式サイトで確認済み",
@@ -167,20 +168,25 @@ describe("登録フロー", () => {
     }
   });
 
-  it("根拠が空だとバリデーションエラーになり DB には何も作成されない", async () => {
+  it("根拠が空でも登録できる", async () => {
+    const did = "did:plc:integ-reg-002";
     const req = makeRegisterRequest({
-      did: "did:plc:integ-reg-002",
+      did,
       handle: "test-register2.bsky.social",
       accountName: "統合テスト 証拠なし",
       oldCategory: "テスト",
-      fields: ["企業・ブランド・サービス"],
+      fields: ["business"],
       migrationStatus: "dual_active",
       twitterUrl: "https://x.com/testreg002",
       evidence: "",
     });
 
-    const res = await registerPOST(req);
-    expect(res.status).toBe(400);
+    try {
+      const res = await registerPOST(req);
+      expect(res.status).toBe(200);
+    } finally {
+      await cleanupSubmissionByDid(did);
+    }
   });
 });
 
@@ -219,7 +225,7 @@ describe("承認フロー", () => {
         .select("display_name")
         .eq("id", accountId)
         .single();
-      expect(account?.display_name).toBe("テスト公式アカウント approve-1");
+      expect(account?.display_name).toBe("[テスト] 公式アカウント approve-1");
 
       // account_fields が作成されているはず
       const { data: fields } = await db()
@@ -240,11 +246,16 @@ describe("承認フロー", () => {
       // activities が記録されているはず
       const { data: activities } = await db()
         .from("activities")
-        .select("action, moderator_id")
-        .eq("account_id", accountId);
+        .select("action, moderator_id, payload")
+        .eq("moderator_id", TEST_MODERATOR_ID)
+        .eq("action", "approve");
       expect(activities).toHaveLength(1);
       expect(activities![0].action).toBe("approve");
       expect(activities![0].moderator_id).toBe(TEST_MODERATOR_ID);
+      const approvePayload = activities![0].payload as { account_id: string; display_name: string; field_id: string };
+      expect(approvePayload.account_id).toBe(accountId);
+      expect(approvePayload.display_name).toBe("[テスト] 公式アカウント approve-1");
+      expect(approvePayload.field_id).toBe("business");
     } finally {
       await cleanupByDid(blueskyDid);
     }
@@ -252,18 +263,37 @@ describe("承認フロー", () => {
 });
 
 describe("却下フロー", () => {
-  it("申請を却下すると entry_submissions のレコードが削除される", async () => {
+  it("申請を却下すると entry_submissions が削除され activities に記録される", async () => {
     const { submissionId } = await createPendingSubmission("reject-1");
 
-    const result = await rejectEntrySubmission(submissionId);
-    expect(result).toEqual({ ok: true });
+    try {
+      const result = await rejectEntrySubmission(submissionId);
+      expect(result).toEqual({ ok: true });
 
-    const { data: submission } = await db()
-      .from("entry_submissions")
-      .select("id")
-      .eq("id", submissionId)
-      .maybeSingle();
-    expect(submission).toBeNull();
+      // entry_submissions は削除されているはず
+      const { data: submission } = await db()
+        .from("entry_submissions")
+        .select("id")
+        .eq("id", submissionId)
+        .maybeSingle();
+      expect(submission).toBeNull();
+
+      // activities に reject が記録されているはず
+      const { data: activities } = await db()
+        .from("activities")
+        .select("action, moderator_id, payload")
+        .eq("moderator_id", TEST_MODERATOR_ID)
+        .eq("action", "reject");
+      expect(activities).toHaveLength(1);
+      expect(activities![0].moderator_id).toBe(TEST_MODERATOR_ID);
+      const rejectPayload = activities![0].payload as { submission_id: string; submission_type: string; display_name: string; field_id: string };
+      expect(rejectPayload.submission_id).toBe(submissionId);
+      expect(rejectPayload.submission_type).toBe("entry");
+      expect(rejectPayload.display_name).toBe("[テスト] 公式アカウント reject-1");
+      expect(rejectPayload.field_id).toBe("business");
+    } finally {
+      await db().from("activities").delete().eq("moderator_id", TEST_MODERATOR_ID);
+    }
   });
 });
 
@@ -274,7 +304,7 @@ describe("分野追加フロー (A06承認・D05)", () => {
     // 1. business 分野に既存アカウントを作成
     const { data: account } = await db()
       .from("accounts")
-      .insert({ display_name: "D05 テストアカウント" })
+      .insert({ display_name: "[テスト] D05アカウント" })
       .select("id")
       .single();
     const accountId = account!.id;
@@ -292,7 +322,7 @@ describe("分野追加フロー (A06承認・D05)", () => {
     const { data: submission } = await db()
       .from("entry_submissions")
       .insert({
-        account_name: "D05 テストアカウント（更新）",
+        account_name: "[テスト] D05アカウント（更新）",
         bluesky_did: blueskyDid,
         bluesky_handle: "d05-test.bsky.social",
         field_id: "tech",
@@ -326,7 +356,148 @@ describe("分野追加フロー (A06承認・D05)", () => {
       expect(fieldIds).toContain("tech");
       expect(fields).toHaveLength(2);
     } finally {
+      await db().from("entry_submissions").delete().eq("id", submissionId);
       await cleanupAccount(accountId);
+    }
+  });
+});
+
+describe("来て欲しい申請フロー", () => {
+  function makeRequestSubmissionRequest(body: object) {
+    return new NextRequest("http://localhost/api/contribution/request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "origin": "http://localhost:15010" },
+      body: JSON.stringify(body),
+    });
+  }
+
+  it("フォームから申請すると request_submissions にレコードが作成される（field_id 含む）", async () => {
+    const twitterHandle = "test_req_001";
+    const twitterUrl = `https://x.com/${twitterHandle}`;
+
+    try {
+      const req = makeRequestSubmissionRequest({
+        twitterUrl,
+        twitterName: "[テスト] 来てほしいアカウント",
+        fieldId: "tech",
+      });
+      const res = await requestPOST(req);
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({ ok: true });
+
+      const { data: submission } = await db()
+        .from("request_submissions")
+        .select("display_name, twitter_handle, field_id")
+        .eq("twitter_handle", twitterHandle)
+        .single();
+
+      expect(submission?.display_name).toBe("[テスト] 来てほしいアカウント");
+      expect(submission?.twitter_handle).toBe(twitterHandle);
+      expect(submission?.field_id).toBe("tech");
+    } finally {
+      await db().from("request_submissions").delete().eq("twitter_handle", twitterHandle);
+    }
+  });
+
+  it("field_id なしの申請は 400 を返す", async () => {
+    const req = makeRequestSubmissionRequest({
+      twitterUrl: "https://x.com/test_req_nofield",
+      twitterName: "[テスト] フィールドなし",
+    });
+    const res = await requestPOST(req);
+    expect(res.status).toBe(400);
+  });
+
+  it("申請を承認すると requests に field_id が保存され、活動ログに記録される", async () => {
+    const twitterHandle = "test_req_approve";
+    const { data: submission } = await db()
+      .from("request_submissions")
+      .insert({
+        display_name: "[テスト] 来てほしい承認アカウント",
+        twitter_handle: twitterHandle,
+        field_id: "entertainment",
+      })
+      .select("id")
+      .single();
+    const submissionId = submission!.id;
+
+    try {
+      const result = await approveRequestSubmission(submissionId);
+      expect(result).toEqual({ ok: true });
+
+      // request_submissions は削除されているはず
+      const { data: deleted } = await db()
+        .from("request_submissions")
+        .select("id")
+        .eq("id", submissionId)
+        .maybeSingle();
+      expect(deleted).toBeNull();
+
+      // requests に field_id が保存されているはず
+      const { data: request } = await db()
+        .from("requests")
+        .select("twitter_handle, field_id, account_id")
+        .eq("twitter_handle", twitterHandle)
+        .single();
+      expect(request?.field_id).toBe("entertainment");
+
+      // activities に記録されているはず
+      const { data: activities } = await db()
+        .from("activities")
+        .select("payload")
+        .eq("moderator_id", TEST_MODERATOR_ID)
+        .eq("action", "approve");
+      expect(activities).toHaveLength(1);
+      const payload = activities![0].payload as { field_id: string; display_name: string };
+      expect(payload.field_id).toBe("entertainment");
+      expect(payload.display_name).toBe("[テスト] 来てほしい承認アカウント");
+
+      // cleanup
+      if (request?.account_id) await cleanupAccount(request.account_id);
+    } finally {
+      await db().from("activities").delete().eq("moderator_id", TEST_MODERATOR_ID);
+      await db().from("request_submissions").delete().eq("id", submissionId);
+    }
+  });
+
+  it("申請を却下すると request_submissions が削除され、field_id が活動ログに記録される", async () => {
+    const { data: submission } = await db()
+      .from("request_submissions")
+      .insert({
+        display_name: "[テスト] 来てほしい却下アカウント",
+        twitter_handle: "test_req_reject",
+        field_id: "music",
+      })
+      .select("id")
+      .single();
+    const submissionId = submission!.id;
+
+    try {
+      const result = await rejectRequestSubmission(submissionId);
+      expect(result).toEqual({ ok: true });
+
+      // request_submissions は削除されているはず
+      const { data: deleted } = await db()
+        .from("request_submissions")
+        .select("id")
+        .eq("id", submissionId)
+        .maybeSingle();
+      expect(deleted).toBeNull();
+
+      // activities に field_id が記録されているはず
+      const { data: activities } = await db()
+        .from("activities")
+        .select("payload")
+        .eq("moderator_id", TEST_MODERATOR_ID)
+        .eq("action", "reject");
+      expect(activities).toHaveLength(1);
+      const payload = activities![0].payload as { submission_type: string; display_name: string; field_id: string };
+      expect(payload.submission_type).toBe("request");
+      expect(payload.display_name).toBe("[テスト] 来てほしい却下アカウント");
+      expect(payload.field_id).toBe("music");
+    } finally {
+      await db().from("activities").delete().eq("moderator_id", TEST_MODERATOR_ID);
+      await db().from("request_submissions").delete().eq("id", submissionId);
     }
   });
 });

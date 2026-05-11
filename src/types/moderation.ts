@@ -28,6 +28,7 @@ export type RequestSubmission = {
   id: string;
   display_name: string;
   twitter_handle: string;
+  field_id: string;
   created_at: string;
 };
 
@@ -41,8 +42,8 @@ export type Activity = {
   id: string;
   action: ActivityAction;
   created_at: string;
+  payload: { display_name?: string; account_id?: string; field_id?: string; submission_id?: string; submission_type?: string };
   moderators: { handle: string; display_name: string } | null;
-  accounts: { display_name: string } | null;
 };
 
 export type FieldMembership = {

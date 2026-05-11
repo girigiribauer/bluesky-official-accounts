@@ -63,6 +63,7 @@ export const RegisterForm = () => {
     setOldCategory(existingData.category);
     setTwitterUrl(existingData.twitter);
     setMigrationStatus(existingData.status);
+    if (existingData.fieldId) setSelectedCategories([existingData.fieldId]);
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -140,6 +141,7 @@ export const RegisterForm = () => {
           placeholder="https://bsky.app/profile/bsky.app"
           value={blueskyInput}
           onChange={handleBlueskyChange}
+          onKeyDown={(e) => { if (e.key === "Enter") e.preventDefault(); }}
         />
         <div aria-live="polite">
           {checkState === "new" && resolvedAccount && (

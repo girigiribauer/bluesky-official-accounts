@@ -86,14 +86,6 @@ describe("POST /api/contribution/register", () => {
     expect(res.status).toBe(400);
   });
 
-  it("未確認以外でevidenceが空なら400を返す", async () => {
-    const res = await POST(makeRequest({
-      ...validBody,
-      migrationStatus: "dual_active",
-      evidence: "",
-    }));
-    expect(res.status).toBe(400);
-  });
 
   it("twitterUrlが空なら400を返す", async () => {
     const res = await POST(makeRequest({ ...validBody, twitterUrl: "" }));

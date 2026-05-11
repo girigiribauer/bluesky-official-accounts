@@ -6,7 +6,7 @@ import { ModalProvider } from "src/components/ModalProvider";
 import { ModalContents } from "src/components/ModalContents";
 import { getCurrentModerator } from "src/lib/auth";
 import { getSupabaseClient } from "src/lib/supabaseClient";
-import type { ReviewSubmission, RequestSubmission, Activity, FieldMembership } from "src/types/moderation";
+import type { ReviewSubmission, RequestSubmission, Activity, FieldMembership, Classification } from "src/types/moderation";
 
 async function getPendingEntrySubmissions(): Promise<ReviewSubmission[]> {
   const { data } = await getSupabaseClient()
@@ -27,7 +27,7 @@ async function getPendingRequestSubmissions(): Promise<RequestSubmission[]> {
 async function getRecentActivities(): Promise<Activity[]> {
   const { data } = await getSupabaseClient()
     .from("activities")
-    .select("id, action, created_at, moderators(handle, display_name), accounts(display_name)")
+    .select("id, action, created_at, payload, moderators(handle, display_name)")
     .in("action", ["approve", "reject"])
     .order("created_at", { ascending: false })
     .limit(10);
@@ -37,12 +37,12 @@ async function getRecentActivities(): Promise<Activity[]> {
 async function getModeratorReviewFieldIds(moderatorId: string): Promise<(string | null)[]> {
   const { data } = await getSupabaseClient()
     .from("activities")
-    .select("accounts!left(account_fields!left(field_id))")
+    .select("payload")
     .eq("moderator_id", moderatorId)
     .in("action", ["approve", "reject"]);
   return (data ?? []).map((a) => {
-    const accounts = a.accounts as { account_fields: { field_id: string }[] } | null;
-    return accounts?.account_fields?.[0]?.field_id ?? null;
+    const payload = a.payload as { field_id?: string } | null;
+    return payload?.field_id ?? null;
   });
 }
 
@@ -59,6 +59,13 @@ async function getAdminCount(): Promise<number> {
     .select("*", { count: "exact", head: true })
     .eq("is_admin", true);
   return count ?? 0;
+}
+
+async function getAllClassifications(): Promise<Classification[]> {
+  const { data } = await getSupabaseClient()
+    .from("classifications")
+    .select("id, name, field_id");
+  return (data ?? []) as Classification[];
 }
 
 export default async function ModerationLayout({
@@ -82,7 +89,7 @@ export default async function ModerationLayout({
     );
   }
 
-  const [entrySubmissions, requestSubmissions, activities, moderatorReviewFieldIds, fieldMemberships, adminCount] =
+  const [entrySubmissions, requestSubmissions, activities, moderatorReviewFieldIds, fieldMemberships, adminCount, classifications] =
     await Promise.all([
       getPendingEntrySubmissions(),
       getPendingRequestSubmissions(),
@@ -90,6 +97,7 @@ export default async function ModerationLayout({
       getModeratorReviewFieldIds(moderator.id),
       getFieldMemberships(),
       getAdminCount(),
+      getAllClassifications(),
     ]);
 
   return (
@@ -107,6 +115,7 @@ export default async function ModerationLayout({
           fieldMemberships={fieldMemberships}
           adminCount={adminCount}
           postCount={0}
+          classifications={classifications}
         />
         {children}
         <GlobalFooter />

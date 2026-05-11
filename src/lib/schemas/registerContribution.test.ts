@@ -71,22 +71,50 @@ describe("registerContributionSchema", () => {
     });
   });
 
-  describe("evidence の必須チェック", () => {
-    it("evidenceが空なら拒否する", () => {
+  describe("evidence は任意", () => {
+    it("evidenceが空でも受け付ける", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
         evidence: "",
       });
-      expect(result.success).toBe(false);
+      expect(result.success).toBe(true);
     });
 
     it("evidenceがあれば受け付ける", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
-        migrationStatus: "migrated",
         evidence: "カスタムドメインのため",
       });
       expect(result.success).toBe(true);
+    });
+  });
+
+  describe("twitterUrl と migrationStatus の条件", () => {
+    it("migratedのときtwitterUrlが空でも受け付ける", () => {
+      const result = registerContributionSchema.safeParse({
+        ...validBase,
+        migrationStatus: "migrated",
+        twitterUrl: "",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("dual_activeのときtwitterUrlが空なら拒否する", () => {
+      const result = registerContributionSchema.safeParse({
+        ...validBase,
+        migrationStatus: "dual_active",
+        twitterUrl: "",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("account_createdのときtwitterUrlが空なら拒否する", () => {
+      const result = registerContributionSchema.safeParse({
+        ...validBase,
+        migrationStatus: "account_created",
+        twitterUrl: "",
+      });
+      expect(result.success).toBe(false);
     });
   });
 

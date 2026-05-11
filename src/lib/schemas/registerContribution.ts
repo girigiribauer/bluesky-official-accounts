@@ -24,12 +24,8 @@ export const registerContributionSchema = z
     evidence: z.string().trim().max(1000).default(""),
   })
   .refine(
-    (d) => d.twitterUrl.length > 0,
+    (d) => d.migrationStatus === "migrated" || d.twitterUrl.length > 0,
     { message: "X(Twitter) URLは必須です" }
-  )
-  .refine(
-    (d) => d.evidence.length > 0,
-    { message: "根拠は必須です" }
   )
   .refine(
     (d) => !d.twitterUrl || twitterUrlPattern.test(d.twitterUrl),

@@ -18,8 +18,12 @@ const SEP = "~";
 
 function getSecret(): string {
   const s = process.env.OAUTH_PRIVATE_KEY;
-  if (!s) throw new Error("OAUTH_PRIVATE_KEY is not set");
-  return s;
+  if (s) return s;
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("OAUTH_PRIVATE_KEY is not set");
+  }
+  // ローカル開発用フォールバック（本番では到達しない）
+  return "local-dev-cookie-secret";
 }
 
 export function signToken(did: string): string {

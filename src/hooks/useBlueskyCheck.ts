@@ -17,6 +17,7 @@ export type ExistingData = {
   source: string;
   twitter: string;
   status: string;
+  fieldId: string;
 };
 
 export const useBlueskyCheck = () => {
