@@ -73,7 +73,7 @@ export const STATUS_OPTIONS = [
   { value: "account_created", label: "アカウント作成済" },
   { value: "dual_active", label: "両方運用中" },
   { value: "migrated", label: "Bluesky 完全移行" },
-  { value: "unverifiable", label: "確認不能" },
+  { value: "unknown", label: "確認不能" },
 ] as const;
 
 export const EVIDENCE_SHORTCUTS: { label: string; template: string | null }[] = [

@@ -4,9 +4,9 @@ export type TransitionStatus =
   | TransitionStatusAccountCreated
   | TransitionStatusDualActive
   | TransitionStatusMigrated
-  | TransitionStatusUnverifiable;
+  | TransitionStatusUnknown;
 
-// 未移行（Blueskyアカウントなし）
+// 来てほしい（requests テーブル側のステータス）
 export type TransitionStatusNotMigrated = "not_migrated";
 // 未確認（Blueskyアカウントはあるが同一性未確認）
 export type TransitionStatusUnverified = "unverified";
@@ -17,7 +17,7 @@ export type TransitionStatusDualActive = "dual_active";
 // Bluesky 完全移行
 export type TransitionStatusMigrated = "migrated";
 // 確認不能
-export type TransitionStatusUnverifiable = "unverifiable";
+export type TransitionStatusUnknown = "unknown";
 
 export const TRANSITION_STATUS_LABELS: Record<TransitionStatus, string> = {
   not_migrated: "来てほしい",
@@ -25,5 +25,5 @@ export const TRANSITION_STATUS_LABELS: Record<TransitionStatus, string> = {
   account_created: "アカウント作成済",
   dual_active: "両方運用中",
   migrated: "Bluesky 完全移行",
-  unverifiable: "確認不能",
+  unknown: "確認不能",
 };

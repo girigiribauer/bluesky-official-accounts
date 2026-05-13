@@ -80,7 +80,7 @@ export const TransitionStatusList = ({}: TransitionStatusListProps) => {
               </p>
               <p>
                 やむを得ず{" "}
-                <span className="status" data-status="unverifiable">確認不能</span>
+                <span className="status" data-status="unknown">確認不能</span>
                 {" "}のステータスを付与しています。怪しいモデレーションリストの利用はお控えくださるよう、周りにも注意喚起をお願いします。
               </p>
             </section>

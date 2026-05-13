@@ -63,7 +63,7 @@ const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_SECRET_KEY);
         id: row.id,
         name: account?.display_name ?? "",
         category: account?.old_category ?? "",
-        status: (row.transition_status ?? "not_migrated") as TransitionStatus,
+        status: (row.transition_status ?? "unknown") as TransitionStatus,
         twitter,
         bluesky,
         source,

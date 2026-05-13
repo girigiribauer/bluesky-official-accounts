@@ -7,6 +7,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/bluesky",
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(true);
@@ -16,6 +17,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://twitter.com/bluesky",
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(true);
@@ -25,6 +27,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/bluesky/",
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(true);
@@ -34,6 +37,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "http://x.com/bluesky",
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(false);
@@ -43,6 +47,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://bsky.app/profile/bluesky.bsky.social",
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(false);
@@ -52,6 +57,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/",
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(false);
@@ -61,6 +67,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/abcdefghijklmnop", // 16文字
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(false);
@@ -70,6 +77,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/abcdefghijklmno", // 15文字
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(true);
@@ -79,6 +87,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/" + "a".repeat(136), // 合計151文字
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(false);
@@ -88,6 +97,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "",
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(false);
@@ -99,6 +109,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/bluesky",
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(true);
@@ -127,6 +138,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/bluesky",
         twitterName: "Bluesky",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(true);
@@ -136,6 +148,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/bluesky",
         twitterName: "",
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(false);
@@ -145,6 +158,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/bluesky",
         twitterName: "a".repeat(100),
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(true);
@@ -154,6 +168,7 @@ describe("requestContributionSchema", () => {
       const result = requestContributionSchema.safeParse({
         twitterUrl: "https://x.com/bluesky",
         twitterName: "a".repeat(101),
+        oldCategory: "ネットサービス",
         fieldId: "business",
       });
       expect(result.success).toBe(false);

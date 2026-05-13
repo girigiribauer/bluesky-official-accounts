@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-// DB の CHECK 制約と合わせる
+// DB の CHECK 制約と合わせる（entries テーブル）
 export const TRANSITION_STATUSES = [
-  "not_migrated",
+  "unverified",
   "account_created",
   "dual_active",
   "migrated",
-  "unverifiable",
+  "unknown",
 ] as const;
 
 export const updateEntryNameSchema = z.object({

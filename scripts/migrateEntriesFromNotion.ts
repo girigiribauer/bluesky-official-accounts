@@ -575,11 +575,11 @@ const CATEGORY_TO_CLASSIFICATION_NAME: Record<string, string | null> = {
 // Notion の移行ステータス（日本語）→ DB の transition_status（英語）
 // ---------------------------------------------------------------------------
 const NOTION_STATUS_TO_TRANSITION_STATUS: Record<string, string> = {
-  "未移行（未確認）": "not_migrated",
+  "未移行（未確認）": "unverified",
   "アカウント作成済": "account_created",
   "両方運用中": "dual_active",
   "Bluesky 完全移行": "migrated",
-  "確認不能": "unverifiable",
+  "確認不能": "unknown",
 };
 
 const TWITTER_URL_PREFIX = "https://x.com/";

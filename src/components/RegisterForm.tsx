@@ -6,9 +6,8 @@ import { AnnotationButton } from "src/components/AnnotationButton";
 import { registerContributionSchema } from "src/lib/schemas/registerContribution";
 import { fetchWithTimeout } from "src/lib/fetchWithTimeout";
 import { formatErrorMessage } from "src/lib/formatErrorMessage";
-import { FIELD_ID_LABELS, OLD_CATEGORIES, STATUS_OPTIONS, EVIDENCE_SHORTCUTS } from "src/constants/contributionForm";
-
-const FIELD_OPTIONS = Object.entries(FIELD_ID_LABELS).map(([id, label]) => ({ id, label }));
+import { STATUS_OPTIONS, EVIDENCE_SHORTCUTS } from "src/constants/contributionForm";
+import { FieldSelector } from "./FieldSelector";
 import { useBlueskyCheck } from "src/hooks/useBlueskyCheck";
 import styles from "./RegisterForm.module.scss";
 
@@ -214,75 +213,13 @@ export const RegisterForm = () => {
             />
           </div>
 
-          {/* 旧分類 */}
-          <div className={styles.item}>
-            <label className={styles.label} htmlFor="old-category">
-              分類(旧)
-            </label>
-            <p className={styles.description}>
-              そのアカウントの興味分野が一番近い分類を選んでください。（以下の分野に移行予定）
-            </p>
-            <select
-              id="old-category"
-              className={styles.select}
-              value={oldCategory}
-              onChange={(e) => setOldCategory(e.target.value)}
-            >
-              <option value="">（選択してください）</option>
-              {OLD_CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* 分野 */}
-          <div className={styles.item}>
-            <div className={styles.labelRow}>
-              <span className={styles.label}>分野</span>
-              <AnnotationButton label="分野・分類について" className={styles.cautionButton}>
-                <section className="page-section">
-                  <h2>分野・分類について</h2>
-                  <p>
-                    現在、新たなモデレーションサイト構築に向けて、旧分類を見直し、新たな分野・分類として紐付け直しを図っています。
-                    <br />
-                    新しい分野では、分野ごとに有識者の方々が集まり、その中での分類作成や分類分けなどのモデレーションを行っていただくことを想定しています。
-                  </p>
-                  <p>
-                    複数の分野にまたがると思われる場合は、最も近いと思う分野を1つ選んでください。複数分野への登録は、今後対応予定です。
-                  </p>
-                  <p>
-                    しばらく移行期間中は新旧両方を指定していただくことになるかと思います。お手数をおかけしますが、ご協力をよろしくお願いします。
-                  </p>
-                </section>
-              </AnnotationButton>
-            </div>
-            <p className={styles.description}>
-              そのアカウントの興味分野が一番近いものを1つ選んでください。
-              <br />
-              複数分野への登録は、今後対応予定です。
-            </p>
-            <div className={styles.chips}>
-              {FIELD_OPTIONS.map(({ id, label }) => {
-                const isSelected = selectedCategories.includes(id);
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    className={[
-                      styles.chip,
-                      isSelected ? styles.chipSelected : "",
-                    ].join(" ")}
-                    onClick={() => setSelectedCategories([id])}
-                  >
-                    <span className={styles.chipIcon}>{isSelected && "✓"}</span>
-                    {label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          {/* 旧分類・分野 */}
+          <FieldSelector
+            fieldId={selectedCategories[0] ?? ""}
+            onFieldIdChange={(id) => setSelectedCategories([id])}
+            oldCategory={oldCategory}
+            onOldCategoryChange={setOldCategory}
+          />
 
           {/* 移行ステータス */}
           <div className={styles.item}>
@@ -298,7 +235,7 @@ export const RegisterForm = () => {
               value={migrationStatus}
               onChange={(e) => setMigrationStatus(e.target.value)}
             >
-              {STATUS_OPTIONS.filter((opt) => opt.value !== "not_migrated" && opt.value !== "unverifiable").map((opt) => (
+              {STATUS_OPTIONS.filter((opt) => opt.value !== "not_migrated" && opt.value !== "unknown").map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>

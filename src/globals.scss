@@ -200,7 +200,7 @@ img {
     color: var(--color-status-level4-darker);
   }
 
-  &[data-status="unverifiable"] {
+  &[data-status="unknown"] {
     background: var(--color-status-level0-darker);
     color: var(--color-status-level0);
   }

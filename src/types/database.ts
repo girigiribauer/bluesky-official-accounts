@@ -497,6 +497,7 @@ export type Database = {
           display_name: string
           field_id: string
           id: string
+          old_category: string | null
           twitter_handle: string
         }
         Insert: {
@@ -504,6 +505,7 @@ export type Database = {
           display_name: string
           field_id: string
           id?: string
+          old_category?: string | null
           twitter_handle: string
         }
         Update: {
@@ -511,6 +513,7 @@ export type Database = {
           display_name?: string
           field_id?: string
           id?: string
+          old_category?: string | null
           twitter_handle?: string
         }
         Relationships: [
