@@ -1,8 +1,8 @@
 {
-  "updatedTime": "2026-05-19T12:14:31.498Z",
+  "updatedTime": "2026-05-19T16:25:38.452Z",
   "total": 3514,
-  "checkedTotal": 2564,
-  "customDomainAccounts": 427,
+  "checkedTotal": 2565,
+  "customDomainAccounts": 428,
   "weeklyPostedAccounts": 0,
   "monthlyPostedAccounts": 293,
   "accounts": [
@@ -2265,12 +2265,12 @@
       "id": "c939088e-dd96-4b83-8be2-09ae5abda717",
       "name": "ファミ通.com",
       "category": "ゲーム（個人・団体）",
-      "status": "unverified",
+      "status": "dual_active",
       "twitter": "https://x.com/famitsu",
-      "bluesky": "https://bsky.app/profile/famitsucom.bsky.social",
+      "bluesky": "https://bsky.app/profile/famitsu.com",
       "source": "公式確認は取れておりません。",
       "createdTime": "2024-02-24T08:01:00+00:00",
-      "updatedTime": "2026-05-07T06:16:19.548817+00:00"
+      "updatedTime": "2026-05-19T12:28:18.552+00:00"
     },
     {
       "id": "79b4f5ac-0ef0-4c93-9fc5-c6eb2049803a",
