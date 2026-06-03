@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-06-02T23:50:46.386Z",
-  "total": 3514,
-  "checkedTotal": 2565,
-  "customDomainAccounts": 428,
-  "weeklyPostedAccounts": 0,
-  "monthlyPostedAccounts": 293,
+  "updatedTime": "2026-06-03T04:45:49.834Z",
+  "total": 3518,
+  "checkedTotal": 2569,
+  "customDomainAccounts": 429,
+  "weeklyPostedAccounts": 4,
+  "monthlyPostedAccounts": 297,
   "accounts": [
     {
       "id": "c706a4dd-e1ac-400c-bb4f-2a81cd9ba1ec",
@@ -10512,6 +10512,17 @@
       "updatedTime": "2026-05-07T06:07:47.677425+00:00"
     },
     {
+      "id": "a946aac2-5793-4017-8151-428a80f42ea5",
+      "name": "Hommarju",
+      "category": "音楽（個人・団体）",
+      "status": "dual_active",
+      "twitter": "https://x.com/Hommarju",
+      "bluesky": "https://bsky.app/profile/hommarju.bsky.social",
+      "source": "X/Twitter での言及あり\nURLは\nhttps://x.com/Hommarju/status/1755150470396710917\nです。",
+      "createdTime": "2026-06-03T00:10:03.911123+00:00",
+      "updatedTime": "2026-06-03T00:10:03.911123+00:00"
+    },
+    {
       "id": "68211ccd-5160-47ac-b345-e568f273f43b",
       "name": "ikaruga_nex",
       "category": "音楽（個人・団体）",
@@ -10554,6 +10565,17 @@
       "source": "著名人/歌手です。\n\nBlueskyアカウントは、XやInstagramと同じIDですが、ご本人かどうかは不明です。",
       "createdTime": "2024-02-21T11:02:00+00:00",
       "updatedTime": "2026-05-07T06:17:56.244011+00:00"
+    },
+    {
+      "id": "f499970c-484b-4f3e-bc3f-5890986717e0",
+      "name": "Kashiwade",
+      "category": "音楽（個人・団体）",
+      "status": "dual_active",
+      "twitter": "https://x.com/Kashiwade_music",
+      "bluesky": "https://bsky.app/profile/kashiwade.bsky.social",
+      "source": "X/Twitter での言及あり\nURLは\nhttps://x.com/Kashiwade_music/status/2003958312476594195\nです。",
+      "createdTime": "2026-06-03T00:06:35.112723+00:00",
+      "updatedTime": "2026-06-03T00:06:35.112723+00:00"
     },
     {
       "id": "4ca6066b-e667-4f64-865d-f740e21b6731",
@@ -10609,6 +10631,17 @@
       "source": "Xで使用しているアイコンとBlueskyで使用しているアイコンが同一のもの。Blueskyのプロフでお試しの発言あり。\n→それだけだと本人確認としては不十分なので未確認で公開",
       "createdTime": "2024-11-14T12:28:00+00:00",
       "updatedTime": "2026-05-07T06:09:07.448548+00:00"
+    },
+    {
+      "id": "084ed3ff-a7d4-492c-81a8-7f920da84813",
+      "name": "MEMODEMO",
+      "category": "音楽（個人・団体）",
+      "status": "migrated",
+      "twitter": "https://x.com/MEMODEMO",
+      "bluesky": "https://bsky.app/profile/memodemo.zip",
+      "source": "カスタムドメインのため",
+      "createdTime": "2026-06-03T00:07:57.550901+00:00",
+      "updatedTime": "2026-06-03T00:07:57.550901+00:00"
     },
     {
       "id": "c5e17159-098b-4b37-bf70-93812306b664",
@@ -10763,6 +10796,17 @@
       "source": "https://x.com/plcube/status/1755176949943775452",
       "createdTime": "2024-11-15T02:07:00+00:00",
       "updatedTime": "2026-05-07T06:09:28.92275+00:00"
+    },
+    {
+      "id": "b566d35d-8837-4815-b214-d6093d787f45",
+      "name": "siqlo",
+      "category": "音楽（個人・団体）",
+      "status": "dual_active",
+      "twitter": "https://x.com/siqlo",
+      "bluesky": "https://bsky.app/profile/siqlo.bsky.social",
+      "source": "X/Twitter での言及あり\nURLは\nhttps://x.com/siqlo/status/1846854266545492395\nです。",
+      "createdTime": "2026-06-03T00:09:22.837583+00:00",
+      "updatedTime": "2026-06-03T00:09:22.837583+00:00"
     },
     {
       "id": "31a9ce28-7ddc-4d3a-be84-cbd7a6c8358c",
