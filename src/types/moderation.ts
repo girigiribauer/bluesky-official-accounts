@@ -22,6 +22,7 @@ export type ReviewSubmission = {
   request_id: string | null;
   created_at: string;
   classifications: { id: string; name: string } | null;
+  existing_bluesky_handle: string | null;
 };
 
 export type RequestSubmission = {

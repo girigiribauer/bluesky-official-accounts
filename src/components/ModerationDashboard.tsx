@@ -10,6 +10,7 @@ import { calcReviewCount, calcMemberCount } from "src/lib/moderationStats";
 import type { ReviewSubmission, RequestSubmission, Activity, FieldMembership, Classification } from "src/types/moderation";
 import { ReviewBottomSheet } from "./ReviewBottomSheet";
 import { RequestReviewBottomSheet } from "./RequestReviewBottomSheet";
+import { updateFieldLastActive } from "src/app/moderation_beta/actions";
 import styles from "./ModerationDashboard.module.scss";
 
 type Props = {
@@ -64,6 +65,12 @@ export function Dashboard({ entrySubmissions, requestSubmissions, moderator, act
   const searchParams = useSearchParams();
 
   const currentField = searchParams.get("field") ?? undefined;
+
+  useEffect(() => {
+    if (currentField) {
+      updateFieldLastActive(currentField);
+    }
+  }, [currentField]);
 
   const requestActiveId = pathname.match(/\/review\/request\/([^/?]+)/)?.[1] ?? null;
   const entryActiveId = requestActiveId ? null : (pathname.match(/\/review\/([^/?]+)/)?.[1] ?? null);
@@ -143,7 +150,7 @@ export function Dashboard({ entrySubmissions, requestSubmissions, moderator, act
                               href={getEntryCardHref(submission.id)}
                               className={[styles.taskCard, entryActiveId === submission.id ? styles.taskCardActive : ""].join(" ")}
                             >
-                              <span className={styles.taskCardHeader}>Review</span>
+                              <span className={styles.taskCardHeader}>{submission.existing_bluesky_handle ? "Update" : "Review"}</span>
                               <span className={styles.taskCardBody}>
                                 <span className={styles.taskCardName} title={submission.account_name}>{submission.account_name}</span>
                                 <span className={styles.taskCardHandle} title={`@${submission.bluesky_handle}`}>@{submission.bluesky_handle}</span>
@@ -326,7 +333,11 @@ function FieldSelector({ currentField }: { currentField?: string }) {
         <span className={styles.fieldIcon} aria-hidden="true">
           <i className="fa-solid fa-flag" />
         </span>
-        <span>{currentField ? (FIELD_ID_LABELS[currentField] ?? currentField) : "すべての分野"}</span>
+        <span>
+          {currentField
+            ? `${FIELD_ID_LABELS[currentField] ?? currentField} チーム`
+            : "すべての分野"}
+        </span>
         <i className={["fa-solid", open ? "fa-chevron-up" : "fa-chevron-down"].join(" ")} />
       </button>
       {open && (
@@ -348,6 +359,15 @@ function FieldSelector({ currentField }: { currentField?: string }) {
               {label}
             </Link>
           ))}
+          <div className={styles.fieldMenuSeparator} />
+          <Link
+            href="/moderation_beta/onboard"
+            className={styles.fieldMenuItemAdd}
+            onClick={() => setOpen(false)}
+          >
+            <i className="fa-solid fa-plus" aria-hidden="true" />
+            分野を追加
+          </Link>
         </div>
       )}
     </div>

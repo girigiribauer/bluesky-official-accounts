@@ -87,14 +87,6 @@ export async function approveEntrySubmission(submissionId: string): Promise<Resu
         if (insertFieldError) throw insertFieldError;
       }
 
-      // 来て欲しいリストに紐付いていた場合は requests を削除
-      if (submission.request_id) {
-        const { error: requestError } = await supabase
-          .from("requests")
-          .delete()
-          .eq("id", submission.request_id);
-        if (requestError) throw requestError;
-      }
     } else {
       const { data: account, error: accountError } = await supabase
         .from("accounts")
@@ -129,14 +121,6 @@ export async function approveEntrySubmission(submissionId: string): Promise<Resu
       });
       if (fieldError) throw fieldError;
 
-      // D03: 来て欲しいリストに存在した場合は requests を削除
-      if (submission.request_id) {
-        const { error: requestError } = await supabase
-          .from("requests")
-          .delete()
-          .eq("id", submission.request_id);
-        if (requestError) throw requestError;
-      }
     }
 
     if (submission.evidence?.trim()) {
@@ -159,11 +143,21 @@ export async function approveEntrySubmission(submissionId: string): Promise<Resu
     });
     if (activityError) throw activityError;
 
+    // entry_submissions を先に削除してから requests を削除する
+    // （entry_submissions.request_id → requests の FK 制約があるため逆順は不可）
     const { error: deleteError } = await supabase
       .from("entry_submissions")
       .delete()
       .eq("id", submissionId);
     if (deleteError) throw deleteError;
+
+    if (submission.request_id) {
+      const { error: requestError } = await supabase
+        .from("requests")
+        .delete()
+        .eq("id", submission.request_id);
+      if (requestError) throw requestError;
+    }
   } catch (err) {
     console.error("approveEntrySubmission error:", err);
     return { ok: false, error: "承認に失敗しました" };
@@ -427,4 +421,32 @@ export async function rejectRequestSubmission(submissionId: string): Promise<Res
 
   revalidatePath("/moderation_beta");
   return { ok: true };
+}
+
+export async function joinField(fieldId: string): Promise<Result> {
+  const moderator = await getCurrentModerator();
+  if (!moderator) return { ok: false, error: "ログインが必要です" };
+
+  const { error } = await getSupabaseClient()
+    .from("field_memberships")
+    .upsert(
+      { moderator_id: moderator.id, field_id: fieldId, last_active_at: new Date().toISOString() },
+      { onConflict: "moderator_id,field_id" }
+    );
+
+  if (error) return { ok: false, error: error.message };
+
+  revalidatePath("/moderation_beta");
+  return { ok: true };
+}
+
+export async function updateFieldLastActive(fieldId: string): Promise<void> {
+  const moderator = await getCurrentModerator();
+  if (!moderator) return;
+
+  await getSupabaseClient()
+    .from("field_memberships")
+    .update({ last_active_at: new Date().toISOString() })
+    .eq("moderator_id", moderator.id)
+    .eq("field_id", fieldId);
 }

@@ -1,9 +1,8 @@
 "use client";
 
-import { FIELD_ID_LABELS, OLD_CATEGORIES } from "src/constants/contributionForm";
+import { OLD_CATEGORIES } from "src/constants/contributionForm";
+import { FieldChips } from "./FieldChips";
 import styles from "./FieldSelector.module.scss";
-
-const FIELD_OPTIONS = Object.entries(FIELD_ID_LABELS).map(([id, label]) => ({ id, label }));
 
 type Props = {
   fieldId: string;
@@ -39,22 +38,7 @@ export function FieldSelector({ fieldId, onFieldIdChange, oldCategory, onOldCate
         <p className={styles.description}>
           そのアカウントの興味分野が一番近いものを1つ選んでください。
         </p>
-        <div className={styles.chips}>
-          {FIELD_OPTIONS.map(({ id, label }) => {
-            const isSelected = fieldId === id;
-            return (
-              <button
-                key={id}
-                type="button"
-                className={[styles.chip, isSelected ? styles.chipSelected : ""].join(" ")}
-                onClick={() => onFieldIdChange(id)}
-              >
-                <span className={styles.chipIcon}>{isSelected && "✓"}</span>
-                {label}
-              </button>
-            );
-          })}
-        </div>
+        <FieldChips fieldId={fieldId} onFieldIdChange={onFieldIdChange} />
       </div>
     </div>
   );

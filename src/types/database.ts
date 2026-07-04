@@ -328,18 +328,21 @@ export type Database = {
           field_id: string
           id: string
           joined_at: string
+          last_active_at: string
           moderator_id: string
         }
         Insert: {
           field_id: string
           id?: string
           joined_at?: string
+          last_active_at?: string
           moderator_id: string
         }
         Update: {
           field_id?: string
           id?: string
           joined_at?: string
+          last_active_at?: string
           moderator_id?: string
         }
         Relationships: [

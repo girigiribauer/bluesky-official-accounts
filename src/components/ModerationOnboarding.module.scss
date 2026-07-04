@@ -1,0 +1,291 @@
+@import 'src/_mixin';
+
+/* コンテンツラッパー: 60px gap、align-items: center */
+.contents {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+  padding-bottom: 100px;
+}
+
+/* form-area: 全幅白バンド */
+.formArea {
+  align-self: stretch;
+  background: var(--color-white);
+  border-top: 1px solid var(--color-black-lighter2);
+  border-bottom: 1px solid var(--color-black-lighter2);
+  padding: 30px 140px;
+  display: flex;
+  justify-content: center;
+
+  @include mq(s) {
+    padding: 30px 20px;
+  }
+}
+
+/* form: 700px 固定幅、縦並び gap 30px */
+.form {
+  width: 700px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* タイトル */
+.title {
+  font-size: 1.25rem;
+  /* 20px */
+  font-weight: 700;
+  color: var(--color-black);
+  line-height: 1.8em;
+  margin: 0;
+}
+
+/* サブタイトル */
+.subtitle {
+  font-size: 1rem;
+  /* 16px */
+  font-weight: 400;
+  color: var(--color-black);
+  line-height: 1.5em;
+  margin: 0;
+}
+
+.termLink {
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* 詳細パネル（分野未選択時プレースホルダー） */
+.needField {
+  width: 100%;
+  height: 180px;
+  background: var(--color-black-lighter2);
+  /* #E5E5E5 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.needFieldText {
+  font-size: 0.875rem;
+  /* 14px */
+  font-weight: 900;
+  line-height: 1.7143em;
+  color: var(--color-black-lighter);
+  /* #888888 */
+  margin: 0;
+  text-align: left;
+}
+
+/* FieldPickupBoard */
+.fieldPickupBoard {
+  position: relative;
+  width: 700px;
+  max-width: 100%;
+  background: var(--color-white);
+  border: 10px solid var(--color-primary-lighter2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+/* 未参加バッジ */
+.notJoinBadge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+  font-size: 1rem;
+  /* 16px */
+  font-weight: 700;
+  color: var(--color-black);
+  line-height: 1em;
+}
+
+.notJoinIcon {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 0.78px solid var(--color-black-lighter);
+  background: var(--color-black-lighter3);
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5rem;
+  color: transparent;
+}
+
+.notJoinBadgeJoined {
+  color: var(--color-secondary);
+}
+
+.notJoinIconJoined {
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: var(--color-white);
+}
+
+/* ピックアップボードの見出し */
+.pickupHeading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.pickupFieldIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--color-primary);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  >i {
+    font-size: 0.75rem;
+    /* 12px */
+    color: var(--color-white);
+    line-height: 1;
+  }
+}
+
+.pickupTitle {
+  font-size: 1.25rem;
+  /* 20px */
+  font-weight: 700;
+  line-height: 1em;
+  color: var(--color-black);
+}
+
+.pickupSeparator {
+  height: 2px;
+  background: var(--color-primary-lighter2);
+  align-self: stretch;
+}
+
+/* ピックアップボード内コンテンツ行 */
+.pickupBoxes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pickupBox {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.pickupLabel {
+  font-size: 0.875rem;
+  /* 14px */
+  font-weight: 700;
+  line-height: 1em;
+  color: var(--color-black);
+}
+
+.pickupContent {
+  font-size: 1rem;
+  /* 16px */
+  font-weight: 400;
+  line-height: 1.5em;
+  color: var(--color-black);
+}
+
+/* 注記テキスト */
+.note {
+  font-size: 1rem;
+  /* 16px */
+  font-weight: 400;
+  line-height: 1.5em;
+  color: var(--color-black);
+  margin: 0;
+}
+
+/* セパレーター */
+.separator {
+  height: 1px;
+  background: var(--color-black-lighter2);
+  margin: 0;
+  border: none;
+}
+
+/* ボタンエリア */
+.center {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ボタン共通 */
+.selectFieldButton {
+  width: 300px;
+  height: 40px;
+  border-radius: 2px;
+  font-size: 1rem;
+  /* 16px */
+  font-weight: 900;
+  font-family: inherit;
+  line-height: 1.375em;
+  cursor: pointer;
+  text-align: left;
+  padding-left: 30px;
+  box-sizing: border-box;
+}
+
+/* ボタン Disabled */
+.selectFieldDisabled {
+  background: var(--color-black-lighter3);
+  /* #F9F9F9 */
+  border: 2px solid var(--color-black-lighter);
+  /* #888888 */
+  color: var(--color-black-lighter);
+  cursor: not-allowed;
+}
+
+/* ボタン Enabled */
+.selectFieldEnabled {
+  background: var(--color-primary);
+  border: none;
+  color: var(--color-white);
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+/* 下部セクション */
+.section {
+  width: 700px;
+  max-width: 100%;
+  align-self: center;
+}
+
+.sectionText {
+  font-size: 1.25rem;
+  /* 20px */
+  font-weight: 400;
+  line-height: 1.8em;
+  color: var(--color-black);
+  margin: 0;
+}
+
+.sectionTextBlue {
+  color: var(--color-secondary);
+  font-weight: 700;
+}

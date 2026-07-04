@@ -4,6 +4,7 @@ import { Account } from "../src/models/Account";
 import { AccountList } from "../src/models/AccountList";
 import type { Database } from "../src/types/database";
 import type { TransitionStatus } from "../src/models/TransitionStatus";
+import { sortEvidences } from "../src/lib/sortEvidences";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "./.env.local" });
@@ -43,17 +44,19 @@ async function fetchAllPages<T>(
     Pick<Database["public"]["Tables"]["entries"]["Row"], "id" | "bluesky_handle" | "twitter_handle" | "transition_status" | "created_at" | "updated_at"> & {
       accounts:
         | (Pick<Database["public"]["Tables"]["accounts"]["Row"], "display_name" | "old_category"> & {
-            evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content">[];
+            evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content" | "created_at">[];
           })
         | null;
     };
 
   const entryRows = await fetchAllPages<EntryRow>(
-    () => supabase.from("entries").select("id, bluesky_handle, twitter_handle, transition_status, created_at, updated_at, accounts(display_name, old_category, evidences(content))")
+    () => supabase.from("entries").select("id, bluesky_handle, twitter_handle, transition_status, created_at, updated_at, accounts(display_name, old_category, evidences(content, created_at))")
   );
 
   const entryAccounts: Account[] = entryRows.map((row) => {
     const account = Array.isArray(row.accounts) ? row.accounts[0] : row.accounts;
+    const evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content" | "created_at">[] = account?.evidences ?? [];
+    const latestEvidence = sortEvidences(evidences).at(0) ?? null;
     return {
       id: row.id,
       name: account?.display_name ?? "",
@@ -61,9 +64,7 @@ async function fetchAllPages<T>(
       status: (row.transition_status ?? "unknown") as TransitionStatus,
       twitter: row.twitter_handle ? `https://x.com/${row.twitter_handle}` : "",
       bluesky: row.bluesky_handle ? `https://bsky.app/profile/${row.bluesky_handle}` : "",
-      source: Array.isArray(account?.evidences) && account.evidences.length > 0
-        ? account.evidences[0].content
-        : "",
+      source: latestEvidence?.content ?? "",
       createdTime: row.created_at,
       updatedTime: row.updated_at,
     };
@@ -75,17 +76,19 @@ async function fetchAllPages<T>(
     Pick<Database["public"]["Tables"]["requests"]["Row"], "id" | "twitter_handle" | "created_at"> & {
       accounts:
         | (Pick<Database["public"]["Tables"]["accounts"]["Row"], "display_name" | "old_category"> & {
-            evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content">[];
+            evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content" | "created_at">[];
           })
         | null;
     };
 
   const requestRows = await fetchAllPages<RequestRow>(
-    () => supabase.from("requests").select("id, twitter_handle, created_at, accounts(display_name, old_category, evidences(content))")
+    () => supabase.from("requests").select("id, twitter_handle, created_at, accounts(display_name, old_category, evidences(content, created_at))")
   );
 
   const requestAccounts: Account[] = requestRows.map((row) => {
     const account = Array.isArray(row.accounts) ? row.accounts[0] : row.accounts;
+    const evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content" | "created_at">[] = account?.evidences ?? [];
+    const latestEvidence = sortEvidences(evidences).at(0) ?? null;
     return {
       id: row.id,
       name: account?.display_name ?? "",
@@ -93,9 +96,7 @@ async function fetchAllPages<T>(
       status: "not_migrated" as TransitionStatus,
       twitter: row.twitter_handle ? `https://x.com/${row.twitter_handle}` : "",
       bluesky: "",
-      source: Array.isArray(account?.evidences) && account.evidences.length > 0
-        ? account.evidences[0].content
-        : "",
+      source: latestEvidence?.content ?? "",
       createdTime: row.created_at,
       updatedTime: row.created_at,
     };

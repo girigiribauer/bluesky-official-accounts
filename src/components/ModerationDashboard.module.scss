@@ -103,6 +103,26 @@
   color: var(--color-primary);
 }
 
+.fieldMenuSeparator {
+  height: 1px;
+  background: var(--color-black-lighter2);
+  margin: 4px 0;
+}
+
+.fieldMenuItemAdd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  text-decoration: none;
+
+  >i {
+    font-size: 0.75rem;
+  }
+}
+
 /* rows */
 .rows {
   display: flex;

@@ -103,7 +103,6 @@ export function ModerationReviewPanel({ submission, classifications, onClose }: 
     startTransition(async () => {
       const result = await approveEntrySubmission(local.id);
       if (!result.ok) { setError(result.error); return; }
-      router.refresh();
       onClose();
     });
   };
@@ -167,6 +166,9 @@ export function ModerationReviewPanel({ submission, classifications, onClose }: 
             >
               <i className="fa-solid fa-pencil" />
             </button>
+            {local.existing_bluesky_handle && local.existing_bluesky_handle !== local.bluesky_handle && (
+              <span className={styles.infoTextMuted}>{local.existing_bluesky_handle} →</span>
+            )}
             <a
               className={styles.infoLink}
               href={`https://bsky.app/profile/${local.bluesky_handle}`}

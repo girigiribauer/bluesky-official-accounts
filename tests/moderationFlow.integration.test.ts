@@ -7,7 +7,7 @@
  *
  * 前提: supabase start でローカル DB が起動していること。
  */
-import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
+import { describe, it, expect, vi, beforeAll, afterAll, afterEach } from "vitest";
 import { config } from "dotenv";
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest } from "next/server";
@@ -39,7 +39,7 @@ vi.mock("src/lib/rateLimit", () => ({ checkRateLimit: vi.fn().mockReturnValue(tr
 
 const { POST: registerPOST } = await import("src/app/(public)/api/contribution/register/route");
 const { POST: requestPOST } = await import("src/app/(public)/api/contribution/request/route");
-const { approveEntrySubmission, rejectEntrySubmission, updateSubmissionName, approveRequestSubmission, rejectRequestSubmission } =
+const { approveEntrySubmission, rejectEntrySubmission, updateSubmissionName, approveRequestSubmission, rejectRequestSubmission, joinField, updateFieldLastActive } =
   await import("src/app/moderation_beta/actions");
 
 // ---------------------------------------------------------------------------
@@ -63,6 +63,7 @@ async function cleanupAccount(accountId: string) {
   await supabase.from("evidences").delete().eq("account_id", accountId);
   await supabase.from("account_fields").delete().eq("account_id", accountId);
   await supabase.from("entries").delete().eq("account_id", accountId);
+  await supabase.from("requests").delete().eq("account_id", accountId);
   await supabase.from("accounts").delete().eq("id", accountId);
 }
 
@@ -519,6 +520,266 @@ describe("アカウント名修正フロー", () => {
       expect(submission?.account_name).toBe("修正後のアカウント名");
     } finally {
       await db().from("entry_submissions").delete().eq("id", submissionId);
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// B シナリオ: 認証・オンボーディングフロー
+// ---------------------------------------------------------------------------
+
+describe("分野参加フロー (B01/B03)", () => {
+  afterEach(async () => {
+    await db().from("field_memberships").delete().eq("moderator_id", TEST_MODERATOR_ID);
+  });
+
+  it("未参加の分野に joinField すると field_memberships にレコードが作成される（B01）", async () => {
+    const before = new Date();
+
+    const result = await joinField("tech");
+    expect(result).toEqual({ ok: true });
+
+    const { data } = await db()
+      .from("field_memberships")
+      .select("field_id, last_active_at")
+      .eq("moderator_id", TEST_MODERATOR_ID)
+      .eq("field_id", "tech")
+      .single();
+
+    expect(data?.field_id).toBe("tech");
+    expect(new Date(data!.last_active_at) >= before).toBe(true);
+  });
+
+  it("既参加の分野がある状態で別の分野に joinField すると新規レコードが追加され既存は維持される（B03）", async () => {
+    await joinField("business");
+
+    const result = await joinField("tech");
+    expect(result).toEqual({ ok: true });
+
+    const { data } = await db()
+      .from("field_memberships")
+      .select("field_id")
+      .eq("moderator_id", TEST_MODERATOR_ID);
+
+    const fieldIds = (data ?? []).map((m) => m.field_id);
+    expect(fieldIds).toContain("business");
+    expect(fieldIds).toContain("tech");
+    expect(data).toHaveLength(2);
+  });
+
+  it("既参加の分野に再度 joinField すると last_active_at が更新され、レコードは増えない", async () => {
+    await joinField("tech");
+
+    const { data: first } = await db()
+      .from("field_memberships")
+      .select("last_active_at")
+      .eq("moderator_id", TEST_MODERATOR_ID)
+      .eq("field_id", "tech")
+      .single();
+
+    await new Promise((r) => setTimeout(r, 20));
+
+    await joinField("tech");
+
+    const { data: second } = await db()
+      .from("field_memberships")
+      .select("last_active_at")
+      .eq("moderator_id", TEST_MODERATOR_ID)
+      .eq("field_id", "tech")
+      .single();
+
+    // last_active_at が更新されているはず
+    expect(new Date(second!.last_active_at) > new Date(first!.last_active_at)).toBe(true);
+
+    // upsert なのでレコードは1件のまま
+    const { data: all } = await db()
+      .from("field_memberships")
+      .select("id")
+      .eq("moderator_id", TEST_MODERATOR_ID)
+      .eq("field_id", "tech");
+    expect(all).toHaveLength(1);
+  });
+});
+
+describe("分野切り替えフロー (B04)", () => {
+  afterEach(async () => {
+    await db().from("field_memberships").delete().eq("moderator_id", TEST_MODERATOR_ID);
+  });
+
+  it("updateFieldLastActive を呼ぶと対象分野の last_active_at が更新され、他分野は変わらない", async () => {
+    // business → tech の順に参加（tech の方が last_active_at が新しい）
+    await joinField("business");
+    await new Promise((r) => setTimeout(r, 20));
+    await joinField("tech");
+
+    const { data: techBefore } = await db()
+      .from("field_memberships")
+      .select("last_active_at")
+      .eq("moderator_id", TEST_MODERATOR_ID)
+      .eq("field_id", "tech")
+      .single();
+
+    // 少し経ってから business に切り替え
+    await new Promise((r) => setTimeout(r, 20));
+    await updateFieldLastActive("business");
+
+    const { data: businessAfter } = await db()
+      .from("field_memberships")
+      .select("last_active_at")
+      .eq("moderator_id", TEST_MODERATOR_ID)
+      .eq("field_id", "business")
+      .single();
+
+    const { data: techAfter } = await db()
+      .from("field_memberships")
+      .select("last_active_at")
+      .eq("moderator_id", TEST_MODERATOR_ID)
+      .eq("field_id", "tech")
+      .single();
+
+    // business が tech より新しくなっているはず（切り替えたので）
+    expect(new Date(businessAfter!.last_active_at) > new Date(techAfter!.last_active_at)).toBe(true);
+
+    // tech の last_active_at は変わっていないはず
+    expect(techAfter!.last_active_at).toBe(techBefore!.last_active_at);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// D02: 既存アカウントの情報更新承認
+// ---------------------------------------------------------------------------
+
+describe("既存アカウント情報更新フロー (D02)", () => {
+  it("同じ DID・同じ分野の申請を承認すると entries が更新され新規作成されない", async () => {
+    const blueskyDid = "did:plc:test-d02-1";
+
+    const { data: account } = await db()
+      .from("accounts")
+      .insert({ display_name: "[テスト] D02アカウント" })
+      .select("id")
+      .single();
+    const accountId = account!.id;
+
+    await db().from("entries").insert({
+      account_id: accountId,
+      bluesky_did: blueskyDid,
+      bluesky_handle: "d02-old.bsky.social",
+      transition_status: "dual_active",
+      approved_at: new Date().toISOString(),
+    });
+    await db().from("account_fields").insert({ account_id: accountId, field_id: "business" });
+
+    const { data: submission } = await db()
+      .from("entry_submissions")
+      .insert({
+        account_name: "[テスト] D02アカウント（更新後）",
+        bluesky_did: blueskyDid,
+        bluesky_handle: "d02-new.bsky.social",
+        field_id: "business",
+        transition_status: "migrated",
+      })
+      .select("id")
+      .single();
+    const submissionId = submission!.id;
+
+    try {
+      const result = await approveEntrySubmission(submissionId);
+      expect(result).toEqual({ ok: true });
+
+      // entries は1件のまま（新規作成されない）
+      const { data: allEntries } = await db()
+        .from("entries")
+        .select("bluesky_handle, transition_status")
+        .eq("bluesky_did", blueskyDid);
+      expect(allEntries).toHaveLength(1);
+      expect(allEntries![0].bluesky_handle).toBe("d02-new.bsky.social");
+      expect(allEntries![0].transition_status).toBe("migrated");
+
+      // entry_submissions は削除されているはず
+      const { data: deleted } = await db()
+        .from("entry_submissions")
+        .select("id")
+        .eq("id", submissionId)
+        .maybeSingle();
+      expect(deleted).toBeNull();
+    } finally {
+      await db().from("entry_submissions").delete().eq("id", submissionId);
+      await cleanupAccount(accountId);
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// D03: 来て欲しいリストと紐付いた申請の承認
+// ---------------------------------------------------------------------------
+
+describe("来て欲しいリスト紐付き承認フロー (D03)", () => {
+  it("request_id 付き申請を承認すると requests レコードが削除される", async () => {
+    const blueskyDid = "did:plc:test-d03-1";
+
+    // 来て欲しいリスト用のアカウント + requests を作成
+    const { data: requestAccount } = await db()
+      .from("accounts")
+      .insert({ display_name: "[テスト] D03 来て欲しいアカウント" })
+      .select("id")
+      .single();
+    const requestAccountId = requestAccount!.id;
+
+    const { data: request } = await db()
+      .from("requests")
+      .insert({ account_id: requestAccountId, twitter_handle: "d03_test_user", field_id: "tech" })
+      .select("id")
+      .single();
+    const requestId = request!.id;
+
+    // request_id 付きの登録申請を作成
+    const { data: submission } = await db()
+      .from("entry_submissions")
+      .insert({
+        account_name: "[テスト] D03アカウント",
+        bluesky_did: blueskyDid,
+        bluesky_handle: "d03-test.bsky.social",
+        field_id: "tech",
+        transition_status: "migrated",
+        request_id: requestId,
+      })
+      .select("id")
+      .single();
+    const submissionId = submission!.id;
+
+    try {
+      const result = await approveEntrySubmission(submissionId);
+      expect(result).toEqual({ ok: true });
+
+      // requests レコードが削除されているはず
+      const { data: deletedRequest } = await db()
+        .from("requests")
+        .select("id")
+        .eq("id", requestId)
+        .maybeSingle();
+      expect(deletedRequest).toBeNull();
+
+      // entry_submissions も削除されているはず
+      const { data: deletedSub } = await db()
+        .from("entry_submissions")
+        .select("id")
+        .eq("id", submissionId)
+        .maybeSingle();
+      expect(deletedSub).toBeNull();
+
+      // entries + account_fields が作成されているはず
+      const { data: entry } = await db()
+        .from("entries")
+        .select("account_id")
+        .eq("bluesky_did", blueskyDid)
+        .single();
+      expect(entry).not.toBeNull();
+    } finally {
+      await db().from("entry_submissions").delete().eq("id", submissionId);
+      await db().from("requests").delete().eq("id", requestId);
+      await cleanupByDid(blueskyDid);
+      await db().from("accounts").delete().eq("id", requestAccountId);
+      await db().from("activities").delete().eq("moderator_id", TEST_MODERATOR_ID);
     }
   });
 });
