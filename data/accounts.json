@@ -1,5 +1,5 @@
 {
-  "updatedTime": "2026-07-05T12:20:06.501Z",
+  "updatedTime": "2026-07-05T14:47:28.601Z",
   "total": 3518,
   "checkedTotal": 2569,
   "customDomainAccounts": 429,
@@ -2268,7 +2268,7 @@
       "status": "dual_active",
       "twitter": "https://x.com/famitsu",
       "bluesky": "https://bsky.app/profile/famitsu.com",
-      "source": "公式確認は取れておりません。",
+      "source": "カスタムドメインのため",
       "createdTime": "2024-02-24T08:01:00+00:00",
       "updatedTime": "2026-05-19T12:28:18.552+00:00"
     },
@@ -13631,7 +13631,7 @@
       "status": "dual_active",
       "twitter": "https://x.com/kyotominzoku",
       "bluesky": "https://bsky.app/profile/kyotominzoku.bsky.social",
-      "source": "https://x.com/kyotominzoku/status/1847097018071896298",
+      "source": "X/Twitter での言及あり\nURLは\nhttps://x.com/kyotominzoku/status/1847097018071896298\nです。",
       "createdTime": "2024-10-18T02:58:00+00:00",
       "updatedTime": "2026-06-29T13:41:16.746+00:00"
     },
