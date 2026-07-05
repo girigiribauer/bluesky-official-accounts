@@ -43,7 +43,8 @@ export const RequestForm = () => {
       const res = await fetchWithTimeout(`/api/contribution/request/check?url=${encodeURIComponent(normalized.trim())}`);
       if (res.ok) {
         const data = await res.json();
-        setUrlCheckState(data.duplicate === true ? "duplicate" : "valid");
+        // duplicate は "none" | "entry" | "request"
+        setUrlCheckState(data.duplicate === "entry" || data.duplicate === "request" ? "duplicate" : "valid");
       }
     } catch {
       // チェック失敗は無視（submit 時に再チェックされる）

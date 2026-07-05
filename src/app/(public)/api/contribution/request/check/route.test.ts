@@ -19,7 +19,7 @@ const makeRequest = (url?: string) => {
 describe("GET /api/contribution/request/check", () => {
   beforeEach(() => {
     vi.spyOn(console, "error").mockImplementation(() => {});
-    mockCheckDuplicate.mockResolvedValue(false);
+    mockCheckDuplicate.mockResolvedValue("none");
   });
 
   it("urlパラメーターがなければ400を返す", async () => {
@@ -32,19 +32,27 @@ describe("GET /api/contribution/request/check", () => {
     expect(res.status).toBe(400);
   });
 
-  it("重複なしの場合は duplicate: false を返す", async () => {
+  it("重複なしの場合は duplicate: 'none' を返す", async () => {
     const res = await GET(makeRequest("https://x.com/bluesky"));
     expect(res.status).toBe(200);
     const json = await res.json();
-    expect(json.duplicate).toBe(false);
+    expect(json.duplicate).toBe("none");
   });
 
-  it("重複ありの場合は duplicate: true を返す", async () => {
-    mockCheckDuplicate.mockResolvedValueOnce(true);
+  it("来て欲しいリストと重複する場合は duplicate: 'request' を返す", async () => {
+    mockCheckDuplicate.mockResolvedValueOnce("request");
     const res = await GET(makeRequest("https://x.com/bluesky"));
     expect(res.status).toBe(200);
     const json = await res.json();
-    expect(json.duplicate).toBe(true);
+    expect(json.duplicate).toBe("request");
+  });
+
+  it("公開リストと重複する場合は duplicate: 'entry' を返す", async () => {
+    mockCheckDuplicate.mockResolvedValueOnce("entry");
+    const res = await GET(makeRequest("https://x.com/bluesky"));
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.duplicate).toBe("entry");
   });
 
   it("checkDuplicate がエラーのとき500を返す", async () => {
