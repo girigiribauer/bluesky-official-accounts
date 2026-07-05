@@ -12,6 +12,9 @@ import {
   updateSubmissionTwitterUrlSchema,
 } from "src/lib/schemas/moderation";
 import type { Result } from "src/types/result";
+import type { Database } from "src/types/database";
+
+type EntrySubmissionUpdate = Database["public"]["Tables"]["entry_submissions"]["Update"];
 
 // 登録申請を承認し、エントリーを公開リストに追加する。
 // DID が既登録の場合は情報を更新。来て欲しいリストに紐付いていれば承認時に削除する。
@@ -207,127 +210,65 @@ export async function rejectEntrySubmission(submissionId: string): Promise<Resul
 }
 
 // レビュー中の登録申請フィールドを修正する。
-export async function updateSubmissionName(submissionId: string, name: string): Promise<Result> {
+// 認証チェック → entry_submissions の更新 → revalidate の共通処理をまとめる。
+async function updateEntrySubmissionFields(
+  submissionId: string,
+  patch: EntrySubmissionUpdate,
+  errorMessage = "更新に失敗しました",
+): Promise<Result> {
   const moderator = await getCurrentModerator();
   if (!moderator) return { ok: false, error: "ログインが必要です" };
-
-  const parsed = updateEntryNameSchema.safeParse({ name });
-  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "入力値が不正です" };
 
   const supabase = getSupabaseClient();
   try {
     const { error } = await supabase
       .from("entry_submissions")
-      .update({ account_name: parsed.data.name })
+      .update(patch)
       .eq("id", submissionId);
     if (error) throw error;
   } catch {
-    return { ok: false, error: "更新に失敗しました" };
+    return { ok: false, error: errorMessage };
   }
   revalidatePath("/moderation_beta");
   return { ok: true };
+}
+
+export async function updateSubmissionName(submissionId: string, name: string): Promise<Result> {
+  const parsed = updateEntryNameSchema.safeParse({ name });
+  if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "入力値が不正です" };
+  return updateEntrySubmissionFields(submissionId, { account_name: parsed.data.name });
 }
 
 export async function updateSubmissionTwitterUrl(submissionId: string, url: string): Promise<Result> {
-  const moderator = await getCurrentModerator();
-  if (!moderator) return { ok: false, error: "ログインが必要です" };
-
   const parsed = updateSubmissionTwitterUrlSchema.safeParse({ url });
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "入力値が不正です" };
-
-  const supabase = getSupabaseClient();
-  try {
-    const { error } = await supabase
-      .from("entry_submissions")
-      .update({ twitter_url: parsed.data.url || null })
-      .eq("id", submissionId);
-    if (error) throw error;
-  } catch {
-    return { ok: false, error: "更新に失敗しました" };
-  }
-  revalidatePath("/moderation_beta");
-  return { ok: true };
+  return updateEntrySubmissionFields(submissionId, { twitter_url: parsed.data.url || null });
 }
 
 export async function updateSubmissionBlueskyHandle(submissionId: string, handle: string): Promise<Result> {
-  const moderator = await getCurrentModerator();
-  if (!moderator) return { ok: false, error: "ログインが必要です" };
-
   const parsed = updateEntryBlueskyHandleSchema.safeParse({ handle });
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "入力値が不正です" };
-
-  const supabase = getSupabaseClient();
-  try {
-    const { error } = await supabase
-      .from("entry_submissions")
-      .update({ bluesky_handle: parsed.data.handle })
-      .eq("id", submissionId);
-    if (error) throw error;
-  } catch {
-    return { ok: false, error: "更新に失敗しました" };
-  }
-  revalidatePath("/moderation_beta");
-  return { ok: true };
+  return updateEntrySubmissionFields(submissionId, { bluesky_handle: parsed.data.handle });
 }
 
 export async function updateSubmissionTransitionStatus(submissionId: string, status: string): Promise<Result> {
-  const moderator = await getCurrentModerator();
-  if (!moderator) return { ok: false, error: "ログインが必要です" };
-
   const parsed = updateEntryStatusSchema.safeParse({ status });
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "入力値が不正です" };
-
-  const supabase = getSupabaseClient();
-  try {
-    const { error } = await supabase
-      .from("entry_submissions")
-      .update({ transition_status: parsed.data.status })
-      .eq("id", submissionId);
-    if (error) throw error;
-  } catch {
-    return { ok: false, error: "更新に失敗しました" };
-  }
-  revalidatePath("/moderation_beta");
-  return { ok: true };
+  return updateEntrySubmissionFields(submissionId, { transition_status: parsed.data.status });
 }
 
 export async function updateSubmissionEvidence(submissionId: string, evidence: string): Promise<Result> {
-  const moderator = await getCurrentModerator();
-  if (!moderator) return { ok: false, error: "ログインが必要です" };
-
-  const supabase = getSupabaseClient();
-  try {
-    const { error } = await supabase
-      .from("entry_submissions")
-      .update({ evidence: evidence.trim() || null })
-      .eq("id", submissionId);
-    if (error) throw error;
-  } catch {
-    return { ok: false, error: "更新に失敗しました" };
-  }
-  revalidatePath("/moderation_beta");
-  return { ok: true };
+  return updateEntrySubmissionFields(submissionId, { evidence: evidence.trim() || null });
 }
 
 export async function setSubmissionClassification(submissionId: string, classificationId: string): Promise<Result> {
-  const moderator = await getCurrentModerator();
-  if (!moderator) return { ok: false, error: "ログインが必要です" };
-
   const parsed = setEntryClassificationSchema.safeParse({ classificationId });
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "入力値が不正です" };
-
-  const supabase = getSupabaseClient();
-  try {
-    const { error } = await supabase
-      .from("entry_submissions")
-      .update({ classification_id: parsed.data.classificationId || null })
-      .eq("id", submissionId);
-    if (error) throw error;
-  } catch {
-    return { ok: false, error: "分類の更新に失敗しました" };
-  }
-  revalidatePath("/moderation_beta");
-  return { ok: true };
+  return updateEntrySubmissionFields(
+    submissionId,
+    { classification_id: parsed.data.classificationId || null },
+    "分類の更新に失敗しました",
+  );
 }
 
 // 来て欲しいアカウント申請を承認してリストに追加する。

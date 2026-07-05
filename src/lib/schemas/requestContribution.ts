@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { FIELD_ID_LABELS } from "src/constants/contributionForm";
+import { FIELD_ID_LABELS } from "src/constants/fields";
 
 const twitterUrlPattern = /^https:\/\/(x|twitter)\.com\/[A-Za-z0-9_]{1,15}(\/.*)?$/;
 

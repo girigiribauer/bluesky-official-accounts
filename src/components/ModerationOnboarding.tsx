@@ -3,12 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FIELD_ID_LABELS } from "src/constants/contributionForm";
-import { FIELD_DETAILS } from "src/constants/fields";
+import { FIELD_ID_LABELS, FIELD_DETAILS } from "src/constants/fields";
 import { FieldChips } from "./FieldChips";
+import type { Result } from "src/types/result";
 import styles from "./ModerationOnboarding.module.scss";
-
-type Result = { ok: boolean; error?: string };
 
 type Props = {
   joinedFieldIds?: string[];

@@ -1,6 +1,6 @@
 "use client";
 
-import { FIELD_ID_LABELS } from "src/constants/contributionForm";
+import { FIELD_ID_LABELS } from "src/constants/fields";
 import styles from "./FieldChips.module.scss";
 
 type Props = {

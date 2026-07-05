@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { FIELD_ID_LABELS } from "src/constants/contributionForm";
+import { FIELD_ID_LABELS } from "src/constants/fields";
 
 // transition_status の選択肢。値は DB に保存される英語値
 export const MIGRATION_STATUSES = [

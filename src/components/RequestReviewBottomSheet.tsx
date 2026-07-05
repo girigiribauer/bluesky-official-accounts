@@ -7,7 +7,7 @@ import {
   rejectRequestSubmission,
 } from "src/app/moderation_beta/actions";
 import type { RequestSubmission } from "src/types/moderation";
-import { FIELD_ID_LABELS } from "src/constants/contributionForm";
+import { FIELD_ID_LABELS } from "src/constants/fields";
 import styles from "./ModerationDashboard.module.scss";
 import panelStyles from "./ModerationReviewPanel.module.scss";
 

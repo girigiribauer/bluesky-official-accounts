@@ -1,21 +1,3 @@
-// 分野IDと表示ラベルのマッピング（fields テーブルのマスターデータと一致させる）
-export const FIELD_ID_LABELS: Record<string, string> = {
-  public_infrastructure: "公的機関・社会インフラ",
-  business: "企業・ブランド・サービス",
-  tech: "IT・テック・Web",
-  visual_arts: "漫画・イラスト・アート",
-  video: "映像作品（実写・アニメ）",
-  games: "ゲーム・玩具・キャラクター",
-  music: "音楽・声優・サウンド",
-  entertainment: "芸能・タレント・配信",
-  publishing: "出版・文芸",
-  sports: "スポーツ・公営競技",
-  local: "飲食・観光・地域文化",
-  fashion: "美容・ファッション・装い",
-  lifestyle: "探究・趣味・暮らし",
-  bot: "bot・定期配信",
-};
-
 export const OLD_CATEGORIES = [
   "政府・省庁・国会議員",
   "地方自治体・地方議員",

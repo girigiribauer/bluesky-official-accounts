@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Moderator } from "src/lib/auth";
-import { FIELD_ID_LABELS } from "src/constants/contributionForm";
+import { FIELD_ID_LABELS } from "src/constants/fields";
 import { calcReviewCount, calcMemberCount } from "src/lib/moderationStats";
 import type { ReviewSubmission, RequestSubmission, Activity, FieldMembership, Classification } from "src/types/moderation";
 import { ReviewBottomSheet } from "./ReviewBottomSheet";
@@ -116,7 +116,7 @@ export function Dashboard({ entrySubmissions, requestSubmissions, moderator, act
         <div className={styles.dashboardInner}>
 
           {/* フィールドセレクター */}
-          <FieldSelector currentField={currentField} />
+          <FieldSwitcher currentField={currentField} />
 
           {/* rows */}
           <div className={styles.rows}>
@@ -308,7 +308,7 @@ export function Dashboard({ entrySubmissions, requestSubmissions, moderator, act
   );
 }
 
-function FieldSelector({ currentField }: { currentField?: string }) {
+function FieldSwitcher({ currentField }: { currentField?: string }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
