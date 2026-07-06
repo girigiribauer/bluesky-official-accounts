@@ -40,6 +40,8 @@
 
 ### テスト・検証
 
+- [~] ⚠️ マイグレーションをデプロイに畳んで順序を構造で担保する → Vercel の `buildCommand` を `scripts/vercel-build.sh` に。production 時のみ `supabase db push --db-url --yes` してから `next build`、migrate 失敗＝デプロイ失敗。postmortem の「migrate はデプロイより先に」を運用ルールでなく構造で保証。「migrate だけ通ってコードは本番反映」も消える
+  - 🟡 要確認（**あなたの手番**）: ①Vercel に env `SUPABASE_DB_URL`（Production スコープ・direct/session pooler の URI、transaction pooler 6543 は不可）を追加 ②初回本番デプロイでビルドログの migration ステップを確認 ③OK なら `.github/workflows/migrate.yml` を削除（二重適用・並走コンフリクト防止）。ハマったら fallback は migrate.yml を残して手動 `db push`
 - [ ] ⚠️ ロールバック手順を明文化する（postmortem 再発防止）
   - 🟢 明確: 手順を書き起こすだけ
 - [x] ⚠️ ブラウザ E2E（Playwright）を薄く1枚入れる → `tests/e2e/` に4本（登録フォーム投稿・来て欲しいフォーム投稿・重複投稿の表示・モデレーター承認）。`npm run test:e2e`（要: ローカル DB 起動。dev サーバーは自動起動）。OAuth は署名 cookie 直付けで迂回、Bluesky アカウント解決は `page.route()` で内部 API をスタブ。方針: 正常系＋ユーザーが日常的に踏むエラー表示のみ。これ以上増やさない（増やしたくなったら下の層へ）
