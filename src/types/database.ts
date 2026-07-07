@@ -144,21 +144,18 @@ export type Database = {
       classifications: {
         Row: {
           created_at: string
-          deleted_at: string | null
           field_id: string
           id: string
           name: string
         }
         Insert: {
           created_at?: string
-          deleted_at?: string | null
           field_id: string
           id?: string
           name: string
         }
         Update: {
           created_at?: string
-          deleted_at?: string | null
           field_id?: string
           id?: string
           name?: string
@@ -533,7 +530,6 @@ export type Database = {
         Row: {
           account_id: string
           created_at: string
-          entry_id: string | null
           field_id: string | null
           id: string
           twitter_handle: string
@@ -541,7 +537,6 @@ export type Database = {
         Insert: {
           account_id: string
           created_at?: string
-          entry_id?: string | null
           field_id?: string | null
           id?: string
           twitter_handle: string
@@ -549,7 +544,6 @@ export type Database = {
         Update: {
           account_id?: string
           created_at?: string
-          entry_id?: string | null
           field_id?: string | null
           id?: string
           twitter_handle?: string
@@ -560,13 +554,6 @@ export type Database = {
             columns: ["account_id"]
             isOneToOne: false
             referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "requests_entry_id_fkey"
-            columns: ["entry_id"]
-            isOneToOne: false
-            referencedRelation: "entries"
             referencedColumns: ["id"]
           },
           {
@@ -583,7 +570,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      approve_entry_submission: {
+        Args: {
+          p_moderator_id: string
+          p_submission_id: string
+          p_twitter_handle?: string
+        }
+        Returns: undefined
+      }
+      approve_request_submission: {
+        Args: { p_moderator_id: string; p_submission_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

@@ -461,6 +461,54 @@ describe("来て欲しい申請フロー", () => {
     }
   });
 
+  it("承認が途中で失敗したとき、トランザクションで全てロールバックされる（account が残らない）", async () => {
+    // 同じ twitter_handle の requests を先に作っておき、承認時の requests insert で
+    // UNIQUE 違反を起こす。関数は「account 作成 → requests 作成(ここで失敗)」の順なので、
+    // トランザクションが無ければ account だけが残ってしまう。
+    const twitterHandle = "test_atomic_rollback";
+    const orphanName = "[テスト] 原子性ロールバック";
+
+    const { data: blocker } = await db()
+      .from("accounts")
+      .insert({ display_name: "[テスト] 原子性ブロッカー" })
+      .select("id")
+      .single();
+    const blockerAccountId = blocker!.id;
+    await db().from("requests").insert({ account_id: blockerAccountId, twitter_handle: twitterHandle });
+
+    const { data: submission } = await db()
+      .from("request_submissions")
+      .insert({ display_name: orphanName, twitter_handle: twitterHandle, field_id: "tech" })
+      .select("id")
+      .single();
+    const submissionId = submission!.id;
+
+    try {
+      const result = await approveRequestSubmission(submissionId);
+      expect(result).toEqual({ ok: false, error: "承認に失敗しました" });
+
+      // ロールバックの証拠: 途中で作られたはずの account が残っていない
+      const { data: orphan } = await db()
+        .from("accounts")
+        .select("id")
+        .eq("display_name", orphanName)
+        .maybeSingle();
+      expect(orphan).toBeNull();
+
+      // 申請も削除されていない（失敗したので消えていないこと）
+      const { data: stillThere } = await db()
+        .from("request_submissions")
+        .select("id")
+        .eq("id", submissionId)
+        .maybeSingle();
+      expect(stillThere).not.toBeNull();
+    } finally {
+      await db().from("request_submissions").delete().eq("id", submissionId);
+      await db().from("requests").delete().eq("account_id", blockerAccountId);
+      await db().from("accounts").delete().eq("id", blockerAccountId);
+    }
+  });
+
   it("申請を却下すると request_submissions が削除され、field_id が活動ログに記録される", async () => {
     const { data: submission } = await db()
       .from("request_submissions")

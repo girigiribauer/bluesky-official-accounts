@@ -20,8 +20,7 @@
 ### パフォーマンス
 
 - [x] ⚠️ Vercel Functions の region を東京（hnd1）に揃える → 遅さの主犯だった（関数が iad1=米国東海岸、DB は東京で全クエリが太平洋往復）。`vercel.json` に `"regions": ["hnd1"]` を追加しデプロイ済み。検証: `x-vercel-id` が `hnd1::hnd1` に、DB を叩く公開 API が warm 150〜185ms（推定 従来比約3倍速、逐次往復の多い承認処理はさらに大きく改善見込み）
-- [ ] 承認処理を `supabase.rpc()` + Postgres 関数にまとめる → 7〜8往復を1往復に＋原子性（途中失敗の中途半端state防止）。supabase-js のまま＝40箇所の書き換え不要（`actions.ts`）
-  - 🟢 明確: region 修正後は性能面の緊急度は下がる（7往復×5ms≒35ms）が、**原子性のバグ対策として依然やる価値あり**
+- [x] ⚠️ 承認処理をトランザクション化する（原子性の確保）→ `approve_entry_submission` / `approve_request_submission` の plpgsql 関数（`migrations/20260706000000_...`）に一連の書き込みを閉じ込め、`actions.ts` から `supabase.rpc()` で呼ぶ。関数内は1トランザクション＝途中失敗で全ロールバック。承認のユニットは配線テストに置換。**統合テスト17件パス＋原子性テスト（UNIQUE 違反で途中失敗させ account が残らないことを確認）で実証済み**。postmortem 型の中途半端 state を構造的に解消
 - [ ] ダッシュボードの往復回数を減らす → 描画ごとに7クエリを並列発行（`(dashboard)/layout.tsx`）。同様に集約 or `rpc()`/ビューでまとめる
   - 🟡 要確認: 集約 SQL に寄せるかビューにするか、実データを見て判断
 - [x] pg 直結 + `attachDatabasePool` は**やらない**（判断確定・再検討条件付き）→ 遅さの主犯はリージョンずれで解決済み。残る旨味は1クエリ1〜2ms のみで、移行費用（40箇所書き換え＋型＋テスト書き直し）と Supavisor×Fluid の接続増加という既知問題に見合わない。「毎回 createClient」も遅さと無関係だった（実測）
@@ -40,8 +39,10 @@
 
 ### テスト・検証
 
-- [~] ⚠️ マイグレーションをデプロイに畳んで順序を構造で担保する → Vercel の `buildCommand` を `scripts/vercel-build.sh` に。production 時のみ `supabase db push --db-url --yes` してから `next build`、migrate 失敗＝デプロイ失敗。postmortem の「migrate はデプロイより先に」を運用ルールでなく構造で保証。「migrate だけ通ってコードは本番反映」も消える
-  - 🟡 要確認（**あなたの手番**）: ①Vercel に env `SUPABASE_DB_URL`（Production スコープ・direct/session pooler の URI、transaction pooler 6543 は不可）を追加 ②初回本番デプロイでビルドログの migration ステップを確認 ③OK なら `.github/workflows/migrate.yml` を削除（二重適用・並走コンフリクト防止）。ハマったら fallback は migrate.yml を残して手動 `db push`
+- [x] ⚠️ マイグレーションをデプロイに畳んで順序を構造で担保 → Vercel の `buildCommand` を `scripts/vercel-build.sh` に。production 時のみ `supabase db push --db-url --yes`（env `SUPABASE_DB_URL`=session pooler URI）してから `next build`、migrate 失敗＝デプロイ失敗。postmortem の「migrate はデプロイより先に」を運用ルールでなく構造で保証。**本番デプロイのビルドログで接続・順序を実証済み**（`Connecting to remote database... / Remote database is up to date.`）
+- [ ] `.github/workflows/migrate.yml` を削除する → 上記でデプロイに畳んだため役目終了。残すと次のマイグレーション込み push で build 内 migration と並走コンフリクトの恐れ
+  - 🟢 明確: `git rm .github/workflows/migrate.yml`
+- [~] Node を 22 に上げる → `package.json` に `engines.node: "22.x"` を追加済み（Vercel はこれを見てランタイムを選ぶ）。残り: 次デプロイのビルドログで Node 22 になっているか確認。必要なら Vercel プロジェクト設定側の Node バージョンも 22 に。ローカルが Node 20 なら `npm install` で engines 警告が出るが実害なし（`@types/node` も ^22 に上げると尚良い）
 - [ ] ⚠️ ロールバック手順を明文化する（postmortem 再発防止）
   - 🟢 明確: 手順を書き起こすだけ
 - [x] ⚠️ ブラウザ E2E（Playwright）を薄く1枚入れる → `tests/e2e/` に4本（登録フォーム投稿・来て欲しいフォーム投稿・重複投稿の表示・モデレーター承認）。`npm run test:e2e`（要: ローカル DB 起動。dev サーバーは自動起動）。OAuth は署名 cookie 直付けで迂回、Bluesky アカウント解決は `page.route()` で内部 API をスタブ。方針: 正常系＋ユーザーが日常的に踏むエラー表示のみ。これ以上増やさない（増やしたくなったら下の層へ）

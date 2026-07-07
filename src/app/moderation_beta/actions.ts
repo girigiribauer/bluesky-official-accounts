@@ -17,7 +17,8 @@ import type { Database } from "src/types/database";
 type EntrySubmissionUpdate = Database["public"]["Tables"]["entry_submissions"]["Update"];
 
 // 登録申請を承認し、エントリーを公開リストに追加する。
-// DID が既登録の場合は情報を更新。来て欲しいリストに紐付いていれば承認時に削除する。
+// 一連の書き込みは Postgres 関数（approve_entry_submission）内で1トランザクションとして実行する。
+// URL パースは純粋ロジックなので TS 側に残し、解決済みの twitter_handle を関数へ渡す。
 export async function approveEntrySubmission(submissionId: string): Promise<Result> {
   const moderator = await getCurrentModerator();
   if (!moderator) return { ok: false, error: "ログインが必要です" };
@@ -26,143 +27,21 @@ export async function approveEntrySubmission(submissionId: string): Promise<Resu
 
   const { data: submission, error: fetchError } = await supabase
     .from("entry_submissions")
-    .select("*")
+    .select("twitter_url")
     .eq("id", submissionId)
     .single();
   if (fetchError || !submission) return { ok: false, error: "申請が見つかりません" };
 
-  try {
-    const twitterHandle = submission.twitter_url ? extractTwitterHandle(submission.twitter_url) : null;
+  const twitterHandle = submission.twitter_url ? extractTwitterHandle(submission.twitter_url) : null;
 
-    const { data: existingEntry } = await supabase
-      .from("entries")
-      .select("id, account_id")
-      .eq("bluesky_did", submission.bluesky_did)
-      .maybeSingle();
-
-    let accountId: string;
-
-    if (existingEntry) {
-      accountId = existingEntry.account_id;
-
-      const { error: updateEntryError } = await supabase
-        .from("entries")
-        .update({
-          bluesky_handle: submission.bluesky_handle,
-          twitter_handle: twitterHandle,
-          transition_status: submission.transition_status,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existingEntry.id);
-      if (updateEntryError) throw updateEntryError;
-
-      const { error: updateAccountError } = await supabase
-        .from("accounts")
-        .update({ display_name: submission.account_name })
-        .eq("id", accountId);
-      if (updateAccountError) throw updateAccountError;
-
-      // 同じ分野なら分類を更新、異なる分野なら account_fields を追加
-      const { data: existingField } = await supabase
-        .from("account_fields")
-        .select("field_id")
-        .eq("account_id", accountId)
-        .eq("field_id", submission.field_id)
-        .maybeSingle();
-
-      if (existingField) {
-        if (submission.classification_id !== null) {
-          const { error: updateFieldError } = await supabase
-            .from("account_fields")
-            .update({ classification_id: submission.classification_id })
-            .eq("account_id", accountId)
-            .eq("field_id", submission.field_id);
-          if (updateFieldError) throw updateFieldError;
-        }
-      } else {
-        const { error: insertFieldError } = await supabase
-          .from("account_fields")
-          .insert({
-            account_id: accountId,
-            field_id: submission.field_id,
-            classification_id: submission.classification_id,
-          });
-        if (insertFieldError) throw insertFieldError;
-      }
-
-    } else {
-      const { data: account, error: accountError } = await supabase
-        .from("accounts")
-        .insert({
-          display_name: submission.account_name,
-          old_category: submission.old_category,
-          submitted_by: null,
-        })
-        .select("id")
-        .single();
-      if (accountError) throw accountError;
-      accountId = account.id;
-
-      const { error: entryError } = await supabase
-        .from("entries")
-        .insert({
-          account_id: accountId,
-          bluesky_did: submission.bluesky_did,
-          bluesky_handle: submission.bluesky_handle,
-          twitter_handle: twitterHandle,
-          transition_status: submission.transition_status,
-          approved_at: new Date().toISOString(),
-        })
-        .select("id")
-        .single();
-      if (entryError) throw entryError;
-
-      const { error: fieldError } = await supabase.from("account_fields").insert({
-        account_id: accountId,
-        field_id: submission.field_id,
-        classification_id: submission.classification_id,
-      });
-      if (fieldError) throw fieldError;
-
-    }
-
-    if (submission.evidence?.trim()) {
-      const { error: evidenceError } = await supabase.from("evidences").insert({
-        account_id: accountId,
-        moderator_id: moderator.id,
-        content: submission.evidence.trim(),
-      });
-      if (evidenceError) throw evidenceError;
-    }
-
-    const { error: activityError } = await supabase.from("activities").insert({
-      moderator_id: moderator.id,
-      action: "approve",
-      payload: {
-        account_id: accountId,
-        display_name: submission.account_name,
-        field_id: submission.field_id,
-      },
-    });
-    if (activityError) throw activityError;
-
-    // entry_submissions を先に削除してから requests を削除する
-    // （entry_submissions.request_id → requests の FK 制約があるため逆順は不可）
-    const { error: deleteError } = await supabase
-      .from("entry_submissions")
-      .delete()
-      .eq("id", submissionId);
-    if (deleteError) throw deleteError;
-
-    if (submission.request_id) {
-      const { error: requestError } = await supabase
-        .from("requests")
-        .delete()
-        .eq("id", submission.request_id);
-      if (requestError) throw requestError;
-    }
-  } catch (err) {
-    console.error("approveEntrySubmission error:", err);
+  const { error } = await supabase.rpc("approve_entry_submission", {
+    p_submission_id: submissionId,
+    p_moderator_id: moderator.id,
+    // twitter が無いときは省略（SQL 側デフォルト NULL）。型生成の都合で null ではなく undefined を渡す
+    p_twitter_handle: twitterHandle ?? undefined,
+  });
+  if (error) {
+    console.error("approveEntrySubmission error:", error);
     return { ok: false, error: "承認に失敗しました" };
   }
 
@@ -272,52 +151,17 @@ export async function setSubmissionClassification(submissionId: string, classifi
 }
 
 // 来て欲しいアカウント申請を承認してリストに追加する。
+// 一連の書き込みは Postgres 関数（approve_request_submission）内で1トランザクションとして実行する。
 export async function approveRequestSubmission(submissionId: string): Promise<Result> {
   const moderator = await getCurrentModerator();
   if (!moderator) return { ok: false, error: "ログインが必要です" };
 
-  const supabase = getSupabaseClient();
-
-  const { data: submission, error: fetchError } = await supabase
-    .from("request_submissions")
-    .select("*")
-    .eq("id", submissionId)
-    .single();
-  if (fetchError || !submission) return { ok: false, error: "申請が見つかりません" };
-
-  try {
-    const { data: account, error: accountError } = await supabase
-      .from("accounts")
-      .insert({ display_name: submission.display_name, submitted_by: null })
-      .select("id")
-      .single();
-    if (accountError) throw accountError;
-
-    const { error: requestError } = await supabase.from("requests").insert({
-      account_id: account.id,
-      twitter_handle: submission.twitter_handle,
-      field_id: submission.field_id ?? null,
-    });
-    if (requestError) throw requestError;
-
-    const { error: activityError } = await supabase.from("activities").insert({
-      moderator_id: moderator.id,
-      action: "approve",
-      payload: {
-        account_id: account.id,
-        display_name: submission.display_name,
-        field_id: submission.field_id ?? null,
-      },
-    });
-    if (activityError) throw activityError;
-
-    const { error: deleteError } = await supabase
-      .from("request_submissions")
-      .delete()
-      .eq("id", submissionId);
-    if (deleteError) throw deleteError;
-  } catch (err) {
-    console.error("approveRequestSubmission error:", err);
+  const { error } = await getSupabaseClient().rpc("approve_request_submission", {
+    p_submission_id: submissionId,
+    p_moderator_id: moderator.id,
+  });
+  if (error) {
+    console.error("approveRequestSubmission error:", error);
     return { ok: false, error: "承認に失敗しました" };
   }
 

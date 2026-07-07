@@ -9,6 +9,7 @@ const mockSelect = vi.fn().mockReturnThis();
 const mockEq = vi.fn().mockReturnThis();
 const mockMaybeSingle = vi.fn().mockResolvedValue({ data: null });
 const mockSingle = vi.fn().mockResolvedValue({ data: { id: "new-id-1" } });
+const mockRpc = vi.fn();
 
 const mockFrom = vi.fn(() => ({
   delete: mockDelete,
@@ -21,7 +22,7 @@ const mockFrom = vi.fn(() => ({
 }));
 
 vi.mock("@supabase/supabase-js", () => ({
-  createClient: vi.fn(() => ({ from: mockFrom })),
+  createClient: vi.fn(() => ({ from: mockFrom, rpc: mockRpc })),
 }));
 
 vi.mock("next/cache", () => ({
@@ -87,10 +88,14 @@ beforeEach(() => {
   mockEq.mockReturnValue({ eq: mockEq, single: mockSingle, maybeSingle: mockMaybeSingle });
   mockMaybeSingle.mockResolvedValue({ data: null });
   mockSingle.mockResolvedValue({ data: MOCK_SUBMISSION });
+  mockRpc.mockResolvedValue({ error: null });
 });
 
 // ---------------------------------------------------------------------------
 
+// 承認の書き込みロジックは Postgres 関数（approve_entry_submission）に移動したため、
+// 実際の DB 変換の正しさは統合テスト（tests/moderationFlow.integration.test.ts）が担う。
+// ここでは server action の配線（認証・twitter_handle 解決・RPC 呼び出し）のみを確認する。
 describe("approveEntrySubmission", () => {
   it("未ログインのとき、エラーを返す", async () => {
     mockGetCurrentModerator.mockResolvedValueOnce(null);
@@ -104,102 +109,21 @@ describe("approveEntrySubmission", () => {
     expect(result).toEqual({ ok: false, error: "申請が見つかりません" });
   });
 
-  it("DIDが未登録のとき、アカウント・エントリー・分野を新規作成して申請を削除する", async () => {
-    const accountData = { id: "account-new-1" };
-    const entryData = { id: "entry-new-1" };
-    mockSingle
-      .mockResolvedValueOnce({ data: MOCK_SUBMISSION })  // 申請取得
-      .mockResolvedValueOnce({ data: accountData })       // アカウント作成
-      .mockResolvedValueOnce({ data: entryData });        // エントリー作成
-
+  it("正常なとき、twitter_url を解決して approve_entry_submission RPC を呼ぶ", async () => {
+    mockSingle.mockResolvedValueOnce({ data: { twitter_url: "https://x.com/testuser" } });
     const result = await approveEntrySubmission("sub-1");
     expect(result).toEqual({ ok: true });
-    expect(mockFrom).toHaveBeenCalledWith("entry_submissions");
-    expect(mockFrom).toHaveBeenCalledWith("accounts");
-    expect(mockFrom).toHaveBeenCalledWith("entries");
-    expect(mockFrom).toHaveBeenCalledWith("account_fields");
-  });
-
-  it("DIDが登録済みかつ同じ分野のとき、エントリーとアカウントを更新し新規作成しない", async () => {
-    const existingEntry = { id: "existing-entry-1", account_id: "existing-account-1" };
-    // 1回目: エントリーで既存DID確認、2回目: 分野で同じ field_id 確認
-    mockMaybeSingle
-      .mockResolvedValueOnce({ data: existingEntry })                  // 既存エントリー
-      .mockResolvedValueOnce({ data: { field_id: "business" } });      // 同じ分野が存在
-
-    const result = await approveEntrySubmission("sub-1");
-    expect(result).toEqual({ ok: true });
-    expect(mockUpdate).toHaveBeenCalled();
-    // アカウント・エントリーの新規作成は呼ばれない（.single() は申請取得の1回のみ）
-    expect(mockSingle).toHaveBeenCalledTimes(1);
-  });
-
-  it("DIDが登録済みかつ来て欲しいリストと紐付いているとき、来て欲しいリストから削除する", async () => {
-    const existingEntry = { id: "existing-entry-1", account_id: "existing-account-1" };
-    const submissionWithRequest = { ...MOCK_SUBMISSION, request_id: "req-1" };
-    mockSingle.mockResolvedValueOnce({ data: submissionWithRequest });
-    mockMaybeSingle
-      .mockResolvedValueOnce({ data: existingEntry })
-      .mockResolvedValueOnce({ data: { field_id: "business" } });
-
-    const result = await approveEntrySubmission("sub-1");
-    expect(result).toEqual({ ok: true });
-    expect(mockFrom).toHaveBeenCalledWith("requests");
-    expect(mockDelete).toHaveBeenCalled();
-  });
-
-  it("DIDが登録済みで分野が異なるとき、新しい分野を追加する", async () => {
-    const existingEntry = { id: "existing-entry-1", account_id: "existing-account-1" };
-    // 1回目: エントリーで既存DID確認、2回目: 同じ分野が存在しない
-    mockMaybeSingle
-      .mockResolvedValueOnce({ data: existingEntry }) // 既存エントリー
-      .mockResolvedValueOnce({ data: null });          // 別の分野 → 見つからない
-
-    const result = await approveEntrySubmission("sub-1");
-    expect(result).toEqual({ ok: true });
-    expect(mockFrom).toHaveBeenCalledWith("account_fields");
-    expect(mockInsert).toHaveBeenCalled();
-    // アカウント・エントリーの新規作成は呼ばれない
-    expect(mockSingle).toHaveBeenCalledTimes(1);
-  });
-
-  it("DIDが未登録かつ来て欲しいリストと紐付いているとき、来て欲しいリストから削除する", async () => {
-    const submissionWithRequest = { ...MOCK_SUBMISSION, request_id: "req-1" };
-    mockSingle
-      .mockResolvedValueOnce({ data: submissionWithRequest }) // 申請取得
-      .mockResolvedValueOnce({ data: { id: "new-account-1" } }) // アカウント作成
-      .mockResolvedValueOnce({ data: { id: "new-entry-1" } }); // エントリー作成
-
-    const result = await approveEntrySubmission("sub-1");
-    expect(result).toEqual({ ok: true });
-    expect(mockFrom).toHaveBeenCalledWith("requests");
-    expect(mockDelete).toHaveBeenCalled();
-  });
-
-  it("根拠があるとき、承認者を紐付けて根拠を追加する", async () => {
-    mockSingle
-      .mockResolvedValueOnce({ data: MOCK_SUBMISSION })
-      .mockResolvedValueOnce({ data: { id: "account-new-1" } })
-      .mockResolvedValueOnce({ data: { id: "entry-new-1" } });
-
-    await approveEntrySubmission("sub-1");
-
-    expect(mockFrom).toHaveBeenCalledWith("evidences");
-    expect(mockInsert).toHaveBeenCalledWith(
-      expect.objectContaining({ moderator_id: MOCK_MODERATOR.id })
+    expect(mockRpc).toHaveBeenCalledWith(
+      "approve_entry_submission",
+      expect.objectContaining({ p_submission_id: "sub-1", p_moderator_id: MOCK_MODERATOR.id })
     );
   });
 
-  it("根拠が空のとき、根拠を追加しない", async () => {
-    const submissionWithoutEvidence = { ...MOCK_SUBMISSION, evidence: "" };
-    mockSingle
-      .mockResolvedValueOnce({ data: submissionWithoutEvidence })
-      .mockResolvedValueOnce({ data: { id: "account-new-1" } })
-      .mockResolvedValueOnce({ data: { id: "entry-new-1" } });
-
-    await approveEntrySubmission("sub-1");
-
-    expect(mockFrom).not.toHaveBeenCalledWith("evidences");
+  it("RPC がエラーを返すとき、承認失敗を返す", async () => {
+    mockSingle.mockResolvedValueOnce({ data: { twitter_url: null } });
+    mockRpc.mockResolvedValueOnce({ error: new Error("boom") });
+    const result = await approveEntrySubmission("sub-1");
+    expect(result).toEqual({ ok: false, error: "承認に失敗しました" });
   });
 });
 
@@ -223,30 +147,25 @@ describe("rejectEntrySubmission", () => {
 // ---------------------------------------------------------------------------
 
 describe("approveRequestSubmission", () => {
-  const MOCK_REQUEST_SUBMISSION = {
-    id: "req-sub-1",
-    display_name: "テストアカウント",
-    twitter_handle: "testuser",
-    created_at: "2026-01-01T00:00:00Z",
-  };
-
   it("未ログインのとき、エラーを返す", async () => {
     mockGetCurrentModerator.mockResolvedValueOnce(null);
     const result = await approveRequestSubmission("req-sub-1");
     expect(result).toEqual({ ok: false, error: "ログインが必要です" });
   });
 
-  it("正常なとき、アカウントと来て欲しいリストを作成して申請を削除する", async () => {
-    const accountData = { id: "account-new-2" };
-    mockSingle
-      .mockResolvedValueOnce({ data: MOCK_REQUEST_SUBMISSION })  // 申請取得
-      .mockResolvedValueOnce({ data: accountData });              // アカウント作成
-
+  it("正常なとき、approve_request_submission RPC を呼ぶ", async () => {
     const result = await approveRequestSubmission("req-sub-1");
     expect(result).toEqual({ ok: true });
-    expect(mockFrom).toHaveBeenCalledWith("request_submissions");
-    expect(mockFrom).toHaveBeenCalledWith("accounts");
-    expect(mockFrom).toHaveBeenCalledWith("requests");
+    expect(mockRpc).toHaveBeenCalledWith("approve_request_submission", {
+      p_submission_id: "req-sub-1",
+      p_moderator_id: MOCK_MODERATOR.id,
+    });
+  });
+
+  it("RPC がエラーを返すとき、承認失敗を返す", async () => {
+    mockRpc.mockResolvedValueOnce({ error: new Error("boom") });
+    const result = await approveRequestSubmission("req-sub-1");
+    expect(result).toEqual({ ok: false, error: "承認に失敗しました" });
   });
 });
 
