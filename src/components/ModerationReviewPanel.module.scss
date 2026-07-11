@@ -69,7 +69,7 @@
 }
 
 .infoItemActive {
-  background: var(--color-primary-lighter2);
+  background: var(--color-primary-lighter3);
   border-bottom: 2px solid var(--color-primary);
 }
 
@@ -89,7 +89,7 @@
   font-size: 1rem;
 
   &:hover {
-    background: var(--color-primary-lighter2);
+    background: var(--color-primary-lighter3);
   }
 
   &:disabled {

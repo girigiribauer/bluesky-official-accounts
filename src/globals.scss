@@ -5,7 +5,8 @@
   --color-primary: #1185fe;
   --color-primary-darker: #084e97;
   --color-primary-lighter: #a5d1ff;
-  --color-primary-lighter2: #e7f3ff;
+  --color-primary-lighter2: #C3E0FF;
+  --color-primary-lighter3: #e7f3ff;
 
   /* Secondary */
   --color-secondary: #1d9a7a;
@@ -134,7 +135,7 @@ strong {
 }
 
 a {
-  background: var(--color-primary-lighter2);
+  background: var(--color-primary-lighter3);
   color: var(--color-primary);
   text-decoration: underline;
 }

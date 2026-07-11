@@ -89,7 +89,7 @@
   width: 700px;
   max-width: 100%;
   background: var(--color-white);
-  border: 10px solid var(--color-primary-lighter2);
+  border: 10px solid var(--color-primary-lighter3);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -173,7 +173,7 @@
 
 .pickupSeparator {
   height: 2px;
-  background: var(--color-primary-lighter2);
+  background: var(--color-primary-lighter3);
   align-self: stretch;
 }
 
