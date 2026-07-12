@@ -5,7 +5,6 @@ const validBase = {
   did: "did:plc:abc123",
   handle: "bsky.app",
   accountName: "Bluesky",
-  oldCategory: "テクノロジー（個人・団体・技術領域）",
   fields: ["tech"],
   migrationStatus: "dual_active" as const,
   twitterUrl: "https://x.com/bluesky",
@@ -136,7 +135,7 @@ describe("registerContributionSchema", () => {
     });
   });
 
-  describe("accountName / oldCategory", () => {
+  describe("accountName", () => {
     it("accountNameが空なら拒否する", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
@@ -149,14 +148,6 @@ describe("registerContributionSchema", () => {
       const result = registerContributionSchema.safeParse({
         ...validBase,
         accountName: "a".repeat(101),
-      });
-      expect(result.success).toBe(false);
-    });
-
-    it("oldCategoryが空なら拒否する", () => {
-      const result = registerContributionSchema.safeParse({
-        ...validBase,
-        oldCategory: "",
       });
       expect(result.success).toBe(false);
     });

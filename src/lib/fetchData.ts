@@ -2,7 +2,6 @@ import "server-only";
 
 import { readFile } from "fs/promises";
 import { News } from "../models/News";
-import { Category } from "src/models/Category";
 import { AccountList } from "src/models/AccountList";
 
 const GITHUB_RAW_BASE =
@@ -43,10 +42,4 @@ export const fetchNews = async (): Promise<News[]> => {
   const local = await readLocalJson<News[]>("news.json");
   if (local) return local;
   return fetchFromGitHub<News[]>("news.json");
-};
-
-export const fetchCategories = async (): Promise<Category[]> => {
-  const local = await readLocalJson<Category[]>("categories.json");
-  if (local) return local;
-  return fetchFromGitHub<Category[]>("categories.json");
 };

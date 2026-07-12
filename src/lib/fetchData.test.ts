@@ -16,7 +16,7 @@ vi.stubGlobal("fetch", mockFetch);
 const { readFile } = await import("fs/promises");
 const mockReadFile = vi.mocked(readFile);
 
-const { fetchAccounts, fetchNews, fetchCategories } = await import("./fetchData");
+const { fetchAccounts, fetchNews } = await import("./fetchData");
 
 const mockAccountList = {
   updatedTime: "2024-01-01T00:00:00Z",
@@ -29,7 +29,6 @@ const mockAccountList = {
 };
 
 const mockNews = [{ id: "1", name: "ニュース", date: "2024-01-01" }];
-const mockCategories = [{ id: "1", title: "カテゴリ", order: 1, criteria: "" }];
 
 describe("fetchData", () => {
   beforeEach(() => {
@@ -73,18 +72,6 @@ describe("fetchData", () => {
         expect.anything()
       );
       expect(result).toEqual(mockNews);
-    });
-  });
-
-  describe("fetchCategories", () => {
-    it("ローカルJSONがなければGitHub rawから取得する", async () => {
-      mockFetch.mockResolvedValueOnce({ ok: true, json: async () => mockCategories });
-      const result = await fetchCategories();
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("categories.json"),
-        expect.anything()
-      );
-      expect(result).toEqual(mockCategories);
     });
   });
 });

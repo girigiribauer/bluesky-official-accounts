@@ -17,8 +17,7 @@ export const RegisterForm = () => {
   const router = useRouter();
   const { blueskyInput, checkState, resolvedAccount, existingData, handleInputChange } = useBlueskyCheck();
   const [accountName, setAccountName] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [oldCategory, setOldCategory] = useState("");
+  const [selectedFields, setSelectedFields] = useState<string[]>([]);
   const [twitterUrl, setTwitterUrl] = useState("");
   const [migrationStatus, setMigrationStatus] = useState("");
   const [evidence, setEvidence] = useState("");
@@ -35,8 +34,7 @@ export const RegisterForm = () => {
       did: resolvedAccount?.did ?? "",
       handle: resolvedAccount?.handle ?? "",
       accountName,
-      oldCategory,
-      fields: selectedCategories,
+      fields: selectedFields,
       migrationStatus,
       twitterUrl,
       evidence,
@@ -46,11 +44,10 @@ export const RegisterForm = () => {
     handleInputChange(e.target.value);
     // アカウントが切り替わったらフォームをリセット
     setAccountName("");
-    setOldCategory("");
     setTwitterUrl("");
     setMigrationStatus("");
     setEvidence("");
-    setSelectedCategories([]);
+    setSelectedFields([]);
   };
 
   // checkState が new/registered に変わったとき既存データで初期値を埋める
@@ -59,10 +56,9 @@ export const RegisterForm = () => {
   }
   if (checkState === "registered" && existingData && accountName === "" && existingData.name) {
     setAccountName(existingData.name);
-    setOldCategory(existingData.category);
     setTwitterUrl(existingData.twitter);
     setMigrationStatus(existingData.status);
-    if (existingData.fieldId) setSelectedCategories([existingData.fieldId]);
+    if (existingData.fieldId) setSelectedFields([existingData.fieldId]);
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -80,8 +76,7 @@ export const RegisterForm = () => {
           did: resolvedAccount.did,
           handle: resolvedAccount.handle,
           accountName,
-          oldCategory,
-          fields: selectedCategories,
+          fields: selectedFields,
           migrationStatus,
           twitterUrl,
           evidence,
@@ -213,12 +208,10 @@ export const RegisterForm = () => {
             />
           </div>
 
-          {/* 旧分類・分野 */}
+          {/* 分野 */}
           <FieldSelector
-            fieldId={selectedCategories[0] ?? ""}
-            onFieldIdChange={(id) => setSelectedCategories([id])}
-            oldCategory={oldCategory}
-            onOldCategoryChange={setOldCategory}
+            fieldId={selectedFields[0] ?? ""}
+            onFieldIdChange={(id) => setSelectedFields([id])}
           />
 
           {/* 移行ステータス */}

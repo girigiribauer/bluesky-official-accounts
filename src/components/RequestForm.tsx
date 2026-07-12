@@ -16,7 +16,6 @@ export const RequestForm = () => {
   const [twitterUrl, setTwitterUrl] = useState("");
   const [twitterName, setTwitterName] = useState("");
   const [fieldId, setFieldId] = useState("");
-  const [oldCategory, setOldCategory] = useState("");
   const [honeypot, setHoneypot] = useState("");
   const [twitterUrlTouched, setTwitterUrlTouched] = useState(false);
   const [twitterUrlFocused, setTwitterUrlFocused] = useState(false);
@@ -30,7 +29,6 @@ export const RequestForm = () => {
   const canSubmit =
     urlCheckState === "valid" &&
     twitterName.trim().length > 0 &&
-    oldCategory.length > 0 &&
     fieldId.length > 0 &&
     submitState !== "submitting";
 
@@ -83,7 +81,7 @@ export const RequestForm = () => {
       const res = await fetchWithTimeout("/api/contribution/request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ twitterUrl: twitterUrl.trim(), twitterName: twitterName.trim(), oldCategory, fieldId, website: honeypot }),
+        body: JSON.stringify({ twitterUrl: twitterUrl.trim(), twitterName: twitterName.trim(), fieldId, website: honeypot }),
       });
 
       if (!res.ok) {
@@ -168,12 +166,10 @@ export const RequestForm = () => {
         </p>
       </div>
 
-      {/* 旧分類・分野 */}
+      {/* 分野 */}
       <FieldSelector
         fieldId={fieldId}
         onFieldIdChange={setFieldId}
-        oldCategory={oldCategory}
-        onOldCategoryChange={setOldCategory}
       />
 
       {/* X(Twitter) アカウント名称 */}

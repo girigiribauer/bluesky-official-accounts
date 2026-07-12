@@ -67,7 +67,6 @@ const MOCK_SUBMISSION = {
   bluesky_did: "did:plc:test",
   bluesky_handle: "test.bsky.social",
   twitter_url: "https://x.com/testuser",
-  old_category: null,
   field_id: "business",
   transition_status: "dual_active",
   evidence: "公式サイトで確認",

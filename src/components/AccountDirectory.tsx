@@ -1,6 +1,5 @@
 "use client";
 
-import { Category } from "src/models/Category";
 import { useMemo, useState } from "react";
 import { AccountListView } from "./AccountListView";
 import { FilterRuleSet } from "src/models/FilterRuleSet";
@@ -12,13 +11,12 @@ import { AccountList } from "src/models/AccountList";
 
 export type AccountDirectoryProps = {
   accountList: AccountList;
-  categoryList: Category[];
 };
 
 // 表示するアカウント種別（移行済み / 来て欲しい）
 type ListKind = "standard" | "wants";
 
-export const AccountDirectory = ({ accountList, categoryList }: AccountDirectoryProps) => {
+export const AccountDirectory = ({ accountList }: AccountDirectoryProps) => {
   const { updatedTime, accounts } = accountList;
   const [listKind, setListKind] = useState<ListKind>("standard");
 
@@ -73,7 +71,6 @@ export const AccountDirectory = ({ accountList, categoryList }: AccountDirectory
           filterRuleSet={filterRuleSet}
           handleReset={handleReset}
           items={listKind === "standard" ? standardItems : wantsItems}
-          categoryList={categoryList}
           updatedTime={updatedTime}
         />
       </div>

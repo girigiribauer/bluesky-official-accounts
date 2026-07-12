@@ -13,7 +13,6 @@ const baseRules: FilterRuleSet = {
 const item = (overrides: Partial<Account> = {}): Account => ({
   id: "1",
   name: "テストアカウント",
-  category: "IT・テック・Web",
   status: "dual_active",
   twitter: "https://x.com/test",
   bluesky: "https://bsky.app/profile/test.bsky.social",

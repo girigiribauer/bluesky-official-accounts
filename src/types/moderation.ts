@@ -14,7 +14,6 @@ export type ReviewSubmission = {
   bluesky_did: string;
   bluesky_handle: string;
   twitter_url: string | null;
-  old_category: string | null;
   field_id: string;
   transition_status: TransitionStatus;
   evidence: string | null;

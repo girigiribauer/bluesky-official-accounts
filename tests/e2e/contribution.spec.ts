@@ -23,7 +23,6 @@ test.describe("来て欲しいフォーム", () => {
     await page.locator("#twitter-url").blur();
     await expect(page.getByText("登録可能です")).toBeVisible({ timeout: 15_000 });
 
-    await page.getByRole("combobox").selectOption("テクノロジー（個人・団体・技術領域）");
     await page.getByRole("button", { name: "IT・テック・Web" }).click();
     await page.locator("#twitter-name").fill("[テスト] E2E来て欲しい");
 
@@ -80,7 +79,6 @@ test.describe("来て欲しいフォーム（重複投稿）", () => {
     await expect(page.getByText("このアカウントはすでに登録されています")).toBeVisible({ timeout: 15_000 });
 
     // 他の項目をすべて埋めても送信ボタンは押せないまま
-    await page.getByRole("combobox").selectOption("テクノロジー（個人・団体・技術領域）");
     await page.getByRole("button", { name: "IT・テック・Web" }).click();
     await page.locator("#twitter-name").fill("[テスト] E2E重複投稿");
     await expect(page.getByRole("button", { name: "投稿する" })).toBeDisabled();
@@ -116,8 +114,6 @@ test.describe("登録フォーム", () => {
     // アカウント名称は displayName から自動入力される
     await expect(page.locator("#account-name")).toHaveValue("[テスト] E2E登録");
 
-    // 分類（旧）はフォーム内の最初の select
-    await page.getByRole("combobox").first().selectOption("テクノロジー（個人・団体・技術領域）");
     await page.getByRole("button", { name: "IT・テック・Web" }).click();
     await page.locator("#migration-status").selectOption("dual_active");
     await page.locator("#twitter-url").fill("https://x.com/e2e_reg_test");

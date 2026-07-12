@@ -70,7 +70,7 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
   type EntryRow =
     Pick<Database["public"]["Tables"]["entries"]["Row"], "id" | "bluesky_handle" | "twitter_handle" | "transition_status" | "created_at" | "updated_at"> & {
       accounts:
-        | (Pick<Database["public"]["Tables"]["accounts"]["Row"], "display_name" | "old_category"> & {
+        | (Pick<Database["public"]["Tables"]["accounts"]["Row"], "display_name"> & {
             account_fields: AccountFieldRow[];
             evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content" | "created_at">[];
           })
@@ -78,7 +78,7 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
     };
 
   const entryRows = await fetchAllPages<EntryRow>(
-    () => supabase.from("entries").select(`id, bluesky_handle, twitter_handle, transition_status, created_at, updated_at, accounts(display_name, old_category, ${ACCOUNT_FIELDS_SELECT}, evidences(content, created_at))`)
+    () => supabase.from("entries").select(`id, bluesky_handle, twitter_handle, transition_status, created_at, updated_at, accounts(display_name, ${ACCOUNT_FIELDS_SELECT}, evidences(content, created_at))`)
   );
 
   const entryAccounts: Account[] = entryRows.map((row) => {
@@ -88,7 +88,6 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
     return {
       id: row.id,
       name: account?.display_name ?? "",
-      category: account?.old_category ?? "",
       status: (row.transition_status ?? "unknown") as TransitionStatus,
       twitter: row.twitter_handle ? `https://x.com/${row.twitter_handle}` : "",
       bluesky: row.bluesky_handle ? `https://bsky.app/profile/${row.bluesky_handle}` : "",
@@ -104,7 +103,7 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
   type RequestRow =
     Pick<Database["public"]["Tables"]["requests"]["Row"], "id" | "twitter_handle" | "created_at"> & {
       accounts:
-        | (Pick<Database["public"]["Tables"]["accounts"]["Row"], "display_name" | "old_category"> & {
+        | (Pick<Database["public"]["Tables"]["accounts"]["Row"], "display_name"> & {
             account_fields: AccountFieldRow[];
             evidences: Pick<Database["public"]["Tables"]["evidences"]["Row"], "content" | "created_at">[];
           })
@@ -112,7 +111,7 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
     };
 
   const requestRows = await fetchAllPages<RequestRow>(
-    () => supabase.from("requests").select(`id, twitter_handle, created_at, accounts(display_name, old_category, ${ACCOUNT_FIELDS_SELECT}, evidences(content, created_at))`)
+    () => supabase.from("requests").select(`id, twitter_handle, created_at, accounts(display_name, ${ACCOUNT_FIELDS_SELECT}, evidences(content, created_at))`)
   );
 
   const requestAccounts: Account[] = requestRows.map((row) => {
@@ -122,7 +121,6 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
     return {
       id: row.id,
       name: account?.display_name ?? "",
-      category: account?.old_category ?? "",
       status: "not_migrated" as TransitionStatus,
       twitter: row.twitter_handle ? `https://x.com/${row.twitter_handle}` : "",
       bluesky: "",
@@ -134,9 +132,7 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
   });
 
   const accounts: Account[] = [...entryAccounts, ...requestAccounts].sort(
-    (a, b) =>
-      a.category.localeCompare(b.category, "ja") ||
-      a.name.localeCompare(b.name, "ja")
+    (a, b) => a.name.localeCompare(b.name, "ja")
   );
 
   const total = accounts.length;

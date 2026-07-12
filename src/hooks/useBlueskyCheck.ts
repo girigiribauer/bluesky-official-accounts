@@ -13,7 +13,6 @@ export type ResolvedAccount = {
 
 export type ExistingData = {
   name: string;
-  category: string;
   source: string;
   twitter: string;
   status: string;

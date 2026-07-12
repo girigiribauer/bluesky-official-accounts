@@ -40,13 +40,13 @@
 ### テスト・検証
 
 - [x] ⚠️ マイグレーションをデプロイに畳んで順序を構造で担保 → Vercel の `buildCommand` を `scripts/vercel-build.sh` に。production 時のみ `supabase db push --db-url --yes`（env `SUPABASE_DB_URL`=session pooler URI）してから `next build`、migrate 失敗＝デプロイ失敗。postmortem の「migrate はデプロイより先に」を運用ルールでなく構造で保証。**本番デプロイのビルドログで接続・順序を実証済み**（`Connecting to remote database... / Remote database is up to date.`）
-- [ ] `.github/workflows/migrate.yml` を削除する → 上記でデプロイに畳んだため役目終了。残すと次のマイグレーション込み push で build 内 migration と並走コンフリクトの恐れ
-  - 🟢 明確: `git rm .github/workflows/migrate.yml`
+- [x] `.github/workflows/migrate.yml` を削除する → デプロイに畳んだため役目終了（`7c0cd0d`で削除済み。現存するのは`update-data.yml`のみ）
 - [~] Node を 22 に上げる → `package.json` に `engines.node: "22.x"` を追加済み（Vercel はこれを見てランタイムを選ぶ）。残り: 次デプロイのビルドログで Node 22 になっているか確認。必要なら Vercel プロジェクト設定側の Node バージョンも 22 に。ローカルが Node 20 なら `npm install` で engines 警告が出るが実害なし（`@types/node` も ^22 に上げると尚良い）
 - [ ] ⚠️ ロールバック手順を明文化する（postmortem 再発防止）
   - 🟢 明確: 手順を書き起こすだけ
 - [x] ⚠️ ブラウザ E2E（Playwright）を薄く1枚入れる → `tests/e2e/` に4本（登録フォーム投稿・来て欲しいフォーム投稿・重複投稿の表示・モデレーター承認）。`npm run test:e2e`（要: ローカル DB 起動。dev サーバーは自動起動）。OAuth は署名 cookie 直付けで迂回、Bluesky アカウント解決は `page.route()` で内部 API をスタブ。方針: 正常系＋ユーザーが日常的に踏むエラー表示のみ。これ以上増やさない（増やしたくなったら下の層へ）
 - [x] 重複チェック表示のバグ修正 → `RequestForm` が `duplicate === true`（boolean）と比較していたが、check API の実際の返却は `"none"|"entry"|"request"`（文字列）で、**重複メッセージが一度も表示されていなかった**。E2E 追加時に発覚。route テストのモックも実契約（文字列）に修正（233件パス）
+- [x] 「分類（旧）」撤去に伴うE2E破損の修正 → `tests/e2e/contribution.spec.ts` が削除済みの「分類（旧）」`<select>`を`getByRole("combobox")`で探しに行き3件タイムアウトしていた（**リリース前にE2Eで検知**）。該当の`selectOption`呼び出しを削除。あわせて`RegisterForm`の`selectedCategories`→`selectedFields`にリネーム、`moderationFlow.integration.test.ts`の`oldCategory`残置も削除、FAQページ（`/faq#categorize`）の「分類（旧）」言及・「3つまで選択可」という誤った案内を実態に合わせて修正
 - [ ] E2E の CI 組み込み / デプロイ前チェック運用 → 今はローカル実行のみ。GitHub Actions で回すか、デプロイ前の手動チェックリストに組み込むか
   - 🟡 要確認: CI で Supabase をどう立てるか（`supabase start` は重い）と、実行タイミングの運用を決める
 - [ ] actions の unit テストを脱・実装依存にする → `actions.test.ts` は Supabase チェーンを手作りモックし呼び出し手順を assert していて脆い。承認/却下は integration に寄せ、チェーンモックを減らす
@@ -62,10 +62,9 @@
 
 ### データ・移行運用
 
-- [ ] fetch スクリプトを新分野ベースに更新する → `scripts/fetchAccountList.ts` が今も `old_category` 依存
-  - 🟡 要確認: 「表側の新分野切り替え」「未分類振り分け」の方針が固まってから着手
-- [ ] `old_category` カラムを廃止する → 表側を新分野表示に切り替えた後（フェーズ5）
-  - 🟢 明確: やることは自明。順序待ち
+- [x] fetch スクリプトを新分野ベースに更新する → `scripts/fetchAccountList.ts` から `old_category` の select・`Account.category` フィールド・カテゴリーソートキーを削除（ソートは名前のみに変更）。`Account`型からも`category`を削除（`src/models/Account.ts`）
+- [x] 公開フォームの「分類（旧）」入力を廃止する → `FieldSelector`/`OLD_CATEGORIES`/`registerContribution`・`requestContribution`スキーマ・各route・`useBlueskyCheck`から`oldCategory`/`old_category`関連を削除。`RegisterForm`/`RequestForm`から「分類（旧）」欄が消えたことを目視確認済み
+- [x] `old_category` カラム・`old_categories` テーブルを廃止する → migration `20260713000000_drop_old_category.sql` を用意（`approve_entry_submission`関数の`old_category`参照を除去してからカラム・テーブルをdrop）。`types/database.ts`（DB生成型を手動追従）・`types/moderation.ts`・`actions.test.ts`から参照を削除。コード側の`old_category`/`old_categor`参照はゼロ。実DBへの適用はデプロイ時の自動migrate（`scripts/vercel-build.sh`）に委ねる
 
 ### リファクタ（品質）
 
@@ -84,8 +83,7 @@
 
 ## 設計・モデリング的なこと
 
-- [ ] ⚠️ 未分類アカウントを新分野へ振り分ける → 旧カテゴリーの多くが `uncategorized` のまま（`categories.md`）
-  - 🟡 要確認: 大枠の対応表は `categories.md` にあるが、「内容に応じて各分野」の個別判断基準を詰める必要
+- [x] 旧カテゴリーから新分野への割り当て → 割り当てルールは `categories.md` に定義・適用済み。「未分類」は分野モデレーター確保後に順次拾う正規の置き場（設計課題ではなく運用課題。関連: 「分野ごとの協力者を集める導線をつくる」）
 - [ ] モデレーターのライフサイクルを実装する → 半年無活動で権限失効など（未実装）
   - 🟡 要確認: 概念は明確。失効の正確なルールと自動実行の仕組み（cron 等）を決める
 - [ ] 段階制度（3段階の権限）を実装する → 入門 / 一人前 / 熟練。今は `is_admin` フラグだけ。「管理者以外でも捌ける」体制の核（`moderation.md`）
@@ -111,8 +109,8 @@
   - 🟡 要確認: 「投稿数」が何を指すか（申請数? 分野別? 期間?）の定義を決める
 - [ ] チームメンバーのアイコンを表示する → UI 表示が未対応
   - 🟡 要確認: `moderators.avatar` がログイン時に保存されているか現状確認が先
-- [ ] 表側（公開ページ）を新分野・分類ベースの表示に切り替える → 今は旧カテゴリー表示（フェーズ4）
-  - 🟡 要確認: 目標は明確だが「分野定義の一元化」「未分類振り分け」への依存が多い。前提が揃ってから
+- [x] 表側（公開ページ）を新分野・分類ベースの表示に切り替える（フェーズ4）→ `AccountDirectory` / `accountListCore` が `fields` でグルーピング。旧カテゴリー表示・`categoryList`/`Category`/`groupAccountsByCategory`・`categories.json` 生成・Notion時代の残骸（`fetchNotion.ts` 等）を削除済み
+- [x] 分野バーにアイコンを追加する → `public/images/fields/{fieldId}.svg`（14分野分）を16pxで表示。分野ラベルに分類数（`classCount`）を追加し「N分類 M件」表記に。見出し色を`--color-primary-darker`に、アイコン⇄ラベルの余白を他項目より詰め、分類ヘッダーをアイコン半個分（13px）インデントして親子関係を表現
 - [ ] エンゲージメント向上の UX / 使い勝手を練る → ゲーミフィケーションで「自分の好きな分野の移行促進」に興味を持ってもらう。UI を能動的に反復する前提。Storybook 等ワークベンチ導入の是非もここで判断。関連: 「ポイント制度」（設計・モデリング）
   - 🔴 要壁打ち: 大テーマ。別セッションで集中議論する
 - [x] オンボーディング（分野選択フロー）→ `onboard/page.tsx` + `ModerationOnboarding` + `FieldChips` + `joinField`

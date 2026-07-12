@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from("entries")
-      .select("twitter_handle, transition_status, accounts(display_name, old_category, evidences(content), account_fields(field_id))")
+      .select("twitter_handle, transition_status, accounts(display_name, evidences(content), account_fields(field_id))")
       .eq("bluesky_did", profile.did)
       .limit(1)
       .maybeSingle();
@@ -70,7 +70,6 @@ export async function GET(req: NextRequest) {
         displayName: profile.displayName ?? profile.handle,
         existing: {
           name: account?.display_name ?? "",
-          category: account?.old_category ?? "",
           source,
           twitter: twitterUrl,
           status: data.transition_status ?? "",

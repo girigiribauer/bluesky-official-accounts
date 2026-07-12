@@ -36,7 +36,6 @@
 .alc-bar-class {
   height: 27px; /* min-height:22 + padding:2*2 + border:1（旧デザイン維持）*/
   padding: 2px 5px;
-  gap: 10px;
   border-bottom: 1px solid var(--color-primary);
   cursor: pointer;
   user-select: none;
@@ -48,10 +47,18 @@
   background: var(--color-primary-lighter2);
 }
 
-/* ---- 分類: 色は lighter3 (#e7f3ff) ---- */
+/* ---- 分類: 色は lighter3 (#e7f3ff)。アイコンの左右中央あたりまでインデントし、分野の子であることを示す ---- */
 .alc-row-class,
 .alc-bar-class {
   background: var(--color-primary-lighter3);
+  padding-left: 13px;
+}
+
+.alc-field-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  margin-right: 4px; /* アイコンとラベルは同じ分野名を指すので、他の項目間より詰める */
 }
 
 .alc-field-label,
@@ -59,12 +66,21 @@
   font-size: 0.75rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--color-black);
+  color: var(--color-primary-darker);
+  margin-right: 10px;
+}
+
+.alc-field-classcount {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-primary-darker);
+  margin-right: 10px;
 }
 
 .alc-count {
   font-size: 0.75rem;
-  color: var(--color-black);
+  font-weight: 700;
+  color: var(--color-primary-darker);
 }
 
 .alc-chev {

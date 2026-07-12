@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { Account } from "src/models/Account";
-import type { Category } from "src/models/Category";
 import type { FilterRuleSet } from "src/models/FilterRuleSet";
 import { TRANSITION_STATUS_LABELS } from "src/models/TransitionStatus";
 import { useModal } from "src/hooks/useModal";
@@ -16,7 +15,6 @@ export type AccountListViewProps = {
   filterRuleSet?: FilterRuleSet | null;
   handleReset?: (key: keyof FilterRuleSet) => void;
   items: Account[];
-  categoryList?: Category[]; // 旧タクソノミー用。新表では未使用（呼び出し互換のため残置）
   updatedTime: string;
 };
 

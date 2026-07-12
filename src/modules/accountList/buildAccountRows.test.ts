@@ -5,7 +5,6 @@ import type { Account, AccountField } from "src/models/Account";
 const acc = (id: string, fields: AccountField[]): Account => ({
   id,
   name: id,
-  category: "",
   status: "dual_active",
   twitter: "",
   bluesky: "",
@@ -93,5 +92,16 @@ describe("buildRows", () => {
   it("分類も開くとアカウント行まで展開される", () => {
     const rows = buildRows(g, new Set(["tech"]), new Set(["tech::A"]));
     expect(rows.map((r) => r.kind)).toEqual(["field", "class", "account"]);
+  });
+
+  it("分野見出しは分類数(classCount)を持つ", () => {
+    const g2 = groupAccounts([
+      acc("1", [f("tech", "B", "B")]),
+      acc("2", [f("tech", "A", "A")]),
+      acc("3", [f("tech", null)]), // 未分類
+    ]);
+    const rows = buildRows(g2, new Set(), new Set());
+    const techRow = rows.find((r) => r.kind === "field" && r.fieldId === "tech");
+    expect(techRow).toMatchObject({ classCount: 3, total: 3 });
   });
 });

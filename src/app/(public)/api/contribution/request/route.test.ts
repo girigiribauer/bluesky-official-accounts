@@ -45,7 +45,6 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
-      oldCategory: "ネットサービス",
       fieldId: "business",
       website: "",
     }));
@@ -58,7 +57,6 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
-      oldCategory: "ネットサービス",
       fieldId: "business",
       website: "filled",
     }));
@@ -69,7 +67,6 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://bsky.app/profile/bluesky",
       twitterName: "Bluesky",
-      oldCategory: "ネットサービス",
       fieldId: "business",
       website: "",
     }));
@@ -80,7 +77,6 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "",
-      oldCategory: "ネットサービス",
       fieldId: "business",
       website: "",
     }));
@@ -92,7 +88,6 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
-      oldCategory: "ネットサービス",
       fieldId: "business",
       website: "",
     }));
@@ -106,7 +101,6 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
-      oldCategory: "ネットサービス",
       fieldId: "business",
       website: "",
     }));
@@ -120,7 +114,6 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
-      oldCategory: "ネットサービス",
       fieldId: "business",
       website: "",
     }));
@@ -131,7 +124,6 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
-      oldCategory: "ネットサービス",
       fieldId: "business",
       website: "",
     }, undefined, "https://evil.example.com"));
@@ -142,7 +134,6 @@ describe("POST /api/contribution/request", () => {
     const res = await POST(makeRequest({
       twitterUrl: "https://x.com/bluesky",
       twitterName: "Bluesky",
-      oldCategory: "ネットサービス",
       fieldId: "business",
       website: "",
     }, undefined, "http://localhost"));

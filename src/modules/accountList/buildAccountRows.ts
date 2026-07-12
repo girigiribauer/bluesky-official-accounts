@@ -9,7 +9,7 @@ export const NO_CLASS = "__none__";
 export const NO_FIELD = "__nofield__";
 
 export type ListRow =
-  | { kind: "field"; rowKey: string; fieldId: string; label: string; total: number }
+  | { kind: "field"; rowKey: string; fieldId: string; label: string; classCount: number; total: number }
   | { kind: "class"; rowKey: string; fieldId: string; classKey: string; name: string; total: number }
   | { kind: "account"; rowKey: string; fieldId: string; account: Account };
 
@@ -101,7 +101,7 @@ export function buildRows(
 ): ListRow[] {
   const rows: ListRow[] = [];
   for (const fb of grouped.fields) {
-    rows.push({ kind: "field", rowKey: `f:${fb.fieldId}`, fieldId: fb.fieldId, label: fb.label, total: fb.total });
+    rows.push({ kind: "field", rowKey: `f:${fb.fieldId}`, fieldId: fb.fieldId, label: fb.label, classCount: fb.orderedClasses.length, total: fb.total });
     if (!fieldOpen.has(fb.fieldId)) continue;
     for (const cb of fb.orderedClasses) {
       const gKey = `${fb.fieldId}::${cb.classKey}`;

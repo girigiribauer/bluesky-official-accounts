@@ -94,7 +94,6 @@ describe("GET /api/contribution/register/check", () => {
         transition_status: "dual_active",
         accounts: {
           display_name: "Bluesky",
-          old_category: "テクノロジー",
           evidences: [{ content: "https://example.com" }],
         },
       },

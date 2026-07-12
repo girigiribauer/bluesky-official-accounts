@@ -82,21 +82,18 @@ export type Database = {
           created_at: string
           display_name: string
           id: string
-          old_category: string | null
           submitted_by: string | null
         }
         Insert: {
           created_at?: string
           display_name: string
           id?: string
-          old_category?: string | null
           submitted_by?: string | null
         }
         Update: {
           created_at?: string
           display_name?: string
           id?: string
-          old_category?: string | null
           submitted_by?: string | null
         }
         Relationships: [
@@ -224,7 +221,6 @@ export type Database = {
           evidence: string | null
           field_id: string
           id: string
-          old_category: string | null
           request_id: string | null
           transition_status: string
           twitter_url: string | null
@@ -238,7 +234,6 @@ export type Database = {
           evidence?: string | null
           field_id: string
           id?: string
-          old_category?: string | null
           request_id?: string | null
           transition_status: string
           twitter_url?: string | null
@@ -252,7 +247,6 @@ export type Database = {
           evidence?: string | null
           field_id?: string
           id?: string
-          old_category?: string | null
           request_id?: string | null
           transition_status?: string
           twitter_url?: string | null
@@ -467,37 +461,12 @@ export type Database = {
         }
         Relationships: []
       }
-      old_categories: {
-        Row: {
-          created_at: string
-          criteria: string
-          id: string
-          sort_order: number
-          title: string
-        }
-        Insert: {
-          created_at?: string
-          criteria?: string
-          id: string
-          sort_order: number
-          title: string
-        }
-        Update: {
-          created_at?: string
-          criteria?: string
-          id?: string
-          sort_order?: number
-          title?: string
-        }
-        Relationships: []
-      }
       request_submissions: {
         Row: {
           created_at: string
           display_name: string
           field_id: string
           id: string
-          old_category: string | null
           twitter_handle: string
         }
         Insert: {
@@ -505,7 +474,6 @@ export type Database = {
           display_name: string
           field_id: string
           id?: string
-          old_category?: string | null
           twitter_handle: string
         }
         Update: {
@@ -513,7 +481,6 @@ export type Database = {
           display_name?: string
           field_id?: string
           id?: string
-          old_category?: string | null
           twitter_handle?: string
         }
         Relationships: [

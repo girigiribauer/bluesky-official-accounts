@@ -31,7 +31,6 @@ const validBody = {
   did: "did:plc:abc123",
   handle: "bsky.app",
   accountName: "Bluesky",
-  oldCategory: "テクノロジー（個人・団体・技術領域）",
   fields: ["tech"],
   migrationStatus: "dual_active",
   twitterUrl: "https://x.com/bluesky",

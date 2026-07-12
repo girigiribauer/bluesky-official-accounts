@@ -1,7 +1,6 @@
 import fs from "fs";
 import { createClient } from "@supabase/supabase-js";
 import { News } from "../src/models/News";
-import { Category } from "../src/models/Category";
 import type { Database } from "../src/types/database";
 import dotenv from "dotenv";
 
@@ -36,21 +35,4 @@ const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_SECRET_KEY);
   }));
   fs.writeFileSync("data/news.json", JSON.stringify(news, null, 2));
   console.log(`saved data/news.json (${news.length} items)`);
-
-  console.log("fetching categories...");
-  const { data: catData, error: catError } = await supabase
-    .from("old_categories")
-    .select("id, title, sort_order, criteria")
-    .order("sort_order", { ascending: true });
-
-  if (catError) throw new Error(`Supabase categories query failed: ${catError.message}`);
-
-  const categories: Category[] = (catData ?? []).map((row) => ({
-    id: row.id,
-    title: row.title,
-    order: row.sort_order,
-    criteria: row.criteria,
-  }));
-  fs.writeFileSync("data/categories.json", JSON.stringify(categories, null, 2));
-  console.log(`saved data/categories.json (${categories.length} items)`);
 })();

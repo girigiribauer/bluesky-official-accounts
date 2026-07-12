@@ -20,7 +20,6 @@ export async function POST(req: NextRequest) {
   const parsed = requestContributionSchema.safeParse({
     twitterUrl: body.twitterUrl,
     twitterName: body.twitterName,
-    oldCategory: body.oldCategory,
     fieldId: body.fieldId,
   });
   if (!parsed.success) {
@@ -29,7 +28,6 @@ export async function POST(req: NextRequest) {
 
   const safeUrl = parsed.data.twitterUrl;
   const safeName = parsed.data.twitterName;
-  const safeOldCategory = parsed.data.oldCategory;
   const safeFieldId = parsed.data.fieldId;
 
   try {
@@ -65,7 +63,6 @@ export async function POST(req: NextRequest) {
     const { error } = await supabase.from("request_submissions").insert({
       display_name: safeName,
       twitter_handle: twitterHandle,
-      old_category: safeOldCategory,
       field_id: safeFieldId,
     });
 

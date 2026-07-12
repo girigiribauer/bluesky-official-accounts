@@ -17,7 +17,6 @@ export const registerContributionSchema = z
     did: z.string().min(1),
     handle: z.string().trim().min(1),
     accountName: z.string().trim().min(1).max(100),
-    oldCategory: z.string().trim().min(1).max(100),
     fields: z.array(z.enum(VALID_FIELD_IDS)).min(1).max(1),
     migrationStatus: z.enum(MIGRATION_STATUSES),
     twitterUrl: z.string().trim().max(150).default(""),

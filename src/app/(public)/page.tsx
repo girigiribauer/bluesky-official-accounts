@@ -1,4 +1,4 @@
-import { fetchAccounts, fetchCategories, fetchNews } from "src/lib/fetchData";
+import { fetchAccounts, fetchNews } from "src/lib/fetchData";
 import { Metadata } from "next";
 import Image from "next/image";
 import { HeroImage } from "src/components/HeroImage";
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
 export default async function Home() {
   const accountList = await fetchAccounts();
   const news = await fetchNews();
-  const categoryList = await fetchCategories();
 
   return (
     <>
@@ -56,7 +55,7 @@ export default async function Home() {
 
         <div className={styles.accountListArea}>
           <div className={styles.accountListInner}>
-            <AccountDirectory accountList={accountList} categoryList={categoryList} />
+            <AccountDirectory accountList={accountList} />
           </div>
         </div>
 

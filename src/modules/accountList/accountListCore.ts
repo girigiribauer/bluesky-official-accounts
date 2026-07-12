@@ -10,6 +10,7 @@ import {
   measureElement,
 } from "@tanstack/virtual-core";
 import type { Account } from "src/models/Account";
+import { FIELDS } from "src/constants/fields";
 import { TRANSITION_STATUS_LABELS } from "src/models/TransitionStatus";
 import { extractTwitter, extractBluesky } from "src/lib/extractFromURL";
 import {
@@ -44,6 +45,11 @@ const esc = (s: string) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!
   );
 
+// 分野アイコン（public/images/fields/{fieldId}.svg）。未分野（NO_FIELD）等、対応ファイルがない場合は空文字。
+const FIELD_ICON_IDS = new Set<string>(FIELDS.map((f) => f.id));
+const fieldIconSrc = (fieldId: string): string =>
+  FIELD_ICON_IDS.has(fieldId) ? `/images/fields/${fieldId}.svg` : "";
+
 export function createAccountList(
   container: HTMLElement,
   options: AccountListOptions = {}
@@ -53,7 +59,8 @@ export function createAccountList(
     <div class="alc-scroller">
       <div class="alc-inner">
         <div class="alc-bar alc-bar-field" style="display:none">
-          <span class="alc-field-label"></span><span class="alc-count"></span>
+          <img class="alc-field-icon" src="" width="16" height="16" alt="" style="display:none">
+          <span class="alc-field-label"></span><span class="alc-field-classcount"></span><span class="alc-count"></span>
           <span class="alc-chev"><i class="fa-solid fa-caret-down"></i></span>
         </div>
         <div class="alc-bar alc-bar-class" style="display:none">
@@ -126,15 +133,18 @@ export function createAccountList(
     el.className = `alc-row alc-row-${row.kind}`;
     el.dataset.index = String(index);
     if (row.kind === "field") {
+      const iconSrc = fieldIconSrc(row.fieldId);
       el.innerHTML =
+        (iconSrc ? `<img class="alc-field-icon" src="${iconSrc}" width="16" height="16" alt="">` : "") +
         `<span class="alc-field-label">${esc(row.label)}</span>` +
-        `<span class="alc-count">${row.total}</span>` +
+        `<span class="alc-field-classcount">${row.classCount}分類</span>` +
+        `<span class="alc-count">${row.total}件</span>` +
         `<span class="alc-chev${fieldOpen.has(row.fieldId) ? " alc-open" : ""}"><i class="fa-solid fa-caret-down"></i></span>`;
       el.onclick = () => toggleField(row.fieldId);
     } else if (row.kind === "class") {
       el.innerHTML =
         `<span class="alc-class-name">${esc(row.name)}</span>` +
-        `<span class="alc-count">${row.total}</span>` +
+        `<span class="alc-count">${row.total}件</span>` +
         `<span class="alc-chev${classOpen.has(row.classKey) ? " alc-open" : ""}"><i class="fa-solid fa-caret-down"></i></span>`;
       el.onclick = () => toggleClass(row.classKey);
     } else {
@@ -188,6 +198,17 @@ export function createAccountList(
     const chev = bar.querySelector(".alc-chev");
     if (chev) chev.classList.toggle("alc-open", open);
   };
+  const setFieldIcon = (bar: HTMLElement, fieldId: string) => {
+    const icon = bar.querySelector<HTMLImageElement>(".alc-field-icon");
+    if (!icon) return;
+    const src = fieldIconSrc(fieldId);
+    if (src) {
+      if (icon.getAttribute("src") !== src) icon.setAttribute("src", src);
+      setStyle(icon, "display", "");
+    } else {
+      setStyle(icon, "display", "none");
+    }
+  };
 
   function updateActiveBars(off: number) {
     const m = virtualizer.measurementsCache;
@@ -210,8 +231,10 @@ export function createAccountList(
     if (fi >= 0) {
       const row = rows[fi] as Extract<ListRow, { kind: "field" }>;
       setStyle(fieldBar, "display", "");
+      setFieldIcon(fieldBar, row.fieldId);
       setText(fieldBar, ".alc-field-label", row.label);
-      setText(fieldBar, ".alc-count", String(row.total));
+      setText(fieldBar, ".alc-field-classcount", `${row.classCount}分類`);
+      setText(fieldBar, ".alc-count", `${row.total}件`);
       setChev(fieldBar, fieldOpen.has(row.fieldId));
       fieldBar.onclick = () => toggleField(row.fieldId);
       const shift = fieldShift(nextFi !== undefined ? m[nextFi]?.start : undefined, off, fieldH);
@@ -225,7 +248,7 @@ export function createAccountList(
       const row = rows[ci] as Extract<ListRow, { kind: "class" }>;
       setStyle(classBar, "display", "");
       setText(classBar, ".alc-class-name", row.name);
-      setText(classBar, ".alc-count", String(row.total));
+      setText(classBar, ".alc-count", `${row.total}件`);
       setChev(classBar, classOpen.has(row.classKey));
       classBar.onclick = () => toggleClass(row.classKey);
       const shift = classShift(

@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, message: "入力値が不正です" }, { status: 400 });
   }
 
-  const { did, handle, accountName, oldCategory, fields, migrationStatus, twitterUrl, evidence } =
+  const { did, handle, accountName, fields, migrationStatus, twitterUrl, evidence } =
     parsed.data;
 
   const fieldId = fields[0];
@@ -46,7 +46,6 @@ export async function POST(req: NextRequest) {
       bluesky_did: did,
       bluesky_handle: handle.trim(),
       twitter_url: twitterUrl.trim() || null,
-      old_category: oldCategory.trim() || null,
       field_id: fieldId,
       transition_status: migrationStatus,
       evidence: evidence.trim() || null,
