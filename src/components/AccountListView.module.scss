@@ -4,17 +4,8 @@
   display: block;
 }
 
-.virtualScroll {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  position: relative;
-}
-
-.placeholderItem {
-  height: 1px;
-  overflow: hidden;
-  margin-bottom: -1px;
+.listMount {
+  display: block;
 }
 
 .header {
@@ -23,4 +14,28 @@
   top: 0;
   z-index: 2;
   border-bottom: 1px solid var(--color-primary);
+}
+
+/* 「根拠」モーダルの中身 */
+.evidence {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.evidenceTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.evidenceText {
+  width: 100%;
+  height: 200px;
+  resize: none;
+  font-size: 1rem;
+  line-height: 1.4;
+  box-sizing: border-box;
 }

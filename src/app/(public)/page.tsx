@@ -6,7 +6,7 @@ import { ShareButtons } from "src/components/ShareButtons";
 import { NewsList } from "src/components/NewsList";
 import { GlobalHeaderServer as GlobalHeader } from "src/components/GlobalHeaderServer";
 import { TransitionStatusList } from "src/components/TransitionStatusList";
-import { Database } from "src/components/Database";
+import { AccountDirectory } from "src/components/AccountDirectory";
 import { PageNavigation } from "src/components/PageNavigation";
 import styles from "./page.module.scss";
 
@@ -56,7 +56,7 @@ export default async function Home() {
 
         <div className={styles.accountListArea}>
           <div className={styles.accountListInner}>
-            <Database accountList={accountList} categoryList={categoryList} />
+            <AccountDirectory accountList={accountList} categoryList={categoryList} />
           </div>
         </div>
 

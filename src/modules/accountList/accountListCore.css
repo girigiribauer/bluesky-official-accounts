@@ -1,0 +1,180 @@
+/* 2段リスト核のスタイル（プレーン CSS。globals.scss の CSS 変数を利用）。
+   行の height は accountListCore.ts の ROW_H と厳密一致させること。 */
+
+.alc-root {
+  display: block;
+}
+
+.alc-scroller {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--color-white);
+}
+
+.alc-inner {
+  position: relative;
+  width: 100%;
+}
+
+/* ---- 共通: 仮想行 ---- */
+.alc-row {
+  position: absolute;
+  top: 0; /* sticky バー(flow)の後ろに落ちないよう原点を固定。位置は translateY で与える */
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ---- 分野・分類 共通（旧 AccountGroupHeader と同寸法。色だけ差）---- */
+.alc-row-field,
+.alc-bar-field,
+.alc-row-class,
+.alc-bar-class {
+  height: 27px; /* min-height:22 + padding:2*2 + border:1（旧デザイン維持）*/
+  padding: 2px 5px;
+  gap: 10px;
+  border-bottom: 1px solid var(--color-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ---- 分野: 色は lighter2 (#C3E0FF) ---- */
+.alc-row-field,
+.alc-bar-field {
+  background: var(--color-primary-lighter2);
+}
+
+/* ---- 分類: 色は lighter3 (#e7f3ff) ---- */
+.alc-row-class,
+.alc-bar-class {
+  background: var(--color-primary-lighter3);
+}
+
+.alc-field-label,
+.alc-class-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-black);
+}
+
+.alc-count {
+  font-size: 0.75rem;
+  color: var(--color-black);
+}
+
+.alc-chev {
+  margin-left: auto;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 14px;
+  background: var(--color-primary);
+  border-radius: 8px;
+  color: var(--color-white);
+  font-size: 0.625rem;
+  transition: transform 120ms ease;
+}
+
+.alc-chev.alc-open {
+  transform: rotate(180deg);
+}
+
+/* ---- sticky バー（吸着は position:sticky に任せる）---- */
+.alc-bar {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+.alc-bar-field {
+  top: 0;
+  z-index: 4;
+}
+
+.alc-bar-class {
+  top: 27px; /* = 分野バーの高さ */
+}
+
+/* ---- アカウント行 ---- */
+.alc-row-account {
+  height: 32px;
+  padding: 3px 5px;
+  gap: 0;
+  border-bottom: 1px solid var(--color-black-lighter2);
+  font-size: 0.75rem;
+  cursor: default;
+}
+
+.alc-acc-name {
+  flex: 1 1 31.25%;
+  min-width: 0;
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alc-acc-status {
+  flex: 0 0 120px;
+}
+
+.alc-acc-status .status {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.alc-acc-evidence {
+  flex: 0 0 60px;
+  display: flex;
+  align-items: center;
+}
+
+.alc-evidence-btn {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--color-link);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.alc-acc-col {
+  flex: 1 1 25%;
+  min-width: 0;
+}
+
+.alc-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.75rem;
+  min-width: 0;
+}
+
+.alc-social a {
+  color: var(--color-black);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alc-social-icon {
+  flex: 0 0 16px;
+}

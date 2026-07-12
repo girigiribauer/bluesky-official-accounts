@@ -7,19 +7,20 @@ import { FilterRuleSet } from "src/models/FilterRuleSet";
 import { FilterRuleSetConfig } from "./FilterRuleSetConfig";
 import { applyFilters } from "src/lib/accountFilters";
 
-import styles from "./Database.module.scss";
+import styles from "./AccountDirectory.module.scss";
 import { AccountList } from "src/models/AccountList";
 
-export type DatabaseProps = {
+export type AccountDirectoryProps = {
   accountList: AccountList;
   categoryList: Category[];
 };
 
-type DatabaseType = "standard" | "wants";
+// 表示するアカウント種別（移行済み / 来て欲しい）
+type ListKind = "standard" | "wants";
 
-export const Database = ({ accountList, categoryList }: DatabaseProps) => {
+export const AccountDirectory = ({ accountList, categoryList }: AccountDirectoryProps) => {
   const { updatedTime, accounts } = accountList;
-  const [databaseType, switchDatabase] = useState<DatabaseType>("standard");
+  const [listKind, setListKind] = useState<ListKind>("standard");
 
   const defaultFilterRuleSet: FilterRuleSet = {
     time: "None",
@@ -50,18 +51,18 @@ export const Database = ({ accountList, categoryList }: DatabaseProps) => {
 
   return (
     <>
-      <div className={styles.databaseType}>
+      <div className={styles.kindSwitch}>
         <select
-          className={styles.databaseTypeSelect}
-          value={databaseType}
-          onChange={(e) => switchDatabase(e.currentTarget.value as DatabaseType)}
+          className={styles.kindSelect}
+          value={listKind}
+          onChange={(e) => setListKind(e.currentTarget.value as ListKind)}
         >
           <option value="standard">移行アカウント一覧</option>
           <option value="wants">来て欲しいアカウント一覧</option>
         </select>
       </div>
 
-      <div className={styles.database}>
+      <div className={styles.directory}>
         <FilterRuleSetConfig
           filterRuleSet={filterRuleSet}
           handleUpdateRules={(filterRuleSet) =>
@@ -71,7 +72,7 @@ export const Database = ({ accountList, categoryList }: DatabaseProps) => {
         <AccountListView
           filterRuleSet={filterRuleSet}
           handleReset={handleReset}
-          items={databaseType === "standard" ? standardItems : wantsItems}
+          items={listKind === "standard" ? standardItems : wantsItems}
           categoryList={categoryList}
           updatedTime={updatedTime}
         />

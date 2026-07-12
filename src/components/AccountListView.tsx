@@ -1,13 +1,12 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Account } from "src/models/Account";
-import { useState, useMemo, useCallback } from "react";
-import { Category } from "src/models/Category";
-import { groupAccountsByCategory } from "src/lib/groupAccountsByCategory";
+import type { Category } from "src/models/Category";
 import type { FilterRuleSet } from "src/models/FilterRuleSet";
-import { GroupedVirtuoso } from "react-virtuoso";
-import { AccountGroupHeader } from "./AccountGroupHeader";
-import { AccountItem } from "./AccountItem";
+import { TRANSITION_STATUS_LABELS } from "src/models/TransitionStatus";
+import { useModal } from "src/hooks/useModal";
+import { createAccountList, type AccountListController } from "src/modules/accountList/accountListCore";
 import { FilterRuleTags } from "./FilterRuleTags";
 import { AccountSummaryHeader } from "./AccountSummaryHeader";
 
@@ -17,80 +16,70 @@ export type AccountListViewProps = {
   filterRuleSet?: FilterRuleSet | null;
   handleReset?: (key: keyof FilterRuleSet) => void;
   items: Account[];
-  categoryList?: Category[];
+  categoryList?: Category[]; // 旧タクソノミー用。新表では未使用（呼び出し互換のため残置）
   updatedTime: string;
 };
 
-// react-virtuoso: 全グループのアイテム数が0だと警告が出るため、全閉じ時は先頭グループにダミーアイテムを1件入れて回避する
-const PlaceholderItem = () => <div className={styles.placeholderItem} />;
+// 「根拠」モーダルの中身（React のまま。核はクリックを onEvidence で伝えるだけ）
+const EvidenceContent = ({ account }: { account: Account }) => {
+  const label = TRANSITION_STATUS_LABELS[account.status] ?? account.status;
+  return (
+    <section className={styles.evidence}>
+      <h2 className={styles.evidenceTitle}>
+        <span>{account.name} の根拠</span>
+        <span className="status" data-status={account.status}>
+          {label}
+        </span>
+      </h2>
+      <textarea
+        readOnly
+        className={styles.evidenceText}
+        defaultValue={
+          account.source ||
+          "現時点で根拠はありません。（カスタムドメインなど明らかな場合には書いてないケースがあります）"
+        }
+      />
+    </section>
+  );
+};
 
 export const AccountListView = ({
   filterRuleSet = null,
   handleReset = () => {},
   items,
-  categoryList = [],
   updatedTime,
 }: AccountListViewProps) => {
-  const originalCategorizedItems = useMemo(
-    () => groupAccountsByCategory(items, categoryList),
-    [items, categoryList]
-  );
+  const containerRef = useRef<HTMLDivElement>(null);
+  const ctrlRef = useRef<AccountListController | null>(null);
+  const { updateModal } = useModal();
 
-  const [prevItems, setPrevItems] = useState(items);
-  const [categoryToggleList, setCategoryToggleList] = useState<boolean[]>(
-    Array.from({ length: originalCategorizedItems.length }, () => false)
-  );
+  // 最新の onEvidence を ref 経由で核へ渡す（核は一度だけ生成し、以後作り直さない）。
+  // ref の書き込みは render 中でなく effect で行う（render 中の ref 更新は禁止）。
+  const onEvidenceRef = useRef<(a: Account) => void>(() => {});
+  useEffect(() => {
+    onEvidenceRef.current = (a) => updateModal(<EvidenceContent account={a} />);
+  });
 
-  // items が変わったら全閉じにリセット（render 中の setState で余分な再描画を避ける）
-  if (prevItems !== items) {
-    setPrevItems(items);
-    setCategoryToggleList(Array.from({ length: originalCategorizedItems.length }, () => false));
-  }
-
-  const total = useMemo(() => items.length, [items]);
-  const blueskyAccountsTotal = useMemo(
-    () => items.filter((a) => a.status !== "not_migrated").length,
-    [items]
-  );
-
-  const groupCounts = originalCategorizedItems.map((a, index) =>
-    categoryToggleList[index] ? a.items.length : 0
-  );
-
-  const isAllClosed = groupCounts.every((c) => c === 0);
-  const groupCountsWithPlaceholder = isAllClosed
-    ? groupCounts.map((c, i) => (i === 0 ? 1 : c))
-    : groupCounts;
-
-  const filteredItems = originalCategorizedItems.reduce((acc, group, index) => {
-    if (categoryToggleList[index]) {
-      return [...acc, ...group.items];
-    }
-    return acc;
-  }, [] as Account[]);
-
-  const handleSelectAllCategory = () => {
-    setCategoryToggleList(
-      Array.from({ length: originalCategorizedItems.length }, () => true)
-    );
-  };
-
-  const handleUnselectAllCategory = useCallback(() => {
-    setCategoryToggleList(
-      Array.from({ length: originalCategorizedItems.length }, () => false)
-    );
-  }, [originalCategorizedItems]);
-
-  const handleSelectCategory = (title: string) => {
-    const newCategoryToggleList = categoryToggleList.map((a, i) => {
-      if (title === originalCategorizedItems[i].title) {
-        return !a;
-      }
-      return a;
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const ctrl = createAccountList(containerRef.current, {
+      height: 500,
+      onEvidence: (a) => onEvidenceRef.current(a),
     });
+    ctrlRef.current = ctrl;
+    return () => {
+      ctrl.destroy();
+      ctrlRef.current = null;
+    };
+  }, []);
 
-    setCategoryToggleList(newCategoryToggleList);
-  };
+  // items（絞り込み済み）が変わったら核へ流し込む
+  useEffect(() => {
+    ctrlRef.current?.setAccounts(items);
+  }, [items]);
+
+  const total = items.length;
+  const blueskyAccountsTotal = items.filter((a) => a.status !== "not_migrated").length;
 
   return (
     <div className={styles.container}>
@@ -99,42 +88,14 @@ export const AccountListView = ({
           total={total}
           blueskyAccountsTotal={blueskyAccountsTotal}
           updatedTime={updatedTime}
-          handleOpen={handleSelectAllCategory}
-          handleClose={handleUnselectAllCategory}
+          handleOpen={() => ctrlRef.current?.openAll()}
+          handleClose={() => ctrlRef.current?.closeAll()}
         />
 
-        <FilterRuleTags
-          filterRuleSet={filterRuleSet}
-          handleReset={handleReset}
-        />
+        <FilterRuleTags filterRuleSet={filterRuleSet} handleReset={handleReset} />
       </div>
 
-      <GroupedVirtuoso
-        style={{ height: 500 }}
-        className={styles.virtualScroll}
-        groupCounts={groupCountsWithPlaceholder}
-        groupContent={(index) => {
-          if (index >= originalCategorizedItems.length) {
-            return null;
-          }
-
-          const { title, total, criteria } = originalCategorizedItems[index];
-          return (
-            <AccountGroupHeader
-              title={title}
-              total={total}
-              isOpen={categoryToggleList[index]}
-              criteria={criteria}
-              handleSelect={() => handleSelectCategory(title)}
-            />
-          );
-        }}
-        itemContent={(index) => {
-          const item = filteredItems[index];
-          if (!item) return <PlaceholderItem />;
-          return <AccountItem item={item} />;
-        }}
-      />
+      <div ref={containerRef} className={styles.listMount} />
     </div>
   );
 };
