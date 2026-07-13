@@ -114,6 +114,8 @@
 - [x] 表側（公開ページ）を新分野・分類ベースの表示に切り替える（フェーズ4）→ `AccountDirectory` / `accountListCore` が `fields` でグルーピング。旧カテゴリー表示・`categoryList`/`Category`/`groupAccountsByCategory`・`categories.json` 生成・Notion時代の残骸（`fetchNotion.ts` 等）を削除済み
 - [x] 分野バーにアイコンを追加する → `public/images/fields/{fieldId}.svg`（14分野分）を16pxで表示。分野ラベルに分類数（`classCount`）を追加し「N分類 M件」表記に。見出し色を`--color-primary-darker`に、アイコン⇄ラベルの余白を他項目より詰め、分類ヘッダーをアイコン半個分（13px）インデントして親子関係を表現
 - [x] モバイルでアカウント行が折り返さず高さ固定になっていたのを修正 → 表側の脱React化（`accountListCore`）で行高が32px固定になり、スマホで X/Bluesky が見切れていた。TanStack virtual-core の `measureElement` を実際に配線（実測キャッシュキーを index → `rowKey` に変更、`render` を実測対応＝毎回 transform 更新＋再入ガードに書き換え）で可変高さ化。マークアップを main（名称・ステータス・根拠）/ socials（X・Bluesky）の2グループに包み、デスクトップは `display:contents` で従来の5列1行を完全維持、モバイル（<800px）のみ2段組: 1行目=名称（伸縮・省略）＋ステータス＋根拠、2行目=X（左半分）とBluesky（右半分）を1:1・各省略。実機確認: モバイルで2行・実測53px、長いハンドルは `text-overflow: ellipsis` で省略（例 `@asahi-commentplus.bsky.social`）、2段 sticky 見出しも追従。デスクトップは32px単一行のまま（`display:contents`＋ResizeObserver 再計測）。※根拠の名称リンク統合案は要検討で保留
+  - [x] 派生バグ: リンクの背景・下線 → 脱React移植で `.alc-social a` が `background`未指定（globals の `a{background:...}` 青背景が透ける）＋`text-decoration:none`（下線消失）になっていた。旧 `.socialMedia a` に合わせ `background:none`＋下線継承に修正
+  - [x] 派生バグ: モバイルで開閉時に無駄スクロール → `estimateSize` がアカウント行を常に32px想定だったが、モバイルの実高は57px。未実測行を跨ぐ位置で推定と実測がズレ、実測補正のたびにスクロールが飛んでいた（PCは32=32でズレず無症状）。推定をビューポート幅で切替（`<=799px` は57px）にして解消。実機確認: 全展開の総高さが 105556px→185556px（≈58px/行＝実測57pxと一致）、浅い開閉の offset保持は維持、PCは32pxのまま回帰なし
 - [ ] エンゲージメント向上の UX / 使い勝手を練る → ゲーミフィケーションで「自分の好きな分野の移行促進」に興味を持ってもらう。UI を能動的に反復する前提。Storybook 等ワークベンチ導入の是非もここで判断。関連: 「ポイント制度」（設計・モデリング）
   - 🔴 要壁打ち: 大テーマ。別セッションで集中議論する
 - [x] オンボーディング（分野選択フロー）→ `onboard/page.tsx` + `ModerationOnboarding` + `FieldChips` + `joinField`

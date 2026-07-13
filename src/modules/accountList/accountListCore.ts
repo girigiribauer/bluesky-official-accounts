@@ -23,10 +23,18 @@ import {
 import { anchorTarget, activeHeaders, fieldShift, classShift } from "./listGeometry";
 import "./accountListCore.css";
 
-// 行の固定高さ（CSS と厳密に一致させること。measureElement を使わず estimate だけで確定する）。
-// 分野・分類バーは 27px（min-height:22 + padding:2*2 + border:1）、アカウント行は 32px。
+// 行の推定高さ。分野・分類バーは常に 27px 固定（CSS と厳密一致）。
+// アカウント行は幅で変わる: PC(>=800px) は 1 行 32px、モバイル(<800px) は 2 段組で 57px。
+// 実際の高さは measureElement が実測して上書きするが、未実測行の推定がこの値。
+// 推定が実測から大きくズレると、未実測行を跨ぐスクロール/アンカー計算が実レイアウトと食い違い、
+// 実測補正のたびに位置が飛ぶ（＝モバイルで開閉時に無駄スクロールしていた原因）。
 // 分野・分類は色だけ差で寸法は同一。
 const ROW_H = { field: 27, class: 27, account: 32 } as const;
+// モバイル（accountListCore.css の @media <800px と一致）でのアカウント行の推定高さ。
+const ACCOUNT_H_MOBILE = 57;
+const MOBILE_MAX_WIDTH = 799;
+const isMobileWidth = () =>
+  typeof window !== "undefined" && window.innerWidth <= MOBILE_MAX_WIDTH;
 
 export type AccountListOptions = {
   height?: number;
@@ -86,7 +94,11 @@ export function createAccountList(
   let classHeaderIdx: number[] = [];
   const pool = new Map<number, HTMLElement>();
 
-  const estimate = (index: number) => ROW_H[rows[index]?.kind ?? "account"];
+  const estimate = (index: number) => {
+    const kind = rows[index]?.kind ?? "account";
+    if (kind === "account") return isMobileWidth() ? ACCOUNT_H_MOBILE : ROW_H.account;
+    return ROW_H[kind];
+  };
 
   const virtualizer = new Virtualizer<HTMLElement, HTMLElement>({
     count: 0,
