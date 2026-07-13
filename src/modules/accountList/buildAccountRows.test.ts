@@ -8,6 +8,7 @@ const acc = (id: string, fields: AccountField[]): Account => ({
   status: "dual_active",
   twitter: "",
   bluesky: "",
+  blueskyDid: "",
   source: "",
   createdTime: "",
   updatedTime: "",

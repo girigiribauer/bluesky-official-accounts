@@ -16,6 +16,7 @@ const item = (overrides: Partial<Account> = {}): Account => ({
   status: "dual_active",
   twitter: "https://x.com/test",
   bluesky: "https://bsky.app/profile/test.bsky.social",
+  blueskyDid: "did:plc:test",
   source: "",
   createdTime: new Date(0).toISOString(),
   updatedTime: new Date(0).toISOString(),

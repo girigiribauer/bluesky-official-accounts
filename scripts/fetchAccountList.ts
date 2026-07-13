@@ -68,7 +68,7 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
   // entries テーブル（Bluesky 登録済みアカウント）
   console.log("fetching entries...");
   type EntryRow =
-    Pick<Database["public"]["Tables"]["entries"]["Row"], "id" | "bluesky_handle" | "twitter_handle" | "transition_status" | "created_at" | "updated_at"> & {
+    Pick<Database["public"]["Tables"]["entries"]["Row"], "id" | "bluesky_did" | "bluesky_handle" | "twitter_handle" | "transition_status" | "created_at" | "updated_at"> & {
       accounts:
         | (Pick<Database["public"]["Tables"]["accounts"]["Row"], "display_name"> & {
             account_fields: AccountFieldRow[];
@@ -78,7 +78,7 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
     };
 
   const entryRows = await fetchAllPages<EntryRow>(
-    () => supabase.from("entries").select(`id, bluesky_handle, twitter_handle, transition_status, created_at, updated_at, accounts(display_name, ${ACCOUNT_FIELDS_SELECT}, evidences(content, created_at))`)
+    () => supabase.from("entries").select(`id, bluesky_did, bluesky_handle, twitter_handle, transition_status, created_at, updated_at, accounts(display_name, ${ACCOUNT_FIELDS_SELECT}, evidences(content, created_at))`)
   );
 
   const entryAccounts: Account[] = entryRows.map((row) => {
@@ -91,6 +91,7 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
       status: (row.transition_status ?? "unknown") as TransitionStatus,
       twitter: row.twitter_handle ? `https://x.com/${row.twitter_handle}` : "",
       bluesky: row.bluesky_handle ? `https://bsky.app/profile/${row.bluesky_handle}` : "",
+      blueskyDid: row.bluesky_did,
       source: latestEvidence?.content ?? "",
       createdTime: row.created_at,
       updatedTime: row.updated_at,
@@ -124,6 +125,7 @@ const mapAccountFields = (rows: AccountFieldRow[] | null | undefined): AccountFi
       status: "not_migrated" as TransitionStatus,
       twitter: row.twitter_handle ? `https://x.com/${row.twitter_handle}` : "",
       bluesky: "",
+      blueskyDid: "",
       source: latestEvidence?.content ?? "",
       createdTime: row.created_at,
       updatedTime: row.created_at,

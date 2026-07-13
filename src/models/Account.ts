@@ -15,6 +15,9 @@ export type Account = {
   status: TransitionStatus;
   twitter: string;
   bluesky: string;
+  // Bluesky の安定識別子（DID）。ハンドルは改名されるため、復元・名寄せの基準はこちら。
+  // requests（来て欲しい＝未登録）は DID を持たないので空文字。
+  blueskyDid: string;
   source: string;
   createdTime: string;
   updatedTime: string;

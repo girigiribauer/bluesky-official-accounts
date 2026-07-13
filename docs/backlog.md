@@ -41,7 +41,7 @@
 
 - [x] ⚠️ マイグレーションをデプロイに畳んで順序を構造で担保 → Vercel の `buildCommand` を `scripts/vercel-build.sh` に。production 時のみ `supabase db push --db-url --yes`（env `SUPABASE_DB_URL`=session pooler URI）してから `next build`、migrate 失敗＝デプロイ失敗。postmortem の「migrate はデプロイより先に」を運用ルールでなく構造で保証。**本番デプロイのビルドログで接続・順序を実証済み**（`Connecting to remote database... / Remote database is up to date.`）
 - [x] `.github/workflows/migrate.yml` を削除する → デプロイに畳んだため役目終了（`7c0cd0d`で削除済み。現存するのは`update-data.yml`のみ）
-- [~] Node を 22 に上げる → `package.json` に `engines.node: "22.x"` を追加済み（Vercel はこれを見てランタイムを選ぶ）。残り: 次デプロイのビルドログで Node 22 になっているか確認。必要なら Vercel プロジェクト設定側の Node バージョンも 22 に。ローカルが Node 20 なら `npm install` で engines 警告が出るが実害なし（`@types/node` も ^22 に上げると尚良い）
+- [x] Node を 22 に上げる → `package.json` に `engines.node: "22.x"` を追加済み。**Vercel プロジェクト設定（Build and Deployment → Node.js Version）も `22.x` を確認済み**。両側揃ったので次デプロイ以降はビルド・Serverless Functions とも Node 22 で動く。任意の付帯（`@types/node` を `^22` に上げる）は未対応だが実害なし
 - [ ] ⚠️ ロールバック手順を明文化する（postmortem 再発防止）
   - 🟢 明確: 手順を書き起こすだけ
 - [x] ⚠️ ブラウザ E2E（Playwright）を薄く1枚入れる → `tests/e2e/` に4本（登録フォーム投稿・来て欲しいフォーム投稿・重複投稿の表示・モデレーター承認）。`npm run test:e2e`（要: ローカル DB 起動。dev サーバーは自動起動）。OAuth は署名 cookie 直付けで迂回、Bluesky アカウント解決は `page.route()` で内部 API をスタブ。方針: 正常系＋ユーザーが日常的に踏むエラー表示のみ。これ以上増やさない（増やしたくなったら下の層へ）
@@ -64,7 +64,7 @@
 
 - [x] fetch スクリプトを新分野ベースに更新する → `scripts/fetchAccountList.ts` から `old_category` の select・`Account.category` フィールド・カテゴリーソートキーを削除（ソートは名前のみに変更）。`Account`型からも`category`を削除（`src/models/Account.ts`）
 - [x] 公開フォームの「分類（旧）」入力を廃止する → `FieldSelector`/`OLD_CATEGORIES`/`registerContribution`・`requestContribution`スキーマ・各route・`useBlueskyCheck`から`oldCategory`/`old_category`関連を削除。`RegisterForm`/`RequestForm`から「分類（旧）」欄が消えたことを目視確認済み
-- [x] `old_category` カラム・`old_categories` テーブルを廃止する → migration `20260713000000_drop_old_category.sql` を用意（`approve_entry_submission`関数の`old_category`参照を除去してからカラム・テーブルをdrop）。`types/database.ts`（DB生成型を手動追従）・`types/moderation.ts`・`actions.test.ts`から参照を削除。コード側の`old_category`/`old_categor`参照はゼロ。実DBへの適用はデプロイ時の自動migrate（`scripts/vercel-build.sh`）に委ねる
+- [x] `old_category` カラム・`old_categories` テーブルを廃止する → migration `20260713000000_drop_old_category.sql` を用意（`approve_entry_submission`関数の`old_category`参照を除去してからカラム・テーブルをdrop）。`types/database.ts`（DB生成型を手動追従）・`types/moderation.ts`・`actions.test.ts`から参照を削除。コード側の`old_category`/`old_categor`参照はゼロ。実DBへの適用はデプロイ時の自動migrate（`scripts/vercel-build.sh`）に委ねた。**本番DB（Supabase Table Editor）で`old_categories`テーブルが消えていることを確認済み＝migration適用成功**（drop tableが最終行のため、手前のカラムdrop 3本も通っている）
 
 ### リファクタ（品質）
 
