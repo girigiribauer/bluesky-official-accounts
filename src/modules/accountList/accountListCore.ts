@@ -97,6 +97,9 @@ export function createAccountList(
     observeElementRect,
     observeElementOffset,
     measureElement,
+    // 実測キャッシュのキーは index ではなく論理行の rowKey にする。
+    // ツリー開閉で index と行内容の対応が入れ替わっても、実測した高さが別の行に化けない。
+    getItemKey: (index) => rows[index]?.rowKey ?? index,
     onChange: () => render(),
   });
 
@@ -120,12 +123,19 @@ export function createAccountList(
     const evidence = account.source
       ? `<button class="alc-evidence-btn" type="button">根拠 <i class="hint">?</i></button>`
       : "";
+    // main（名称・ステータス・根拠）と socials（X・Bluesky）の2グループに分ける。
+    // デスクトップは CSS の display:contents でグループを透過させ、従来通り5列の1行に並べる。
+    // モバイルは main→1行目 / socials→2行目 の2段組にする。
     return (
-      `<div class="alc-acc-name">${esc(account.name)}</div>` +
-      `<div class="alc-acc-status"><span class="status" data-status="${esc(account.status)}">${esc(label)}</span></div>` +
-      `<div class="alc-acc-evidence">${evidence}</div>` +
-      `<div class="alc-acc-col alc-acc-x">${x}</div>` +
-      `<div class="alc-acc-col alc-acc-bsky">${bsky}</div>`
+      `<div class="alc-acc-main">` +
+        `<div class="alc-acc-name">${esc(account.name)}</div>` +
+        `<div class="alc-acc-status"><span class="status" data-status="${esc(account.status)}">${esc(label)}</span></div>` +
+        `<div class="alc-acc-evidence">${evidence}</div>` +
+      `</div>` +
+      `<div class="alc-acc-socials">` +
+        `<div class="alc-acc-col alc-acc-x">${x}</div>` +
+        `<div class="alc-acc-col alc-acc-bsky">${bsky}</div>` +
+      `</div>`
     );
   }
 
@@ -161,28 +171,57 @@ export function createAccountList(
     }
   }
 
+  // 実測（measureElement）は resizeItem → onChange → render を同期で呼び戻すことがある。
+  // 再入すると DOM 追加ループの途中で位置が変わるため、フラグで直列化し末尾でまとめて再描画する。
+  let renderRunning = false;
+  let renderScheduled = false;
   function render() {
+    if (renderRunning) {
+      renderScheduled = true;
+      return;
+    }
+    renderRunning = true;
+    try {
+      do {
+        renderScheduled = false;
+        renderOnce();
+      } while (renderScheduled);
+    } finally {
+      renderRunning = false;
+    }
+  }
+
+  function renderOnce() {
     const totalH = `${virtualizer.getTotalSize()}px`;
     if (inner.style.height !== totalH) inner.style.height = totalH;
 
     const items = virtualizer.getVirtualItems();
     const seen = new Set<number>();
+    let removed = false;
     for (const vi of items) {
       seen.add(vi.index);
-      if (!pool.has(vi.index)) {
-        const el = document.createElement("div");
+      let el = pool.get(vi.index);
+      if (!el) {
+        el = document.createElement("div");
         renderRowContent(el, rows[vi.index], vi.index);
-        el.style.transform = `translateY(${vi.start}px)`;
         pool.set(vi.index, el);
         inner.appendChild(el);
+        // 実測を有効化（ResizeObserver 登録＋即時計測）。可変高さはここが拾う。
+        virtualizer.measureElement(el);
       }
+      // 位置は毎回更新する。可変高さでは計測で後続行の start が動くため。
+      const t = `translateY(${vi.start}px)`;
+      if (el.style.transform !== t) el.style.transform = t;
     }
     for (const [idx, el] of pool) {
       if (!seen.has(idx)) {
         el.remove();
         pool.delete(idx);
+        removed = true;
       }
     }
+    // 画面外に消えた行の ResizeObserver を掃除する（切断済みノードを unobserve）。
+    if (removed) virtualizer.measureElement(null as unknown as HTMLElement);
     updateActiveBars(scroller.scrollTop);
   }
 
@@ -289,6 +328,8 @@ export function createAccountList(
     reindexHeaders();
     for (const [, el] of pool) el.remove();
     pool.clear();
+    // 消したノードの ResizeObserver 登録を掃除（切断済みを unobserve）。
+    virtualizer.measureElement(null as unknown as HTMLElement);
     virtualizer.setOptions({ ...virtualizer.options, count: rows.length });
     virtualizer._willUpdate();
     virtualizer.measure();

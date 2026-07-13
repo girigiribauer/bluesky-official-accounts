@@ -440,6 +440,16 @@ describe("来て欲しい申請フロー", () => {
         .single();
       expect(request?.field_id).toBe("entertainment");
 
+      // 表側は account_fields から分野を読むので、account_fields も作られているはず
+      // （分類は未割り当て = null）。
+      const { data: accountFields } = await db()
+        .from("account_fields")
+        .select("field_id, classification_id")
+        .eq("account_id", request!.account_id);
+      expect(accountFields).toHaveLength(1);
+      expect(accountFields![0].field_id).toBe("entertainment");
+      expect(accountFields![0].classification_id).toBeNull();
+
       // activities に記録されているはず
       const { data: activities } = await db()
         .from("activities")
