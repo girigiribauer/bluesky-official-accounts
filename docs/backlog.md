@@ -45,8 +45,10 @@
 
 ### 観測性
 
-- [ ] ヘルスチェック `/api/health` を作る → DB に軽いクエリを1発投げ `{ ok, dbLatencyMs, migration }` 等を返す。デプロイ後に叩けば「DB 接続・レイテンシ」を推測でなく**観測**できる（今回のリージョンずれのような遅延劣化も即検知できたはず）。将来は Uptime 監視からも叩ける
-  - 🟢 明確: エンドポイント1本。任意拡張として、値をモデレーション画面ヘッダに「DB OK / N ms」と小さく出すと「ダッシュボードから DB 接続が見えない」も解消（こちらは UI 作業）
+- [ ] ヘルスチェックにマイグレーションバージョンを含める（`migration`）→ `/api/health` は `{ ok, dbLatencyMs, checkedAt }` まで実装済み。適用済みバージョンを出すには `supabase_migrations.schema_migrations` が PostgREST 非公開のため、`public.latest_migration()`（SECURITY DEFINER）を migration で1本足して `rpc()` で引く必要がある
+  - 🟡 要確認: DB 関数＋migration 追加まで踏み込むか。今のリージョンずれ検知目的は現状の実装で足りている
+- [ ] ヘルス値をモデレーション画面ヘッダに小さく出す（「DB OK / N ms」）→ 「ダッシュボードから DB 接続が見えない」の解消。UI 作業
+  - 🟢 明確: `/api/health` を叩いて表示するだけ
 
 ### リファクタ（品質）
 
@@ -120,6 +122,10 @@
 - [x] ⚠️ 承認処理をトランザクション化する（原子性の確保）→ `approve_entry_submission` / `approve_request_submission` の plpgsql 関数（`migrations/20260706000000_...`）に一連の書き込みを閉じ込め、`actions.ts` から `supabase.rpc()` で呼ぶ。関数内は1トランザクション＝途中失敗で全ロールバック。承認のユニットは配線テストに置換。**統合テスト17件パス＋原子性テスト（UNIQUE 違反で途中失敗させ account が残らないことを確認）で実証済み**。postmortem 型の中途半端 state を構造的に解消
 - [x] pg 直結 + `attachDatabasePool` は**やらない**（判断確定・再検討条件付き）→ 遅さの主犯はリージョンずれで解決済み。残る旨味は1クエリ1〜2ms のみで、移行費用（40箇所書き換え＋型＋テスト書き直し）と Supavisor×Fluid の接続増加という既知問題に見合わない。「毎回 createClient」も遅さと無関係だった（実測）
   - 再検討条件: ①rpc() 化後も本番計測で DB 待ちが支配的 ②表側が DB 直読みに変わりトラフィック激増 ③DX 目的で Drizzle 等を導入する時（その場合 attachDatabasePool は1行のおまけ）
+
+### 観測性
+
+- [x] ヘルスチェック `/api/health` を作る → `{ ok, dbLatencyMs, checkedAt }` を返す（`src/app/(public)/api/health/route.ts`）。`fields` テーブルへ head count クエリを1発投げて DB 往復レイテンシを実測、`dynamic = "force-dynamic"` でキャッシュ無効（毎回フレッシュに観測）、失敗時は `{ ok:false }` ＋ 503。**実機で 200・`dbLatencyMs` が呼ぶたび実測変動・`checkedAt` 更新を確認済み**。`migration` 併記とヘッダ表示は別項目に分離（観測性の未着手へ）
 
 ### テスト・検証
 
