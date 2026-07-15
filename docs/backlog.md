@@ -31,8 +31,6 @@
   - 🔴 要壁打ち: 一般開放時に「誰が何を読めるか」の公開モデルが未定。ここを決めないと書けない
 - [ ] セッション cookie に有効期限を持たせる → 今は HMAC 署名のみで失効しない（`src/lib/auth.ts`）
   - 🔴 要壁打ち: 有効期限・再発行の方針が未定
-- [ ] betaAllowList を撤去する → `isAllowedBetaUser`（`src/lib/betaAllowList.ts`）はテスト以外どこからも呼ばれていない**デッドコード**（実際のログインゲートは OAuth callback の「`moderators` に DID があるか」）。一般開放待ちですらなく、今すぐ消せる
-  - 🟢 明確: 未使用コードとそのテストの削除だけ
 
 ### テスト・検証
 
@@ -145,6 +143,7 @@
 - [x] 命名衝突を解消 → `ModerationDashboard` 内インライン `FieldSelector` を `FieldSwitcher` にリネーム（フォームの `FieldSelector` との混同を解消）
 - [x] ローカル型の重複を解消 → `ModerationOnboarding` の `Result` を `types/result.ts` に統一
 - [x] 分野定義の一元化（コード側）→ `FIELD_ID_LABELS` / `FIELD_DETAILS` を `fields.ts` の `FIELDS` 単一ソースから導出。import 6ファイルを整理、tsc / 232件パス（DB seed 生成は別項目）
+- [x] デッドコード除去 → `betaAllowList.ts`＋テスト（`isAllowedBetaUser` はテスト以外から未参照。実ログインゲートは OAuth callback の `moderators` DID チェック）、孤児化していた `notionClient.ts`（`getNotionClient` はどこからも import されず／news・一覧とも Supabase 由来）を削除。未使用依存 `react-virtuoso`（表側は tanstack/virtual-core へ移行済み）・`@notionhq/client`（`notionClient.ts` からのみ使用）を `package.json` から撤去。`.env.local.example` の死んだ `BETA_ALLOWED_DIDS` 行も除去。tsc クリーン・参照残りゼロ
 
 ### 設計・モデリング
 
