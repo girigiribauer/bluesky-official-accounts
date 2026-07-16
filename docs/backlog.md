@@ -47,8 +47,8 @@
 
 - [ ] ヘルスチェックにマイグレーションバージョンを含める（`migration`）→ `/api/health` は `{ ok, dbLatencyMs, checkedAt }` まで実装済み。適用済みバージョンを出すには `supabase_migrations.schema_migrations` が PostgREST 非公開のため、`public.latest_migration()`（SECURITY DEFINER）を migration で1本足して `rpc()` で引く必要がある
   - 🟡 要確認: DB 関数＋migration 追加まで踏み込むか。今のリージョンずれ検知目的は現状の実装で足りている
-- [ ] ヘルス値をモデレーション画面ヘッダに小さく出す（「DB OK / N ms」）→ 「ダッシュボードから DB 接続が見えない」の解消。UI 作業
-  - 🟢 明確: `/api/health` を叩いて表示するだけ
+- [ ] `ModerationHeader.tsx` ＋ `ModerationHeader.module.scss` を撤去する → どこからも import されていない**デッドコード**（実ヘッダーは全ページ共通の `GlobalHeader`。`moderation_beta/layout.tsx` も `GlobalHeaderServer` 経由で `GlobalHeader` を使う）。ヘルス表示の実装時に発見
+  - 🟢 明確: 未使用コンポーネントとそのスタイルの削除だけ
 
 ### リファクタ（品質）
 
@@ -125,7 +125,9 @@
 
 ### 観測性
 
-- [x] ヘルスチェック `/api/health` を作る → `{ ok, dbLatencyMs, checkedAt }` を返す（`src/app/(public)/api/health/route.ts`）。`fields` テーブルへ head count クエリを1発投げて DB 往復レイテンシを実測、`dynamic = "force-dynamic"` でキャッシュ無効（毎回フレッシュに観測）、失敗時は `{ ok:false }` ＋ 503。**実機で 200・`dbLatencyMs` が呼ぶたび実測変動・`checkedAt` 更新を確認済み**。`migration` 併記とヘッダ表示は別項目に分離（観測性の未着手へ）
+- [x] ヘルスチェック `/api/health` を作る → `{ ok, dbLatencyMs, checkedAt }` を返す（`src/app/(public)/api/health/route.ts`）。`fields` テーブルへ head count クエリを1発投げて DB 往復レイテンシを実測、`dynamic = "force-dynamic"` でキャッシュ無効（毎回フレッシュに観測）、失敗時は `{ ok:false }` ＋ 503。**本番で実証済み**: `x-vercel-id: hnd1::hnd1`・`x-vercel-cache: MISS`、cold 561ms / warm ~60ms（59/59/70/179/60）＝**本番 DB 往復の基準値を初めて観測**（従来の「API 全体 warm 150〜185ms」のうち DB 部分が ~60ms という内訳が判明）。`migration` 併記は別項目に分離
+- [x] ヘルス状態をモデレーション画面ヘッダにドットで出す → `HealthIndicator`（`src/components/HealthIndicator.tsx`）を `GlobalHeader` の右端（アバター左）に追加。直径5px のドットのみで、接続時は緑・確認できない時は赤。詳細（往復レイテンシ）は `title` / `aria-label` に載せマウスオーバーで読む。マウント時に `/api/health` を1回 fetch（ポーリングなし）。**表示条件は `isModeration && moderator`**＝ログイン済みモデレーターのみ（`moderation_beta/layout.tsx` は未ログインのログイン画面でも同じヘッダーを描画するため、`title` のレイテンシが未認証者に漏れないようゲート）。**実機で緑ドット・503 スタブによる赤ドット・未ログイン時に出ないことを確認済み**
+  - 経緯: 当初「DB OK / N ms」とテキストで出したが、**ダッシュボードが描画できている時点で DB は生きている**（レイアウトが7本以上クエリを投げて全部成功しないと画面が出ない）ため表示自体が冗長で、数値を見てもモデレーターに取れるアクションがない。常時見える情報量を最小化する判断でドットに変更した
 
 ### テスト・検証
 

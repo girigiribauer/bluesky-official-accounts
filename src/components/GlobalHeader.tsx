@@ -8,6 +8,7 @@ import { Moderator } from "src/lib/auth";
 import { logoutAction } from "src/lib/authActions";
 
 import styles from "./GlobalHeader.module.scss";
+import { HealthIndicator } from "./HealthIndicator";
 import { useModal } from "src/hooks/useModal";
 
 type Props = {
@@ -122,6 +123,7 @@ export const GlobalHeader = ({ moderator }: Props) => {
       <div className={styles.menu}>
         <div className={styles.headerWrapped}>{menuList}</div>
         <div className={styles.right}>
+          {isModeration && moderator && <HealthIndicator />}
           {moderator && (
             <div className={styles.userMenu} ref={userRef}>
               <button
