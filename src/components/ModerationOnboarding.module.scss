@@ -44,6 +44,100 @@
   margin: 0;
 }
 
+/* 分野選択（パネル）と CTA ブロック（ヒーロー→説明文→参加ボタン）の境界。上下の間隔は form の gap 任せ。 */
+.separator {
+  height: 1px;
+  background: var(--color-black-lighter2);
+  margin: 0;
+  border: none;
+}
+
+/* ヒーロー: 背景写真（ラスター）＋中央の図解（SVG・くっきり）の2レイヤー。 */
+.hero {
+  position: relative;
+  width: 700px;
+  max-width: 100%;
+  aspect-ratio: 700 / 300;
+}
+
+.heroBg {
+  object-fit: cover;
+}
+
+/* 図解SVGを中央に。コンテナ幅に対して比率固定（560/700）で拡縮。 */
+.heroItem {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: auto;
+}
+
+/* 画面に入った瞬間、その場でふわんと膨らんで減衰しながらバウンス（フェードなし・スケールのみ）。
+   人工感を消すため timing は linear にし、キーフレームを細かく刻んだ"減衰バネ"で
+   速度を連続させる（各節で止まらない＝自然）。振幅は徐々に小さく。
+   ヒーローがページ下部にあり mount 時は画面外なので、可視になってから付与する（IntersectionObserver）。 */
+.heroItemVisible {
+  animation: heroItemPop 0.55s linear both;
+}
+
+@keyframes heroItemPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+
+  15% {
+    transform: translate(-50%, -50%) scale(1.0);
+  }
+
+  28% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  40% {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+
+  52% {
+    transform: translate(-50%, -50%) scale(1.0);
+  }
+
+  62% {
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+
+  74% {
+    transform: translate(-50%, -50%) scale(0.99);
+  }
+
+  86% {
+    transform: translate(-50%, -50%) scale(1.015);
+  }
+
+  94% {
+    transform: translate(-50%, -50%) scale(1.005);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* 動きを抑える設定のユーザーには出さない */
+@media (prefers-reduced-motion: reduce) {
+  .heroItemVisible {
+    animation: none;
+  }
+}
+
+/* 説明テキスト2段落のまとまり。form の一律 gap(30px) では離れすぎるため、ここだけ 15px に詰める。 */
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 /* サブタイトル */
 .subtitle {
   font-size: 1rem;
@@ -56,7 +150,8 @@
 
 .termLink {
   background: none;
-  color: inherit;
+  color: var(--color-link);
+  font-weight: 700;
   text-decoration: underline;
 }
 
@@ -117,7 +212,7 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 0.78px solid var(--color-black-lighter);
+  border: 1px solid var(--color-black-lighter);
   background: var(--color-black-lighter3);
   flex-shrink: 0;
   display: inline-flex;
@@ -127,13 +222,14 @@
   color: transparent;
 }
 
+/* 分野ブロック内の表示なので青。緑は「参加する」など踏み出す操作に限る（`.selectFieldEnabled` 参照）。 */
 .notJoinBadgeJoined {
-  color: var(--color-secondary);
+  color: var(--color-primary-darker);
 }
 
 .notJoinIconJoined {
-  background: var(--color-secondary);
-  border-color: var(--color-secondary);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   color: var(--color-white);
 }
 
@@ -145,22 +241,11 @@
   gap: 10px;
 }
 
-.pickupFieldIcon {
+.pickupFieldImg {
   flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  background: var(--color-primary);
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  >i {
-    font-size: 0.75rem;
-    /* 12px */
-    color: var(--color-white);
-    line-height: 1;
-  }
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
 }
 
 .pickupTitle {
@@ -206,6 +291,27 @@
   color: var(--color-black);
 }
 
+/* この分野が扱うクラスタ（分類）の一覧 */
+.clusterList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+}
+
+.clusterItem {
+  margin: 0; // グローバルの ul>li マージンを打ち消す
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-primary-darker);
+  background: var(--color-primary-lighter3);
+  border-radius: 4px;
+  padding: 3px 10px;
+  line-height: 1.4;
+}
+
 /* 注記テキスト */
 .note {
   font-size: 1rem;
@@ -214,37 +320,37 @@
   line-height: 1.5em;
   color: var(--color-black);
   margin: 0;
-}
 
-/* セパレーター */
-.separator {
-  height: 1px;
-  background: var(--color-black-lighter2);
-  margin: 0;
-  border: none;
+  // global の strong は青（ブランド）だが、ここは緑の CTA ブロック内なので強調も緑で揃える。
+  strong {
+    color: var(--color-secondary);
+  }
 }
 
 /* ボタンエリア */
 .center {
-  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  // CTA を押しやすく見せるため、form の一律 gap(30px) に上乗せしてボタンの上下に余白を足す。
+  margin: 30px 0;
 }
 
 /* ボタン共通 */
 .selectFieldButton {
   width: 300px;
-  height: 40px;
+  height: 60px;
   border-radius: 2px;
-  font-size: 1rem;
-  /* 16px */
-  font-weight: 900;
+  font-size: 1.25rem;
+  /* 20px */
+  // Figma は 900 だが、同サイズの h1(700) より重くなり主役が2つになるため 700 に揃えた。
+  font-weight: 700;
   font-family: inherit;
-  line-height: 1.375em;
+  line-height: 1.1em;
+  /* 22px */
+  padding: 0 10px;
   cursor: pointer;
-  text-align: left;
-  padding-left: 30px;
+  text-align: center;
   box-sizing: border-box;
 }
 
@@ -258,34 +364,13 @@
   cursor: not-allowed;
 }
 
-/* ボタン Enabled */
+/* ボタン Enabled。分野=青／モデレーション操作=緑の切り分けで、参加は「踏み出す操作」なので緑。直前のヒーロー画像（緑基調）と連続させて一体の CTA に見せる。 */
 .selectFieldEnabled {
-  background: var(--color-primary);
+  background: var(--color-secondary);
   border: none;
   color: var(--color-white);
 
   &:hover {
     opacity: 0.85;
   }
-}
-
-/* 下部セクション */
-.section {
-  width: 700px;
-  max-width: 100%;
-  align-self: center;
-}
-
-.sectionText {
-  font-size: 1.25rem;
-  /* 20px */
-  font-weight: 400;
-  line-height: 1.8em;
-  color: var(--color-black);
-  margin: 0;
-}
-
-.sectionTextBlue {
-  color: var(--color-secondary);
-  font-weight: 700;
 }
