@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-08-26T04:44:23.062Z",
-  "total": 3518,
+  "updatedTime": "2026-08-26T05:38:11.358Z",
+  "total": 3519,
   "checkedTotal": 2569,
   "customDomainAccounts": 429,
-  "weeklyPostedAccounts": 0,
-  "monthlyPostedAccounts": 0,
+  "weeklyPostedAccounts": 1,
+  "monthlyPostedAccounts": 1,
   "accounts": [
     {
       "id": "c2bdd49e-2035-4598-b15f-306fe9eca6f4",
@@ -2357,6 +2357,25 @@
         {
           "fieldId": "business",
           "fieldLabel": "企業・ブランド・サービス",
+          "classificationId": null,
+          "classificationName": null
+        }
+      ]
+    },
+    {
+      "id": "e91d088f-dbac-40e1-95ff-b41c3431cb89",
+      "name": "BE:FIRST",
+      "status": "not_migrated",
+      "twitter": "https://x.com/BEFIRSTofficial",
+      "bluesky": "",
+      "blueskyDid": "",
+      "source": "",
+      "createdTime": "2026-08-26T05:17:30.26035+00:00",
+      "updatedTime": "2026-08-26T05:17:30.26035+00:00",
+      "fields": [
+        {
+          "fieldId": "music",
+          "fieldLabel": "音楽・声優・サウンド",
           "classificationId": null,
           "classificationName": null
         }
