@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-09-08T23:18:01.376Z",
-  "total": 3519,
-  "checkedTotal": 2569,
-  "customDomainAccounts": 429,
-  "weeklyPostedAccounts": 0,
-  "monthlyPostedAccounts": 1,
+  "updatedTime": "2026-09-09T04:00:40.027Z",
+  "total": 3518,
+  "checkedTotal": 2573,
+  "customDomainAccounts": 432,
+  "weeklyPostedAccounts": 3,
+  "monthlyPostedAccounts": 4,
   "accounts": [
     {
       "id": "c2bdd49e-2035-4598-b15f-306fe9eca6f4",
@@ -4111,21 +4111,21 @@
       ]
     },
     {
-      "id": "c03c61b2-3845-41d4-9ede-47335bbc3fdc",
-      "name": "EWRS総合情報共有局（EGIC）",
-      "status": "not_migrated",
+      "id": "be9e714c-da67-4f00-8122-b1da80b82b22",
+      "name": "EWRS総合情報共有局（EGIC）【公式】",
+      "status": "dual_active",
       "twitter": "https://x.com/EGIC_Info",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:17:25.875719+00:00",
-      "updatedTime": "2026-05-07T06:17:25.875719+00:00",
+      "bluesky": "https://bsky.app/profile/ewrs.jp",
+      "blueskyDid": "did:plc:b2rlzzz5hvai4djv5oimzgjd",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-08T23:45:27.107186+00:00",
+      "updatedTime": "2026-09-08T23:45:27.107186+00:00",
       "fields": [
         {
           "fieldId": "public_infrastructure",
           "fieldLabel": "公的機関・社会インフラ",
-          "classificationId": null,
-          "classificationName": null
+          "classificationId": "45f68839-4e11-417f-b90e-aa757b221e73",
+          "classificationName": "気象・災害"
         }
       ]
     },
@@ -14029,21 +14029,21 @@
       ]
     },
     {
-      "id": "d1b99a02-67f4-49e1-b12c-c597fd66c7b0",
-      "name": "Vivaldi",
-      "status": "not_migrated",
+      "id": "0494b6bc-f7ac-4dcf-85fd-2fc7b125dcfa",
+      "name": "Vivaldi Browser",
+      "status": "dual_active",
       "twitter": "https://x.com/vivaldibrowser",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:11:47.977383+00:00",
-      "updatedTime": "2026-05-07T06:11:47.977383+00:00",
+      "bluesky": "https://bsky.app/profile/vivaldi.com",
+      "blueskyDid": "did:plc:5cnt2eyggmpbhdvogarubrcs",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-08T23:46:08.505246+00:00",
+      "updatedTime": "2026-09-08T23:46:08.505246+00:00",
       "fields": [
         {
           "fieldId": "tech",
           "fieldLabel": "IT・テック・Web",
-          "classificationId": null,
-          "classificationName": null
+          "classificationId": "d62d8e20-358f-41e0-a352-ff6baa875581",
+          "classificationName": "Webサービス・プロダクト"
         }
       ]
     },
@@ -43048,21 +43048,21 @@
       ]
     },
     {
-      "id": "438ea551-6a85-402d-af50-4a35c12c7f7e",
-      "name": "高知さんさんテレビ",
-      "status": "not_migrated",
+      "id": "f1f542cf-d5cb-44e8-9939-c175f4832b4b",
+      "name": "高知のニュース （さんさんテレビ）",
+      "status": "account_created",
       "twitter": "https://x.com/sunsuntv",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:08:34.584133+00:00",
-      "updatedTime": "2026-05-07T06:08:34.584133+00:00",
+      "bluesky": "https://bsky.app/profile/www.sunsuntv.co.jp",
+      "blueskyDid": "did:plc:oen7ir4p6phqqezmgkzyck4a",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-08T23:44:33.801497+00:00",
+      "updatedTime": "2026-09-08T23:44:33.801497+00:00",
       "fields": [
         {
           "fieldId": "public_infrastructure",
           "fieldLabel": "公的機関・社会インフラ",
-          "classificationId": null,
-          "classificationName": null
+          "classificationId": "14b443d4-6879-4775-909f-612cdb59e96c",
+          "classificationName": "報道機関"
         }
       ]
     },
@@ -45387,38 +45387,19 @@
     {
       "id": "6c9a041d-cea2-4a99-86b3-8e6a052dec75",
       "name": "山添 拓",
-      "status": "unverified",
+      "status": "dual_active",
       "twitter": "https://x.com/pioneertaku84",
       "bluesky": "https://bsky.app/profile/pioneertaku84.bsky.social",
       "blueskyDid": "did:plc:qnuwfcih3ivb5yvg5w4lxfjr",
-      "source": "",
+      "source": "公式サイトにリンクあり\nURLは https://www.yamazoetaku.com/ です。\n＋Blueskyにより認証済み\n\n「来て欲しいアカウント一覧」より",
       "createdTime": "2026-03-03T06:48:00+00:00",
-      "updatedTime": "2026-05-07T06:15:57.60912+00:00",
+      "updatedTime": "2026-09-08T23:43:51.058447+00:00",
       "fields": [
         {
           "fieldId": "public_infrastructure",
           "fieldLabel": "公的機関・社会インフラ",
-          "classificationId": null,
-          "classificationName": null
-        }
-      ]
-    },
-    {
-      "id": "38ddaadf-23e1-4699-ba28-792b55e82548",
-      "name": "山添　拓",
-      "status": "not_migrated",
-      "twitter": "https://x.com/pioneertaku84",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:09:52.011057+00:00",
-      "updatedTime": "2026-05-07T06:09:52.011057+00:00",
-      "fields": [
-        {
-          "fieldId": "public_infrastructure",
-          "fieldLabel": "公的機関・社会インフラ",
-          "classificationId": null,
-          "classificationName": null
+          "classificationId": "4e0705bf-c08c-48c5-bcef-1653f8affcd9",
+          "classificationName": "国会議員"
         }
       ]
     },
