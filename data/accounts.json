@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-09-09T14:16:57.630Z",
-  "total": 3518,
-  "checkedTotal": 2573,
-  "customDomainAccounts": 432,
-  "weeklyPostedAccounts": 3,
-  "monthlyPostedAccounts": 4,
+  "updatedTime": "2026-09-09T18:24:08.946Z",
+  "total": 3519,
+  "checkedTotal": 2592,
+  "customDomainAccounts": 444,
+  "weeklyPostedAccounts": 22,
+  "monthlyPostedAccounts": 23,
   "accounts": [
     {
       "id": "c2bdd49e-2035-4598-b15f-306fe9eca6f4",
@@ -1527,15 +1527,15 @@
       ]
     },
     {
-      "id": "d79188b5-6d39-45c0-a2e6-8f6744b6b89e",
-      "name": "AFP News Agency (AFP通信)",
-      "status": "not_migrated",
+      "id": "b52045d7-3b45-4d1c-907e-036abc2fb3d6",
+      "name": "AFP News Agency",
+      "status": "dual_active",
       "twitter": "https://x.com/AFP",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:12:37.420227+00:00",
-      "updatedTime": "2026-05-07T06:12:37.420227+00:00",
+      "bluesky": "https://bsky.app/profile/en.afp.com",
+      "blueskyDid": "did:plc:r4ve5hjtfjubdwrvlxcad62e",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より。英語版。他言語版やファクトチェックのアカウントなどもある",
+      "createdTime": "2026-09-09T15:09:21.567823+00:00",
+      "updatedTime": "2026-09-09T15:09:21.567823+00:00",
       "fields": [
         {
           "fieldId": "public_infrastructure",
@@ -2895,6 +2895,25 @@
       ]
     },
     {
+      "id": "73fc4a49-953f-4d32-8b13-ce2c4feed671",
+      "name": "Chiitan🌈ちぃたん☆",
+      "status": "dual_active",
+      "twitter": "https://x.com/chiitan7407",
+      "bluesky": "https://bsky.app/profile/chiitan.love",
+      "blueskyDid": "did:plc:t5pur7eruxfgxy7ynpfrmg2w",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:04:44.275772+00:00",
+      "updatedTime": "2026-09-09T15:04:44.275772+00:00",
+      "fields": [
+        {
+          "fieldId": "games",
+          "fieldLabel": "ゲーム・玩具・キャラクター",
+          "classificationId": null,
+          "classificationName": null
+        }
+      ]
+    },
+    {
       "id": "bb94cdef-7e13-4e71-84b9-75333c96d6a8",
       "name": "Chillhop Music",
       "status": "dual_active",
@@ -3921,21 +3940,21 @@
       ]
     },
     {
-      "id": "2ccfb311-ca18-4f98-8735-8a939375c942",
+      "id": "07c4be0e-9850-4cb2-ac36-1a7b2ac3566b",
       "name": "Engadget",
-      "status": "not_migrated",
+      "status": "dual_active",
       "twitter": "https://x.com/engadget",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:17:25.571035+00:00",
-      "updatedTime": "2026-05-07T06:17:25.571035+00:00",
+      "bluesky": "https://bsky.app/profile/engadget.com",
+      "blueskyDid": "did:plc:hpnjvcdy2eb4f7wmrdfuka3h",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T14:55:34.291689+00:00",
+      "updatedTime": "2026-09-09T14:55:34.291689+00:00",
       "fields": [
         {
           "fieldId": "tech",
           "fieldLabel": "IT・テック・Web",
-          "classificationId": null,
-          "classificationName": null
+          "classificationId": "4e95590f-1c58-4886-93dd-13c9c71f9fdd",
+          "classificationName": "テックメディア"
         }
       ]
     },
@@ -7018,6 +7037,25 @@
       ]
     },
     {
+      "id": "3e0caf32-9401-4c74-99d6-ab668dc563ae",
+      "name": "Komiflo",
+      "status": "dual_active",
+      "twitter": "https://x.com/komiflo",
+      "bluesky": "https://bsky.app/profile/komiflo.com",
+      "blueskyDid": "did:plc:6h7zo2yvfexpm52p3mi7uwoc",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より（ただしそちらに登録されているのは https://x.com/komiflo_support でサポートアカウントはBlueskyには見当たらない）",
+      "createdTime": "2026-09-09T15:00:59.518821+00:00",
+      "updatedTime": "2026-09-09T15:00:59.518821+00:00",
+      "fields": [
+        {
+          "fieldId": "publishing",
+          "fieldLabel": "出版・文芸",
+          "classificationId": null,
+          "classificationName": null
+        }
+      ]
+    },
+    {
       "id": "64dc122e-bf9c-42b7-a07e-f22317c16c54",
       "name": "Komiflo",
       "status": "not_migrated",
@@ -7246,21 +7284,21 @@
       ]
     },
     {
-      "id": "5a655679-1fad-478f-bc4d-900f27d5138c",
-      "name": "Le Monde (英語)",
-      "status": "not_migrated",
+      "id": "11832e58-ad48-4301-a3fd-e48b98d848c4",
+      "name": "Le Monde in English",
+      "status": "migrated",
       "twitter": "https://x.com/LeMonde_EN",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:13:24.102633+00:00",
-      "updatedTime": "2026-05-07T06:13:24.102633+00:00",
+      "bluesky": "https://bsky.app/profile/english.lemonde.fr",
+      "blueskyDid": "did:plc:4izzk7jyj5yebyo22zblxby4",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T14:29:09.601312+00:00",
+      "updatedTime": "2026-09-09T14:29:09.601312+00:00",
       "fields": [
         {
           "fieldId": "public_infrastructure",
           "fieldLabel": "公的機関・社会インフラ",
-          "classificationId": null,
-          "classificationName": null
+          "classificationId": "14b443d4-6879-4775-909f-612cdb59e96c",
+          "classificationName": "報道機関"
         }
       ]
     },
@@ -7531,15 +7569,15 @@
       ]
     },
     {
-      "id": "66dc0f15-9aa1-43f1-8cf4-0c883fe1b94c",
+      "id": "b89c0b87-7ac9-4261-9a74-e85015316ca5",
       "name": "Lula（ルーラ大統領）",
-      "status": "not_migrated",
+      "status": "dual_active",
       "twitter": "https://x.com/LulaOficial",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:17:54.401232+00:00",
-      "updatedTime": "2026-05-07T06:17:54.401232+00:00",
+      "bluesky": "https://bsky.app/profile/lulaoficialbluesky.bsky.social",
+      "blueskyDid": "did:plc:a5o5pa6imrd52s627zq63zgz",
+      "source": "同一だとわかる客観的根拠としてBlueskyによる認証があります。",
+      "createdTime": "2026-09-09T14:33:12.576952+00:00",
+      "updatedTime": "2026-09-09T14:33:12.576952+00:00",
       "fields": [
         {
           "fieldId": "public_infrastructure",
@@ -8500,15 +8538,15 @@
       ]
     },
     {
-      "id": "db9ac88c-da0c-4ce5-a0bb-45c87a789316",
+      "id": "e40b5840-c0d9-4250-aba0-73c24cd3dade",
       "name": "Nature Portfolio",
-      "status": "not_migrated",
+      "status": "dual_active",
       "twitter": "https://x.com/NaturePortfolio",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:12:35.499469+00:00",
-      "updatedTime": "2026-05-07T06:12:35.499469+00:00",
+      "bluesky": "https://bsky.app/profile/natureportfolio.nature.com",
+      "blueskyDid": "did:plc:jyctnrcv5dznuu67bkjjlf3t",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:10:35.507848+00:00",
+      "updatedTime": "2026-09-09T15:10:35.507848+00:00",
       "fields": [
         {
           "fieldId": "public_infrastructure",
@@ -11616,15 +11654,15 @@
       ]
     },
     {
-      "id": "d5307772-5322-441a-a6ee-f0d455a6d036",
+      "id": "5caaa1fb-6f4a-48bc-931b-0188e26fb746",
       "name": "STARBOOKS",
-      "status": "not_migrated",
+      "status": "dual_active",
       "twitter": "https://x.com/e_STARBOOKS",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:17:07.419163+00:00",
-      "updatedTime": "2026-05-07T06:17:07.419163+00:00",
+      "bluesky": "https://bsky.app/profile/starbooks-jp.bsky.social",
+      "blueskyDid": "did:plc:v4fvce5f2onm7payg4226qrs",
+      "source": "X/Twitter での言及あり\nURLは https://x.com/e_STARBOOKS/status/2004354980099379402 です。\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T14:59:45.27782+00:00",
+      "updatedTime": "2026-09-09T14:59:45.27782+00:00",
       "fields": [
         {
           "fieldId": "publishing",
@@ -12604,15 +12642,15 @@
       ]
     },
     {
-      "id": "1a2e3604-7357-42e0-a090-80a3d30ea607",
+      "id": "0c44f44c-fb9f-4a90-8b80-47b392a3c29d",
       "name": "The Lancet",
-      "status": "not_migrated",
+      "status": "dual_active",
       "twitter": "https://x.com/TheLancet",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:12:33.725009+00:00",
-      "updatedTime": "2026-05-07T06:12:33.725009+00:00",
+      "bluesky": "https://bsky.app/profile/thelancet.com",
+      "blueskyDid": "did:plc:ypu6bwefbbzhcvojdj7mz657",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より。別途各誌のアカウントあり",
+      "createdTime": "2026-09-09T15:10:21.375813+00:00",
+      "updatedTime": "2026-09-09T15:10:21.375813+00:00",
       "fields": [
         {
           "fieldId": "public_infrastructure",
@@ -13449,6 +13487,25 @@
       "source": "カスタムドメイン。「両方運用中」に更新。",
       "createdTime": "2024-12-10T22:11:00+00:00",
       "updatedTime": "2026-05-07T06:12:43.484902+00:00",
+      "fields": [
+        {
+          "fieldId": "public_infrastructure",
+          "fieldLabel": "公的機関・社会インフラ",
+          "classificationId": null,
+          "classificationName": null
+        }
+      ]
+    },
+    {
+      "id": "d4d78d95-deb6-4b9d-b011-1cd8666d91c2",
+      "name": "UN Environment Programme (UNEP)",
+      "status": "dual_active",
+      "twitter": "https://x.com/UNEP",
+      "bluesky": "https://bsky.app/profile/unep.org",
+      "blueskyDid": "did:plc:woph5pj32fzbuicun4r53g43",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より（UNEPとして登録）",
+      "createdTime": "2026-09-09T15:10:08.10888+00:00",
+      "updatedTime": "2026-09-09T15:10:08.10888+00:00",
       "fields": [
         {
           "fieldId": "public_infrastructure",
@@ -16860,15 +16917,15 @@
       ]
     },
     {
-      "id": "4b015019-fa66-4069-ac65-9de621840228",
+      "id": "50d18b2f-7dc5-482f-88a1-b496bf11bc42",
       "name": "インサイド",
-      "status": "not_migrated",
+      "status": "dual_active",
       "twitter": "https://x.com/insidejp",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:16:58.477854+00:00",
-      "updatedTime": "2026-05-07T06:16:58.477854+00:00",
+      "bluesky": "https://bsky.app/profile/inside-games.jp",
+      "blueskyDid": "did:plc:v72u4gia4c7tdgmaepdojcaq",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:04:56.07593+00:00",
+      "updatedTime": "2026-09-09T15:04:56.07593+00:00",
       "fields": [
         {
           "fieldId": "games",
@@ -21179,34 +21236,15 @@
       "twitter": "https://x.com/COMITIAofficial",
       "bluesky": "https://bsky.app/profile/comitia.co.jp",
       "blueskyDid": "did:plc:omfauww5bv5go3t3pksc434x",
-      "source": "カスタムドメイン",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」から要削除",
       "createdTime": "2025-06-08T11:43:00+00:00",
-      "updatedTime": "2026-05-07T06:15:18.779629+00:00",
+      "updatedTime": "2026-09-09T14:57:28.832003+00:00",
       "fields": [
         {
           "fieldId": "visual_arts",
           "fieldLabel": "漫画・イラスト・アート",
           "classificationId": "d9761829-c8c9-4446-ac31-34fb2101ca94",
           "classificationName": "同人（静止画）"
-        }
-      ]
-    },
-    {
-      "id": "4ae06d97-a027-45b5-937a-76ffc919e5b0",
-      "name": "コミティア実行委員会",
-      "status": "not_migrated",
-      "twitter": "https://x.com/COMITIAofficial",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:11:16.823524+00:00",
-      "updatedTime": "2026-05-07T06:11:16.823524+00:00",
-      "fields": [
-        {
-          "fieldId": "visual_arts",
-          "fieldLabel": "漫画・イラスト・アート",
-          "classificationId": null,
-          "classificationName": null
         }
       ]
     },
@@ -24399,25 +24437,6 @@
           "fieldLabel": "漫画・イラスト・アート",
           "classificationId": "b95bc2fe-7511-4a5f-bdb9-80fd08ecb8e9",
           "classificationName": "漫画作品"
-        }
-      ]
-    },
-    {
-      "id": "7cd99918-1b8e-4ed8-b4a9-1f3a0f5a1c14",
-      "name": "ちぃたん☆／Chiitan",
-      "status": "not_migrated",
-      "twitter": "https://x.com/chiitan7407",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:12:10.454458+00:00",
-      "updatedTime": "2026-05-07T06:12:10.454458+00:00",
-      "fields": [
-        {
-          "fieldId": "games",
-          "fieldLabel": "ゲーム・玩具・キャラクター",
-          "classificationId": null,
-          "classificationName": null
         }
       ]
     },
@@ -27975,15 +27994,15 @@
       ]
     },
     {
-      "id": "1fdaaba2-28a9-459d-a714-c0c4c0ebe45e",
-      "name": "ビオシェルジュ 業務用有機野菜の注文サイト by マクミノル",
-      "status": "not_migrated",
+      "id": "ab8d15d5-1776-47f8-a14b-d70b337f2414",
+      "name": "ビオシェルジュ - 業務用有機野菜の注文サイト",
+      "status": "dual_active",
       "twitter": "https://x.com/biocierge",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:06:01.720503+00:00",
-      "updatedTime": "2026-05-07T06:06:01.720503+00:00",
+      "bluesky": "https://bsky.app/profile/biocierge.jp",
+      "blueskyDid": "did:plc:u5glehkqdcnbq2htsubu3xfb",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:09:55.935609+00:00",
+      "updatedTime": "2026-09-09T15:09:55.935609+00:00",
       "fields": [
         {
           "fieldId": "business",
@@ -28184,15 +28203,15 @@
       ]
     },
     {
-      "id": "6090946c-100f-4a0a-b238-f5dbb153acea",
-      "name": "ビッグカツといか姿フライのすぐる",
-      "status": "not_migrated",
+      "id": "de8a38ad-7bb7-455e-92a7-f7acc4c46328",
+      "name": "ビッグカツといか姿フライのすぐる【公式】",
+      "status": "account_created",
       "twitter": "https://x.com/SUGURU_BIGKATSU",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:16:28.978104+00:00",
-      "updatedTime": "2026-05-07T06:16:28.978104+00:00",
+      "bluesky": "https://bsky.app/profile/suguru-net.com",
+      "blueskyDid": "did:plc:tvise5e5nu37sy4izxt7gryu",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:01:24.707732+00:00",
+      "updatedTime": "2026-09-09T15:01:24.707732+00:00",
       "fields": [
         {
           "fieldId": "local",
@@ -36582,19 +36601,19 @@
       ]
     },
     {
-      "id": "3dce4c19-52e1-4a71-81f1-63a06c410b2e",
+      "id": "08d67cf9-a929-482c-8dee-cc83b635d4b1",
       "name": "仮面女子（公式）",
-      "status": "not_migrated",
+      "status": "account_created",
       "twitter": "https://x.com/AliceProject_mb",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:15:59.613426+00:00",
-      "updatedTime": "2026-05-07T06:15:59.613426+00:00",
+      "bluesky": "https://bsky.app/profile/kamen-joshi.com",
+      "blueskyDid": "did:plc:ufmz33vtsr544zosz56f4ifg",
+      "source": "カスタムドメインのため\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:02:42.687289+00:00",
+      "updatedTime": "2026-09-09T15:02:42.687289+00:00",
       "fields": [
         {
-          "fieldId": "entertainment",
-          "fieldLabel": "芸能・タレント・配信",
+          "fieldId": "music",
+          "fieldLabel": "音楽・声優・サウンド",
           "classificationId": null,
           "classificationName": null
         }
@@ -37589,15 +37608,15 @@
       ]
     },
     {
-      "id": "14913a25-b042-45f3-ad6d-89f02a578f4c",
-      "name": "株式会社 栄光",
-      "status": "not_migrated",
+      "id": "6d01902a-005c-49b2-8c35-75685ee6cb9b",
+      "name": "株式会社 栄光（同人印刷）",
+      "status": "dual_active",
       "twitter": "https://x.com/eikou_info",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:15:33.220209+00:00",
-      "updatedTime": "2026-05-07T06:15:33.220209+00:00",
+      "bluesky": "https://bsky.app/profile/eikou-info.bsky.social",
+      "blueskyDid": "did:plc:dbesnhkl7ni3edyxdtjaum3x",
+      "source": "X/Twitter での言及あり\nURLは https://x.com/eikou_info/status/2027311511631249774 です。\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T14:59:08.787058+00:00",
+      "updatedTime": "2026-09-09T14:59:08.787058+00:00",
       "fields": [
         {
           "fieldId": "publishing",
@@ -37912,15 +37931,15 @@
       ]
     },
     {
-      "id": "aca3a0f0-3895-4a53-8272-0d436a597b45",
+      "id": "58aa7c45-84a5-42d0-b307-304a3159cd22",
       "name": "株式会社リバァイアンス【公式】",
-      "status": "not_migrated",
+      "status": "dual_active",
       "twitter": "https://x.com/reviance__",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:07:45.888322+00:00",
-      "updatedTime": "2026-05-07T06:07:45.888322+00:00",
+      "bluesky": "https://bsky.app/profile/reviance0430.bsky.social",
+      "blueskyDid": "did:plc:f7tc27u3nshrlcdrlgzdrkhz",
+      "source": "同一だとわかる客観的根拠としてX（Twitter）のプロフィールからリンクしているリンク一覧 https://lit.link/reviance への掲載があります。\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:09:43.548874+00:00",
+      "updatedTime": "2026-09-09T15:09:43.548874+00:00",
       "fields": [
         {
           "fieldId": "business",
@@ -38444,15 +38463,15 @@
       ]
     },
     {
-      "id": "0621aaf4-a661-4472-9455-1c051cd5944e",
+      "id": "5b754023-22f8-4452-ba8d-08e772a61a66",
       "name": "岩手大学だめライフ愛好会",
-      "status": "not_migrated",
+      "status": "account_created",
       "twitter": "https://x.com/gandame_life",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:15:12.547616+00:00",
-      "updatedTime": "2026-05-07T06:15:12.547616+00:00",
+      "bluesky": "https://bsky.app/profile/gandamelife.bsky.social",
+      "blueskyDid": "did:plc:coeyn64gprifprdlnmcoakg3",
+      "source": "X/Twitter プロフィールに記載あり\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:01:46.889661+00:00",
+      "updatedTime": "2026-09-09T15:01:46.889661+00:00",
       "fields": [
         {
           "fieldId": "lifestyle",
@@ -43504,15 +43523,15 @@
       ]
     },
     {
-      "id": "93a06299-cab0-4533-9f32-af9302c12fd6",
+      "id": "5fda7e9d-a37c-4061-8283-ef542abccac9",
       "name": "黒井よだか",
-      "status": "not_migrated",
+      "status": "dual_active",
       "twitter": "https://x.com/k_yodaka_02",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:13:46.820073+00:00",
-      "updatedTime": "2026-05-07T06:13:46.820073+00:00",
+      "bluesky": "https://bsky.app/profile/yodaka-kuroi.bsky.social",
+      "blueskyDid": "did:plc:hysgdgffkyqfswq6tomy4cuu",
+      "source": "X/Twitter での言及あり\nURLは https://x.com/k_yodaka_02/status/2003831932099170360 です。\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:08:11.901443+00:00",
+      "updatedTime": "2026-09-09T15:08:11.901443+00:00",
       "fields": [
         {
           "fieldId": "visual_arts",
@@ -56310,15 +56329,15 @@
       ]
     },
     {
-      "id": "84c0d098-7119-474a-bcf5-0457fe41b59e",
+      "id": "8761fc46-5219-4a17-a473-db07a87e2bfb",
       "name": "津久井箇人 a.k.a. そそそ",
-      "status": "not_migrated",
+      "status": "account_created",
       "twitter": "https://x.com/sososo291",
-      "bluesky": "",
-      "blueskyDid": "",
-      "source": "",
-      "createdTime": "2026-05-07T06:16:47.538488+00:00",
-      "updatedTime": "2026-05-07T06:16:47.538488+00:00",
+      "bluesky": "https://bsky.app/profile/sososo291.bsky.social",
+      "blueskyDid": "did:plc:bnotx7srkan23vhdpdv7h57y",
+      "source": "同一だとわかる客観的根拠としてX（Twitter）のプロフィールからリンクしている https://lit.link/sososo291 への掲載があります。\n\n「来て欲しいアカウント一覧」より",
+      "createdTime": "2026-09-09T15:03:26.371617+00:00",
+      "updatedTime": "2026-09-09T15:03:26.371617+00:00",
       "fields": [
         {
           "fieldId": "music",
