@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-09-21T04:45:39.500Z",
-  "total": 3519,
-  "checkedTotal": 2592,
-  "customDomainAccounts": 444,
-  "weeklyPostedAccounts": 0,
-  "monthlyPostedAccounts": 23,
+  "updatedTime": "2026-09-21T10:32:28.962Z",
+  "total": 3520,
+  "checkedTotal": 2593,
+  "customDomainAccounts": 445,
+  "weeklyPostedAccounts": 1,
+  "monthlyPostedAccounts": 24,
   "accounts": [
     {
       "id": "c2bdd49e-2035-4598-b15f-306fe9eca6f4",
@@ -3537,6 +3537,25 @@
           "fieldLabel": "ゲーム・玩具・キャラクター",
           "classificationId": "d97b5c36-a46d-4592-a21b-944b18912b3c",
           "classificationName": "ゲーム会社"
+        }
+      ]
+    },
+    {
+      "id": "e8d38bfc-bc56-408d-8fdc-c4c695d5042d",
+      "name": "Deku Deals",
+      "status": "dual_active",
+      "twitter": "https://x.com/dekudeals",
+      "bluesky": "https://bsky.app/profile/dekudeals.com",
+      "blueskyDid": "did:plc:3l63gtda6n7wpqc3x676ivyw",
+      "source": "カスタムドメインのため",
+      "createdTime": "2026-09-21T07:43:52.017516+00:00",
+      "updatedTime": "2026-09-21T07:43:52.017516+00:00",
+      "fields": [
+        {
+          "fieldId": "games",
+          "fieldLabel": "ゲーム・玩具・キャラクター",
+          "classificationId": null,
+          "classificationName": null
         }
       ]
     },
