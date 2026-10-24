@@ -9,5 +9,7 @@ export function getSupabaseClient() {
   if (!url || !key) {
     throw new Error("SUPABASE_URL or SUPABASE_SECRET_KEY is not set");
   }
-  return createClient<Database>(url, key);
+  return createClient<Database>(url, key, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
 }
