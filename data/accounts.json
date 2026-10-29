@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-10-29T05:08:10.940Z",
-  "total": 3520,
-  "checkedTotal": 2593,
-  "customDomainAccounts": 445,
-  "weeklyPostedAccounts": 0,
-  "monthlyPostedAccounts": 0,
+  "updatedTime": "2026-10-29T12:37:52.011Z",
+  "total": 3524,
+  "checkedTotal": 2597,
+  "customDomainAccounts": 446,
+  "weeklyPostedAccounts": 4,
+  "monthlyPostedAccounts": 4,
   "accounts": [
     {
       "id": "c2bdd49e-2035-4598-b15f-306fe9eca6f4",
@@ -3936,6 +3936,25 @@
           "fieldLabel": "漫画・イラスト・アート",
           "classificationId": "cb19b4fe-7f91-44e9-b8f8-5464106ca15c",
           "classificationName": "漫画家・イラストレーター"
+        }
+      ]
+    },
+    {
+      "id": "f359245e-999e-43e9-b36c-ad17e3f109b5",
+      "name": "EmDash CMS",
+      "status": "dual_active",
+      "twitter": "https://x.com/EmDashCMS",
+      "bluesky": "https://bsky.app/profile/emdashcms.com",
+      "blueskyDid": "did:plc:ilznslhspsvk6naatedr66pi",
+      "source": "カスタムドメインのため",
+      "createdTime": "2026-10-29T05:40:42.122732+00:00",
+      "updatedTime": "2026-10-29T05:40:42.122732+00:00",
+      "fields": [
+        {
+          "fieldId": "tech",
+          "fieldLabel": "IT・テック・Web",
+          "classificationId": null,
+          "classificationName": null
         }
       ]
     },
@@ -16081,6 +16100,25 @@
       ]
     },
     {
+      "id": "283f8b46-dbdf-4fa7-803f-5a772983c69b",
+      "name": "あらたとしひら",
+      "status": "dual_active",
+      "twitter": "https://x.com/arata_amode",
+      "bluesky": "https://bsky.app/profile/arata-amode.bsky.social",
+      "blueskyDid": "did:plc:jnrlavfk74q74zz3qfvhi3xv",
+      "source": "X/Twitter での言及あり\nURLは\nhttps://x.com/arata_amode/status/1755122175735120169\nです。",
+      "createdTime": "2026-10-29T05:42:12.209855+00:00",
+      "updatedTime": "2026-10-29T05:42:12.209855+00:00",
+      "fields": [
+        {
+          "fieldId": "visual_arts",
+          "fieldLabel": "漫画・イラスト・アート",
+          "classificationId": null,
+          "classificationName": null
+        }
+      ]
+    },
+    {
       "id": "52a90802-0910-4b1a-bfd6-a55e316e76e3",
       "name": "あらゐけいいち",
       "status": "unverified",
@@ -21112,6 +21150,25 @@
           "fieldLabel": "漫画・イラスト・アート",
           "classificationId": "cb19b4fe-7f91-44e9-b8f8-5464106ca15c",
           "classificationName": "漫画家・イラストレーター"
+        }
+      ]
+    },
+    {
+      "id": "587ad8f0-9fd1-47a7-a10e-129a464f2e5b",
+      "name": "ゴブリン書房",
+      "status": "dual_active",
+      "twitter": "https://x.com/GoblinShobo",
+      "bluesky": "https://bsky.app/profile/goblinshobo.bsky.social",
+      "blueskyDid": "did:plc:f7if2mndqu2li6s4ybiwl2lo",
+      "source": "Xのプロフィール欄にBlueskyへのリンクが記載されている",
+      "createdTime": "2026-10-29T05:41:01.615776+00:00",
+      "updatedTime": "2026-10-29T05:41:01.615776+00:00",
+      "fields": [
+        {
+          "fieldId": "publishing",
+          "fieldLabel": "出版・文芸",
+          "classificationId": null,
+          "classificationName": null
         }
       ]
     },
@@ -37224,6 +37281,25 @@
           "fieldLabel": "漫画・イラスト・アート",
           "classificationId": "cb19b4fe-7f91-44e9-b8f8-5464106ca15c",
           "classificationName": "漫画家・イラストレーター"
+        }
+      ]
+    },
+    {
+      "id": "8f3e14da-d5f7-4cef-b2b2-47c2aa646b1f",
+      "name": "海源",
+      "status": "dual_active",
+      "twitter": "https://x.com/KTx3rl8o",
+      "bluesky": "https://bsky.app/profile/ktx3rl8o.bsky.social",
+      "blueskyDid": "did:plc:f5ltnz4ttdioishkdj6cttg2",
+      "source": "X/Twitter での言及あり\nURLは\nhttps://x.com/KTx3rl8o/status/1856175247218880887\nです。\n\n公式サイトにリンクあり\nURLは\nhttps://ktx3rl8oss.stars.ne.jp/ktx3rl8o.html\nです。",
+      "createdTime": "2026-10-29T05:41:49.124835+00:00",
+      "updatedTime": "2026-10-29T05:41:49.124835+00:00",
+      "fields": [
+        {
+          "fieldId": "visual_arts",
+          "fieldLabel": "漫画・イラスト・アート",
+          "classificationId": null,
+          "classificationName": null
         }
       ]
     },
