@@ -1,10 +1,10 @@
 {
-  "updatedTime": "2026-11-19T03:01:18.051Z",
-  "total": 3524,
-  "checkedTotal": 2597,
+  "updatedTime": "2026-11-19T12:40:12.989Z",
+  "total": 3525,
+  "checkedTotal": 2598,
   "customDomainAccounts": 446,
-  "weeklyPostedAccounts": 0,
-  "monthlyPostedAccounts": 4,
+  "weeklyPostedAccounts": 1,
+  "monthlyPostedAccounts": 5,
   "accounts": [
     {
       "id": "c2bdd49e-2035-4598-b15f-306fe9eca6f4",
@@ -30990,6 +30990,25 @@
         {
           "fieldId": "lifestyle",
           "fieldLabel": "探究・趣味・暮らし",
+          "classificationId": null,
+          "classificationName": null
+        }
+      ]
+    },
+    {
+      "id": "917333c3-9b2e-4e8e-b3b3-cf30514bc4b6",
+      "name": "みずいろブックス",
+      "status": "dual_active",
+      "twitter": "https://x.com/mizuirobooks",
+      "bluesky": "https://bsky.app/profile/mizuirobooks.bsky.social",
+      "blueskyDid": "did:plc:mqv7cdpsvnpub6k7lbofj3xx",
+      "source": "出版社のウェブサイトにXとBlueskyのURLが記載されている\nhttps://sites.google.com/mizuirobooks.com/home/sns\n-> Xのプロフィール, https://mizuirobooks.stores.jp/ , https://sites.google.com/mizuirobooks.com/home/ と追うことで辿れるため正しい（途中過程もちゃんと書いて報告してください）",
+      "createdTime": "2026-11-19T11:48:52.3297+00:00",
+      "updatedTime": "2026-11-19T11:48:52.3297+00:00",
+      "fields": [
+        {
+          "fieldId": "publishing",
+          "fieldLabel": "出版・文芸",
           "classificationId": null,
           "classificationName": null
         }
